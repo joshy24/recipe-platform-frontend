@@ -1,0 +1,67 @@
+
+
+
+.authHolder{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("/images/auth_bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.authHolderInnerContent{
+    width: 40%;
+    max-width: 500px;
+    min-width: 250px;
+    padding: 30px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+}
+
+.authInputFieldHolder{
+    margin-bottom: 8px;
+    margin-top: 0px;
+    width: 100%;
+}
+
+.authInputFieldHolder h4{
+    margin-bottom: 8px;
+}
+
+
+.authTitle{
+    font-weight: 500;
+    font-size: 30px;
+    color: #7bae7f;
+    margin: 0px;
+}
+
+
+.authButton{
+    margin-top: 30px;
+    background: #73956f;
+    color: #FFFFFF;
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.authLinkText{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    margin-bottom: 0px;
+    margin-top: 24px;
+}
