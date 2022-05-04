@@ -5,7 +5,7 @@ import styles from "../../styles/Auth.module.css"
 
 const SignUp = () => {
     return <div className={styles.authHolderInnerContent}>
-        <h2 className={styles.authTitle}>SignIn</h2>
+        <h2 className={styles.authTitle}>SignUp</h2>
 
         <div className={styles.authInputFieldHolder}>
             <h4>Email</h4>
