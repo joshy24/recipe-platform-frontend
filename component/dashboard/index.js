@@ -1,5 +1,6 @@
 import React from 'react'
 import IngredientCount from './IngredientCount'
+<<<<<<< HEAD
 import RecentRecipes from './RecentRecipes'
 import RecipeNumbers from './RecipeNumbers'
 
@@ -21,13 +22,30 @@ function DashboardIndex() {
                 <RecentRecipes />
             </div>
              
+=======
+import RecentRecipe from './RecentRecipe'
+import RecentRecipes from './RecentRecipes'
+import RecipeNumbers from './RecipeNumbers'
+
+function DashboardIndex() {
+
+    return (
+        <div>
+            <IngredientCount />
+            <RecentRecipe />
+            <RecentRecipes />
+            <RecipeNumbers />
+>>>>>>> mofe
         </div>
     )
 }
 
 export default DashboardIndex;
+<<<<<<< HEAD
 
 
            
             
            
+=======
+>>>>>>> mofe

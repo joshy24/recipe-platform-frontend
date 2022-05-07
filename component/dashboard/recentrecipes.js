@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import styles from "../../styles/Dashboard.module.css"
 
@@ -66,3 +67,12 @@ export default RecentRecipes;
             })
         }
 */
+=======
+const RecentRecipes = () => {
+    return <div>
+        <h2>Recent Recipes</h2>
+    </div>
+}
+
+export default RecentRecipes;
+>>>>>>> mofe

@@ -1,5 +1,6 @@
 import styles from "../../styles/Dashboard.module.css"
 
+<<<<<<< HEAD
 import {getDate, getAmount} from "../../utils/helper"
 
 const RecentRecipe = ({recipe}) => {
@@ -19,6 +20,11 @@ const RecentRecipe = ({recipe}) => {
         <div className={styles.recipeCost}>
             <h5>{getAmount(recipe.cost)}</h5>
         </div>
+=======
+const RecentRecipe = () => {
+    return <div>
+        <h2>Recent Recipe</h2>
+>>>>>>> mofe
     </div>
 }
 
