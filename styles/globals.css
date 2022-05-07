@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=DM+Sans:200,300,400,500,600,700,800,900&display=swap');
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  background: #F6F6F6;;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+}
+
+
+
+/*
+Buttons
+*/
+
+button{
+    border-radius: 8px;
+    box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
+    font-size: 17px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    padding: 12px 24px;
+    border: none;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+
+input{
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    padding: 12px 24px;
+    border: 1px solid #000000;
+    width: 100%;
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+.primaryButton{
+  background: #73956f;
+  color: #FFFFFF;
+}
+
+.secondaryButton{
+   background: #7bae7f;
+}
+
+.link{
+   text-decoration: underline;
+}
+
+/*
+text
+*/
+
+
+
+
+
+
