@@ -1,0 +1,204 @@
+
+.dashboardIndex{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+
+
+
+.recipesIngredientsCountHolder{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 50px;
+}
+
+
+
+
+
+.recentRecipesHolder{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0px 26px 30px 26px;
+    margin-top: 16px;
+}
+
+.recentRecipesHolder h2{
+    font-size: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+
+
+
+
+.recipesNumbersHolder{
+    padding-bottom: 24px;
+    padding-top: 24px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipesNumbersHolderTitle{
+    padding: 0px 24px;
+}
+
+.recipesNumbersHolderTitle h3{
+    font-size: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.recipesNumbersHolder hr{
+    width: 100%;
+    height: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.recipesNumbersHolder .recipesNumbersHolderContent{
+    padding: 0px 24px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.recipesNumbersHolder .recipesNumbersHolderContent .recipesNumbersHolderContentItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.recipesNumbersHolder .recipesNumbersHolderContent .recipesNumbersHolderContentItem h5{
+    margin: 0px 0px 6px 0px;
+
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.recipesNumbersHolder .recipesNumbersHolderContent .recipesNumbersHolderContentItem h4{
+    margin: 0px;
+
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+}
+
+
+
+
+.ingredientsNumbersHolder{
+    padding-bottom: 24px;
+    padding-top: 24px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredientsNumbersHolderTitle{
+    padding: 0px 24px;
+}
+
+.ingredientsNumbersHolderTitle h3{
+    font-size: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.ingredientsNumbersHolder .ingredientsNumbersHolderContent{
+    padding: 0px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.ingredientsNumbersHolder .ingredientsNumbersHolderContent h4{
+    margin: 0px 0px 6px 0px;
+
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.ingredientsNumbersHolder hr{
+    width: 100%;
+    height: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+
+.recentRecipesHolder{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.recentRecipeHolder{
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.recentRecipeHolderTitle{
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.recentRecipesHolder .recentRecipeHolderTitle h5{
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.recentRecipesHolder .recentRecipeHolder h5{
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+}
+
+.recentRecipesHolder h5{
+    margin: 0px;
+}
+
+.recentRecipesHolder .recipeName{
+    flex: 3;
+}
+
+.recentRecipesHolder .recipeDate{
+    flex: 1;
+}
+
+.recentRecipesHolder .recipeStatus{
+    flex: 1;
+}
+
+.recentRecipesHolder .recipeIngredient{
+    flex: 1;
+}
+
+.recentRecipesHolder .recipeCost{
+    flex: 1;
+}

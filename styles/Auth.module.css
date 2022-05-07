@@ -17,7 +17,11 @@
     width: 40%;
     max-width: 500px;
     min-width: 250px;
+<<<<<<< HEAD
     padding: 30px;
+=======
+    padding: 40px;
+>>>>>>> d396c529c388c972aa2a45a688c575522da10e21
     border-radius: 8px;
     background: #FFFFFF;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
@@ -34,6 +38,16 @@
     width: 100%;
 }
 
+<<<<<<< HEAD
+=======
+.authInputFieldHolderSignupSuccessText{
+    margin-bottom: 8px;
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+>>>>>>> d396c529c388c972aa2a45a688c575522da10e21
 .authInputFieldHolder h4{
     margin-bottom: 8px;
 }
