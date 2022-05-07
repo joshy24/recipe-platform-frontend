@@ -1,11 +1,4 @@
 
-<<<<<<< HEAD
-import styles from "../../styles/Account.module.css"
-
-const ForgotPassword = () => {
-    return <div>
-        <h2>Forgot Password</h2>
-=======
 import Link from "next/link"
 
 import styles from "../../styles/Auth.module.css"
@@ -23,7 +16,6 @@ const ForgotPassword = () => {
 
         <h5 className={styles.authLinkText}>Remember password? <span className="link"><Link href="/auth/signin">SignIn</Link></span></h5>
 
->>>>>>> d396c529c388c972aa2a45a688c575522da10e21
     </div>
 }
 
