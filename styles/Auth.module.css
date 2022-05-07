@@ -34,6 +34,13 @@
     width: 100%;
 }
 
+.authInputFieldHolderSignupSuccessText{
+    margin-bottom: 8px;
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+}
+
 .authInputFieldHolder h4{
     margin-bottom: 8px;
 }
