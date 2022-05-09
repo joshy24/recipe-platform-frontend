@@ -11,7 +11,7 @@ const SignUpSuccess = () => {
             <h4>You have succesfully signed up.<br/>We sent you an email to the email address you entered.<br/>Please follow the link in the email to activate your account.</h4>
         </div>
 
-        <button className={styles.authButton}><Link href="/auth/signin">SignIn</Link></button>
+        <Link href="/auth/signin"><button className={styles.authButton}>SignIn</button></Link>
 
     </div>
 }
