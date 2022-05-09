@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import { useState } from "react";
 import styles from "../../styles/Dashboard.module.css"
@@ -15,11 +14,6 @@ const IngredientCount = () => {
         <div className={styles.ingredientsNumbersHolderContent}>
             <h4>Total - {total}</h4>
         </div>
-=======
-const IngredientCount = () => {
-    return <div>
-        <h2>Ingredient Count</h2>
->>>>>>> mofe
     </div>
 }
 

@@ -23,14 +23,6 @@
 
 
 
-.recentRecipesHolder{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    padding: 0px 26px 30px 26px;
-    margin-top: 16px;
-}
-
 .recentRecipesHolder h2{
     font-size: 24px;
     font-family: 'DM Sans', sans-serif;
@@ -149,6 +141,8 @@
     width: 100%;
     align-items: flex-start;
     justify-content: space-between;
+    padding: 0px 26px 30px 26px;
+    margin-top: 16px;
 }
 
 .recentRecipeHolder{
