@@ -105,6 +105,14 @@ button:hover{
    background: #7bae7f;
 }
 
+.redButton{
+  background: #7bae7f;
+}
+
+.greyButton{
+  background: #CCCCCC;
+}
+
 .link{
    text-decoration: underline;
 }
@@ -119,6 +127,15 @@ text
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
 }
+
+.colorWhite{
+    color: #FFFFFF;
+}
+
+.colorBlack{
+   color: #000000;
+}
+
 
 
 
@@ -143,7 +160,7 @@ recipeBox
 */
 
 
-.recipeBox{
+.whiteBox{
     background: #FFFFFF;
     border-radius: 8px;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
