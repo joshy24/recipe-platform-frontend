@@ -27,7 +27,7 @@ const SignUp = () => {
             <input type="password" name="password" placeholder="Enter password" />
         </div>
 
-        <button className={styles.authButton}><Link href="/auth/signupsuccess">Submit</Link></button>
+        <Link href="/auth/signupsuccess"><button className={styles.authButton}>Submit</button></Link>
 
         <h5 className={styles.authLinkText}>Already have an account? <span className="link"><Link href="/auth/signin">SignIn</Link></span></h5>
 

@@ -5,7 +5,7 @@ import styles from "../../styles/Dashboard.module.css"
 const RecipeNumbers = () => {
 
     const [numbers, setNumbers] = useState({pending: 0, fulfilled: 0, total: 0});
-
+    
     return <div className={`whiteBox ${styles.recipesNumbersHolder}`}>
         <div className={styles.recipesNumbersHolderTitle}>
             <h3 className="colorPrimary">Recipes</h3>
