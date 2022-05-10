@@ -3,7 +3,7 @@ import styles from "../../styles/Recipes.module.css"
 import {getDate, getAmount} from "../../utils/helper"
 
 const RecipeItem = ({recipe}) => {
-    return <div className={`recipeBox ${styles.recipeItemHolder}`}>
+    return <div className={`whiteBox ${styles.recipeItemHolder}`}>
         <div className={styles.recipeName}>
             <h5 className="colorSecondary">{recipe.name}</h5>
         </div>
