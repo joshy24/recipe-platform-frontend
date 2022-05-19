@@ -21,12 +21,6 @@
 }
 
 
-.ingredientsList{
-    width: 100%;
-
-}
-
-
 
 
 .ingredientsList{
@@ -91,5 +85,120 @@
 }
 
 .ingredientsList .ingredientDelete{
+    flex: 1;
+}
+
+
+
+
+
+/*
+Ingredient Component File
+*/
+
+.ingredient{
+    width: 100%;
+}
+
+.ingredientTopCenterContent{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.ingredientTopCenterContent > *{
+    margin: 0px 8px;
+    flex: 1;
+}
+
+.ingredientTopCenterContent .whiteBox{
+    
+}
+
+.ingredientTopCenterContent .ingredientTopCenterContentItem{
+    padding: 16px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    height: 80px;
+}
+
+
+.ingredientTopCenterContent .ingredientTopCenterContentItem h5{
+    text-align: center;
+    font-weight: 600;
+}
+
+
+
+
+/*
+Ingredient Recipes Styles
+*/
+
+.ingredientRecipesHolder{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0px 26px 30px 26px;
+    margin-top: 100px;
+}
+
+.ingredientRecipeHolder{
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ingredientRecipeHolderTitle{
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ingredientRecipesHolder .ingredientRecipeHolderTitle h5{
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.ingredientRecipesHolder .ingredientRecipeHolder h5{
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+}
+
+.ingredientRecipesHolder .ingredientRecipesContentHolder{
+    margin-top: 30px;
+}   
+
+.ingredientRecipesHolder h5{
+    margin: 0px;
+}
+
+.ingredientRecipesHolder .recipeName{
+    flex: 3;
+}
+
+.ingredientRecipesHolder .recipeDate{
+    flex: 1;
+}
+
+.ingredientRecipesHolder .recipeStatus{
+    flex: 1;
+}
+
+.ingredientRecipesHolder .recipeIngredient{
+    flex: 1;
+}
+
+.ingredientRecipesHolder .recipeCost{
     flex: 1;
 }

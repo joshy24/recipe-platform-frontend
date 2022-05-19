@@ -3,7 +3,12 @@ import styles from "../../styles/Ingredients.module.css"
 
 import {getDate, getAmount} from "../../utils/helper"
 
-const IngredientsItem = ({ingredient}) => {
+const IngredientsItem = ({ingredient, setShowDelete}) => {
+
+    const removeIngredient = () => {
+        setShowDelete(true);
+    }
+
     return <div className={`whiteBox ${styles.ingredientItemHolder}`}>
        
             <div className={styles.ingredientName}>
@@ -22,7 +27,7 @@ const IngredientsItem = ({ingredient}) => {
                 <button className="button secondaryButton colorWhite">Edit</button>
             </div>
             <div className={styles.ingredientDelete}>
-                <button className="button greyButton colorBlack">Delete</button>
+                <button onClick={removeIngredient} className="button greyButton colorBlack">Remove</button>
             </div>
     </div>
 }

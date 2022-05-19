@@ -3,7 +3,7 @@ import styles from "../../styles/Ingredients.module.css"
 
 import IngredientsItem from "./ingredientitem"
 
-const IngredientsList = ({ingredients}) => {
+const IngredientsList = ({ingredients, setShowDelete}) => {
     return <div className={styles.ingredientsList}>
         <div className={styles.ingredientsHolderTitle}>
             <div className={styles.ingredientName}>
@@ -28,7 +28,7 @@ const IngredientsList = ({ingredients}) => {
 
         {
             ingredients && ingredients.map(ingredient => { 
-                return <IngredientsItem key={ingredient.name} ingredient={ingredient} />
+                return <IngredientsItem setShowDelete={setShowDelete} key={ingredient.name} ingredient={ingredient} />
             })
         }
 

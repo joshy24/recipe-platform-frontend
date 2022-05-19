@@ -35,37 +35,37 @@ const AccountIndex = () => {
         </div>
 
         <div className={styles.accountDetails}>
-            <div className={styles.accountInputFieldHolder}>
+            <div className="inputFieldHolder">
                 <h4>Email</h4>
                 { 
                   isEdit ? <input onChange={onChange} type="email" name="email" value={profile.email} placeholder="Enter email" /> : <h5>{profile.email}</h5>
                 }
             </div>
-            <div className={styles.accountInputFieldHolder}>
+            <div className="inputFieldHolder">
                 <h4>Password</h4>
                 {
                     isEdit ? <button value={profile.password} className={`${styles.changePasswordButton} secondaryButton`}>Change Password</button> : <h5>{profile.password}</h5>
                 }
             </div>
-            <div className={styles.accountInputFieldHolder}>
+            <div className="inputFieldHolder">
                 <h4>Phone Number</h4>
                 {
                     isEdit ? <input onChange={onChange} value={profile.phone_number} type="phone" name="phone_number" placeholder="Enter phone number" /> : <h5>{profile.phone_number}</h5>
                 }
             </div>
-            <div className={styles.accountInputFieldHolder}>
+            <div className="inputFieldHolder">
                 <h4>First Name</h4>
                 {
                     isEdit ? <input onChange={onChange} value={profile.firstname} type="text" name="firstname" placeholder="First Name" /> : <h5>{profile.firstname}</h5>
                 }
             </div>
-            <div className={styles.accountInputFieldHolder}>
+            <div className="inputFieldHolder">
                 <h4>Last Name</h4>
                 {
                     isEdit ? <input onChange={onChange} value={profile.lastname} type="text" name="lastname" placeholder="Last Name" /> : <h5>{profile.lastname}</h5>
                 }
             </div>
-            <div className={styles.accountInputFieldHolder}>
+            <div className="inputFieldHolder">
                 
                 {
                     isEdit ? <button onClick={switchIsEdit} className={`${styles.saveButton} primaryButton`}>Save</button> : null

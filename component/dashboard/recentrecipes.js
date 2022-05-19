@@ -9,7 +9,7 @@ const recipes = [{
     name: "Fufu",
     created: "December 17, 2022 03:24:00",
     status: "pending", 
-    ingredients: 1,
+    ingredients: 3,
     cost: 500
 },{
     name: "Cake",

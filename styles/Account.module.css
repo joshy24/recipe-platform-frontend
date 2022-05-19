@@ -53,19 +53,3 @@
     width: 100%;
     color: #FFFFFF;
 }
-
-.accountDetails .accountInputFieldHolder{
-    margin-bottom: 30px;
-}
-
-.accountDetails .accountInputFieldHolder h4{
-    margin: 0px 0px 8px 0px;
-    font-weight: 500;
-    font-size: 18px;
-}
-
-.accountDetails .accountInputFieldHolder h5{
-    margin: 0px;
-    font-weight: 400;
-    font-size: 16px;
-}

@@ -214,6 +214,12 @@ export const getAmount = (amount) => {
           return "₦"+a.slice(0,2) +"," +a.slice(2,5)+","+a.slice(5);
         case 9:
           return "₦"+a.slice(0,3) +"," +a.slice(3,6)+","+a.slice(6);
+        case 10:
+          return "₦"+a.slice(0,1) +"," +a.slice(1,4)+","+a.slice(4,7)+","+a.slice(7);
+        case 11:
+          return "₦"+a.slice(0,2) +"," +a.slice(2,5)+","+a.slice(5,8)+","+a.slice(8);
+        case 12:
+          return "₦"+a.slice(0,3) +"," +a.slice(3,6)+","+a.slice(6,9)+","+a.slice(9);
         default: 
           return "₦"+a;
       }

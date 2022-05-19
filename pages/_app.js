@@ -10,7 +10,6 @@ const MyApp = ({ Component, pageProps }) => {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
 
   return <div>
-    <Nav setShowMobileMenu={setShowMobileMenu} />
     <Component {...pageProps} />
     { 
         showMobileMenu && <MobileNav setShowMobileMenu={setShowMobileMenu} />
