@@ -91,3 +91,7 @@
 .recipesListHolder .recipeIngredientCount{
     flex: 1;
 }
+
+.recipesListHolder .recipeIngredientDelete{
+    flex: 1;
+}
