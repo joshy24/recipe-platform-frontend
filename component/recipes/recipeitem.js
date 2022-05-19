@@ -25,6 +25,9 @@ const RecipeItem = ({recipe}) => {
         <div className={styles.recipeIngredientCount}>
             <h5>{recipe.ingredients}</h5>
         </div>
+        <div className={styles.recipeIngredientDelete}>
+            <button className="button greyButton colorBlack">Delete</button>
+        </div>
 
     </div>
 }

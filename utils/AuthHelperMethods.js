@@ -8,7 +8,7 @@ const logout_url = '/api/va/admin/logout'
 export default class AuthHelperMethods{
 
     login = (username, password) => {
-        return  this.axios(login_url, {username,password}, "post")
+        /*return  this.axios(login_url, {username,password}, "post")
                     .then(res => {
                         this.setToken(res.data.data.token); 
                         this.setAdmin(res.data.data.admin)
@@ -16,7 +16,9 @@ export default class AuthHelperMethods{
                     })
                     .catch(err => {
                         return "error";
-                    })
+                    })*/
+
+        localStorage.setItem("loggedIn", true)
     }
 
     signup = (email, firstname, lastname, business_name, password, password_again) => {
@@ -45,10 +47,14 @@ export default class AuthHelperMethods{
     }
 
     loggedIn = () => {
+        return localStorage.getItem("loggedIn");
+    }
+
+    /*loggedIn = () => {
         // Checks if there is a saved token and it's still valid
         const token = this.getToken(); // Getting token from localstorage
         return !!token && !this.isTokenExpired(token); // handwaiving here
-    };
+    };*/
 
     isTokenExpired = token => {
         try {
@@ -89,9 +95,13 @@ export default class AuthHelperMethods{
     };
 
     logout = () => {
+        localStorage.removeItem("loggedIn");
+    };
+
+    /*logout = () => {
         localStorage.removeItem("id_token");
         localStorage.removeItem("admin");
-    };
+    };*/
 
     getConfirm = () => {
         // Using jwt-decode npm package to decode the token

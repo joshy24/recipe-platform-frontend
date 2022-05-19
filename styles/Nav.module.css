@@ -56,43 +56,6 @@
 }
 
 
-
-@media screen and (max-width: 800px) {
-    .nav{
-        width: 100%;
-        padding: 12px 36px;
-    }
-}
-
-
-@media screen and (max-width: 660px) {
-    .nav{
-        width: 100%;
-        padding: 12px 24px;
-    }
-
-    .nav .navHolder{
-        display: none;
-   }
-
-   .mobileNavMenuBtn{
-        background: url("/images/menu.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        width: 51px;
-        height: 39px;
-        border: none;
-        margin-right: 16px;
-        display: inline;
-    }
-}
-
-
-
-
-
-
 /*
 Mobile Nav
 */
@@ -142,4 +105,87 @@ Mobile Nav
     background-repeat: no-repeat;
     width: 60px;
     height: 60px;
+}
+
+
+
+
+/*
+Nav PopUp Component
+*/
+.navPopUp{
+    z-index: 10;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 120px;
+    background: #73956f;
+    margin-top: 60px;
+    margin-right: 60px;
+}
+
+.navPopUp h5{
+    color: #FFFFFF;
+    font-size: 16px;
+    margin-bottom: 12px;
+    border: none;
+    background: #73956f;
+    color: #FFFFFF;
+}
+
+.navPopUp hr{
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-weight: 400;
+    width: 100%;
+}
+
+
+
+@media screen and (max-width: 800px) {
+    .nav{
+        width: 100%;
+        padding: 12px 36px;
+    }
+
+    .navPopUp{
+        margin-right: 10px;
+    }
+}
+
+
+@media screen and (max-width: 660px) {
+    .nav{
+        width: 100%;
+        padding: 12px 24px;
+    }
+
+    .nav .navHolder{
+        display: none;
+   }
+
+   .mobileNavMenuBtn{
+        background: url("/images/menu.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 51px;
+        height: 39px;
+        border: none;
+        margin-right: 16px;
+        display: inline;
+    }
+
+    .navAvatar{
+        display: none;
+    }
+
+    .navPopUp{
+        display: none;
+    }
 }

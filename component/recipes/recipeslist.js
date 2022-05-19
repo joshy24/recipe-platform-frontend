@@ -56,6 +56,10 @@ const RecipesList = () => {
             <div className={styles.recipeIngredientCount}>
                 <h5>Ingredient<br />count</h5>
             </div>
+            <div className={styles.recipeIngredientDelete}>
+                
+            </div>
+
         </div>
 
         {
