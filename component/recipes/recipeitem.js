@@ -1,9 +1,18 @@
 import styles from "../../styles/Recipes.module.css"
 
+import { useRouter } from "next/router"
+
 import {getDate, getAmount} from "../../utils/helper"
 
 const RecipeItem = ({recipe}) => {
-    return <div className={`whiteBox ${styles.recipeItemHolder}`}>
+
+    const router = useRouter()
+
+    const navigateToRecipe = () => {
+
+        router.push("/recipe")
+    }
+    return <div onClick={navigateToRecipe} className={`whiteBox ${styles.recipeItemHolder}`}>
         <div className={styles.recipeName}>
             <h5 className="colorSecondary">{recipe.name}</h5>
         </div>

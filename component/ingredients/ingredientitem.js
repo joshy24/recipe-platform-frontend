@@ -3,13 +3,22 @@ import styles from "../../styles/Ingredients.module.css"
 
 import {getDate, getAmount} from "../../utils/helper"
 
+import { useRouter } from "next/router"
+
 const IngredientsItem = ({ingredient, setShowDelete}) => {
 
     const removeIngredient = () => {
         setShowDelete(true);
     }
 
-    return <div className={`whiteBox ${styles.ingredientItemHolder}`}>
+    const router = useRouter()
+
+    const navigateToIngredient = () => {
+
+        router.push("/ingredient/1")
+    }
+
+    return <div onClick={navigateToIngredient} className={`whiteBox ${styles.ingredientItemHolder}`}>
        
             <div className={styles.ingredientName}>
                 <h5>{ingredient.name}</h5>
