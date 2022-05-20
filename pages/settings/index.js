@@ -2,6 +2,8 @@ import SettingsIndex from '../../component/settings/index'
 
 import styles from "../../styles/Settings.module.css"
 
+import withAuth from "../../utils/withAuth"
+
 function Settings() {
 
   return <div className={`pageHolder ${styles.settingsPageHolder}`}>
@@ -9,4 +11,4 @@ function Settings() {
   </div>
 }
 
-export default Settings;
+export default withAuth(Settings);

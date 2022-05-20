@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const AddRecipe = ({closeAddRecipe}) => {
 
-    const [recipe, setRecipe] = useState({name: "", fulfillment_date: "",  status: "", labour_cost: 0, profit: "", total_cost: 0})
+    const [recipe, setRecipe] = useState({name: "", fulfillment_date: "",  status: "", labour_cost: 0, profit: 20, total_cost: 0})
 
     const onChange = (e) => {
         const value = e.target.value

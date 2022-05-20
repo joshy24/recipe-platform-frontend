@@ -1,6 +1,8 @@
 
 import AccountIndex from '../../component/account/index'
 
+import withAuth from "../../utils/withAuth"
+
 function Account() {
 
   return <div className="pageHolder">
@@ -8,7 +10,7 @@ function Account() {
   </div>
 }
 
-export default Account;
+export default withAuth(Account);
 
 /*
 <MobileNav />

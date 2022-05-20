@@ -3,7 +3,22 @@ import Link from "next/link"
 
 import styles from "../../styles/Auth.module.css"
 
+import { useRouter } from "next/router"
+
+import AuthHelperMethods from '../../utils/AuthHelperMethods';
+
+const Auth = new AuthHelperMethods();
+
 const Signin = () => {
+
+    const router = useRouter()
+
+    const doSignInAndNavigate = () => {
+        Auth.login(null,null);
+
+        router.push("/dashboard")
+    }
+
     return <div className={styles.authHolderInnerContent}>
         <h2 className={styles.authTitle}>SignIn</h2>
 
@@ -17,7 +32,7 @@ const Signin = () => {
             <input type="password" name="password" placeholder="Enter password" />
         </div>
 
-        <button className={styles.authButton}>Continue</button>
+        <button onClick={doSignInAndNavigate} className={styles.authButton}>Continue</button>
 
         <h5 className={styles.authLinkText}>Dont have an account? <span className="link"><Link href="/auth/signup">Signup</Link></span></h5>
 

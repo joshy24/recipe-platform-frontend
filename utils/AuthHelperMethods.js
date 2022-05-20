@@ -104,11 +104,15 @@ export default class AuthHelperMethods{
     };*/
 
     getConfirm = () => {
+        return localStorage.getItem("loggedIn");
+    };
+
+    /*getConfirm = () => {
         // Using jwt-decode npm package to decode the token
         let answer = decode(this.getToken());
         
         return answer;
-    };
+    };*/
     
     axios = (url, data, method) => {
         // performs api calls sending the required authentication headers

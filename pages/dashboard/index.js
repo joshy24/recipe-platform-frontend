@@ -1,5 +1,7 @@
 import DashboardIndex from '../../component/dashboard/index'
 
+import withAuth from "../../utils/withAuth"
+
 function Dashboard() {
 
   return <div className="pageHolder">
@@ -7,4 +9,4 @@ function Dashboard() {
   </div>
 }
 
-export default Dashboard;
+export default withAuth(Dashboard);

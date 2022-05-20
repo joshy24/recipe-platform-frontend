@@ -15,7 +15,7 @@ export default function withAuth(AuthComponent) {
       componentDidMount() {
         
         if (Auth.loggedIn()) {
-          window.location = '/admin/dashboard';
+          window.location = '/dashboard';
         } else {
           /* Try to get confirmation message from the Auth helper. */
           try {

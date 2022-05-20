@@ -1,15 +1,25 @@
 import React, { Component } from "react";
 import AuthHelperMethods from "./AuthHelperMethods";
 
+import MobileNav from "../component/general/mobilenavmenu"
+import Nav from "../component/general/nav"
+
 export default function withAuth(AuthComponent) {
     const Auth = new AuthHelperMethods();
   
     return class AuthWrapped extends Component {
       state = {
         confirm: null,
-        loaded: false
+        loaded: false,
+        showMobileMenu: false
       };
   
+      setShowMobileMenu(val){
+          this.setState({
+            showMobileMenu: val
+          })
+      }
+
       /* In the componentDid<ount, we would want to do a couple of important tasks in order to verify the current users authentication status
       prior to granting them enterance into the app. */
       componentDidMount() {
@@ -38,12 +48,23 @@ export default function withAuth(AuthComponent) {
           if (this.state.confirm) {
             //console.log("confirmed!");
             return (
-              /* component that is currently being wrapper(App.js) */
-              <AuthComponent
-                history={this.props.history}
-                confirm={this.state.confirm}
-                {...this.props}
-              />
+              <>
+
+                  {
+                      Auth.loggedIn() && <Nav setShowMobileMenu={this.setShowMobileMenu} />
+                  }
+
+                  /* component that is currently being wrapper(App.js) */
+                  <AuthComponent
+                    history={this.props.history}
+                    confirm={this.state.confirm}
+                    {...this.props}
+                  />
+
+                  { 
+                      Auth.loggedIn() && this.showMobileMenu && <MobileNav setShowMobileMenu={this.setShowMobileMenu} />
+                  }
+              </>
             );
           } else {
             //console.log("not confirmed!");

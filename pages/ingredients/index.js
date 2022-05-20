@@ -1,6 +1,8 @@
 
 import IngredientsIndex from '../../component/ingredients/index'
 
+import withAuth from "../../utils/withAuth"
+
 function Ingredients() {
 
   return <div className="pageHolder">
@@ -8,4 +10,4 @@ function Ingredients() {
   </div>
 }
 
-export default Ingredients;
+export default withAuth(Ingredients);

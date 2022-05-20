@@ -2,10 +2,14 @@ import {useState} from 'react'
 import styles from "../../styles/Settings.module.css"
 import Link from "next/link"
 
+import { useRouter } from "next/router"
+
 const SettingsIndex = () => {
+    const router = useRouter()
+
     const [isEdit, setIsEdit] = useState(false)
 
-    const [percentage, setPercentage] = useState(0)
+    const [percentage, setPercentage] = useState(20)
     
     const switchIsEdit = () => {
         setIsEdit(!isEdit)
@@ -16,6 +20,12 @@ const SettingsIndex = () => {
         let name = e.target.name
 
         setPercentage(value)
+    }
+
+    const doLogout = () => {
+        showPopUpMenu()
+        Auth.logout();
+        router.push("/auth/signin")
     }
 
     return <div className={styles.settingsIndex}>
@@ -50,7 +60,7 @@ const SettingsIndex = () => {
         </div>
         
         <div className={styles.settingsButtonsHolder}>
-        <Link href="/auth/signin"><button className={`${styles.signOutButton} +greyButton`}>Sign Out</button></Link>
+        <button onClick={doLogout} className={`${styles.signOutButton} +greyButton`}>Sign Out</button>
         </div>
 
     </div>

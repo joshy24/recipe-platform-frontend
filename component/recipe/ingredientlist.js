@@ -41,10 +41,10 @@ const IngredientsItemList = () => {
                 <h5>Name</h5>
             </div>
             <div className={styles.ingredientPQ}>
-                <h5>Purchase Quantity</h5>
+                <h5>Quantity</h5>
             </div>
             <div className={styles.ingredientPS}>
-                <h5>Purchase Size</h5>
+                <h5>Size</h5>
             </div>
             <div className={styles.ingredientPrice}>
                 <h5>Price</h5>
