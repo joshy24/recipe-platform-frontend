@@ -2,17 +2,21 @@
 import { useState } from "react";
 import styles from "../../styles/Recipes.module.css"
 
-import IngredientList from "./ingredientlist"
+import RecipeList from "./recipelist"
 
-import RecipeDetails from "./details"
+import OrderDetails from "./details"
 
-const recipe = {
+const order = {
     name: "Fufu",
+    fulfillment_date: "December 17, 2022 03:24:00",
     created: "December 10, 2022 03:24:00",
+    status: "pending",
+    labour_cost: 3000,
+    profit: 500,
     total_cost: 8000
 }
 
-const RecipeIndex = () => {
+const OrderIndex = () => {
 
     const [selected, setSelected] = useState(1)
 
@@ -23,12 +27,18 @@ const RecipeIndex = () => {
 
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
-            <h2 className="pageTitle">Recipe</h2>
+            <h2 className="pageTitle">Order</h2>
+            <div>
+                <h4>Total cost of order - 500</h4>
+            </div>
             <div>
                 <button className="colorWhite secondaryButton">Edit</button>
-                <button className="colorWhite primaryButton">Add Ingredient</button>
+                <button className="colorWhite primaryButton">Add Recipe</button>
                 <button className="greyButton">Delete</button>
             </div>
+        </div>
+        <div>
+            <h4 className="description">Description</h4>
         </div>
         
         <div className={styles.recipeContentHolder}>
@@ -37,7 +47,7 @@ const RecipeIndex = () => {
                     <h4>Details</h4>
                 </div>
                 <div onClick={e => switchSelected(e, 2)} className={selected == 2 ? styles.selected : ""}>
-                    <h4>Ingredients</h4>
+                    <h4>Recipes</h4>
                 </div>
             </div>
         </div>
@@ -45,14 +55,14 @@ const RecipeIndex = () => {
         <div className="pageHolderContent">
             {
                 (selected == 1) ? <div className={styles.recipeDetails}>
-                                    <RecipeDetails recipe={recipe} />
+                                    <OrderDetails order={order} />
                                 </div>
-                              : <div className={styles.recipeIngredients}>
-                                    <IngredientList />
+                              : <div className={styles.orderRecipes}>
+                                    <RecipeList />
                                 </div>
             }
         </div>
     </div>
 }
 
-export default RecipeIndex;
+export default OrderIndex;

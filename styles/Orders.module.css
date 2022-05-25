@@ -1,0 +1,258 @@
+
+.ordersIndex{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.ordersIndex .ordersTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ordersIndex .ordersTop h2{
+    margin: 0;
+}
+
+.ordersIndex h4{
+    margin: 8px 0px;
+}
+
+.ordersButton{
+    background: #73956f;
+    color: #FFFFFF;
+    width: 150px;
+    margin-left: 16px;
+}
+
+.ordersListHolder{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0px 26px 30px 26px;
+    margin-top: 16px;
+}
+
+.ordersListHolderTitle{
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.orderItemHolder{
+    width: 100%;
+    display: flex;
+    padding: 16px;
+    margin-bottom: 16px;
+    align-items: center;
+}
+
+.ordersListHolderTitle h5{
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+
+.ordersListHolder .orderName{
+    flex: 3;
+}
+
+.ordersListHolder .orderDate{
+    flex: 1;
+}
+
+.ordersListHolder .orderStatus{
+    flex: 1;
+}
+
+.ordersListHolder .orderTotalCost{
+    flex: 1;
+}
+
+.ordersListHolder .orderFulfilled{
+    flex: 1;
+}
+
+.ordersListHolder .orderLabourCost{
+    flex: 1;
+}
+
+.ordersListHolder .orderRecipeCount{
+    flex: 1;
+}
+
+.ordersListHolder .orderRecipeDelete{
+    flex: 1;
+}
+
+
+
+/*
+order Content Holder
+*/
+
+.orderContentHolder{
+    width: 100%;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    margin-top: 50px;
+}
+
+.orderContentHolder .orderContentHolderTopContent{
+    width: 100%;
+    display: flex;
+}
+
+.pageHolderContent .pageHolderContentTop div button{
+    margin-left: 16px;
+}
+
+.orderContentHolder .orderContentHolderTopContent div{
+    width: 130px;
+    padding: 12px;
+    border-right: 1px solid #000000;
+}
+
+.orderContentHolder .orderContentHolderTopContent div:hover{
+    cursor: pointer;
+}
+
+.orderContentHolder .orderContentHolderTopContent .selected{
+    background: #73956f;
+    color: #FFFFFF;
+}
+
+
+.orderContentHolderTopContentDetails{
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+
+/*
+order Details Holder
+*/
+
+.orderDetailsHolder{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid #000000;
+    margin-top: 6px;
+    border-radius: 8px;
+    padding: 12px;
+    background: #FFFFFF;
+}
+
+.detailsHolderTitles{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid #000000;
+    padding-right: 16px;
+}
+
+.detailsHolderContent{
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 16px;
+}
+
+.detailsHolderTitles h5{
+    padding: 12px 0px;
+    font-weight: 500;
+    font-size: 16px;
+}   
+
+.detailsHolderContent h5{
+    padding: 12px 0px;
+    font-weight: 600px;
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+.recipesList{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    border: 1px solid #000000;
+    margin-top: 6px;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.recipeItemHolder{
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recipesHolderTitle{
+    width: 100%;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.recipesList .recipesHolderTitle h5{
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.recipesList .recipeItemHolder h5{
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+}
+
+.recipesList h5{
+    margin: 0px;
+}
+
+.recipesList .recipeName{
+    flex: 3;
+}
+
+.recipesList .recipePQ{
+    flex: 2;
+}
+
+.recipesList .recipePS{
+    flex: 2;
+}
+
+.recipesList .recipeCost{
+    flex: 2;
+}
+
+.recipesList .recipeEdit{
+    flex: 1;
+}
+
+.recipesList .recipeDelete{
+    flex: 1;
+}
