@@ -11,7 +11,7 @@
 
 
 
-.recipesIngredientsCountHolder{
+.ordersRecipesIngredientsCountHolder{
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -23,7 +23,7 @@
 
 
 
-.recentRecipesHolder h2{
+.recentOrdersHolder h2{
     font-size: 24px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
@@ -33,7 +33,7 @@
 
 
 
-.recipesNumbersHolder{
+.ordersNumbersHolder{
     padding-bottom: 24px;
     padding-top: 24px;
     width: 400px;
@@ -41,31 +41,31 @@
     flex-direction: column;
 }
 
-.recipesNumbersHolderTitle{
+.ordersNumbersHolderTitle{
     padding: 0px 24px;
 }
 
-.recipesNumbersHolderTitle h3{
+.ordersNumbersHolderTitle h3{
     font-size: 24px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
     margin: 0px;
 }
 
-.recipesNumbersHolder hr{
+.ordersNumbersHolder hr{
     width: 100%;
     height: 2px;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-.recipesNumbersHolder .recipesNumbersHolderContent{
+.ordersNumbersHolder .ordersNumbersHolderContent{
     padding: 0px 24px;
     display: flex;
     justify-content: space-between;
 }
 
-.recipesNumbersHolder .recipesNumbersHolderContent .recipesNumbersHolderContentItem{
+.ordersNumbersHolder .ordersNumbersHolderContent .ordersNumbersHolderContentItem{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,7 +73,7 @@
     flex: 1;
 }
 
-.recipesNumbersHolder .recipesNumbersHolderContent .recipesNumbersHolderContentItem h5{
+.ordersNumbersHolder .ordersNumbersHolderContent .ordersNumbersHolderContentItem h5{
     margin: 0px 0px 6px 0px;
 
     font-size: 16px;
@@ -81,7 +81,7 @@
     font-weight: 500;
 }
 
-.recipesNumbersHolder .recipesNumbersHolderContent .recipesNumbersHolderContentItem h4{
+.ordersNumbersHolder .ordersNumbersHolderContent .ordersNumbersHolderContentItem h4{
     margin: 0px;
 
     font-size: 14px;
@@ -135,7 +135,51 @@
 
 
 
-.recentRecipesHolder{
+
+.recipesNumbersHolder{
+    padding-bottom: 24px;
+    padding-top: 24px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipesNumbersHolderTitle{
+    padding: 0px 24px;
+}
+
+.recipesNumbersHolderTitle h3{
+    font-size: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.recipesNumbersHolder .recipesNumbersHolderContent{
+    padding: 0px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.recipesNumbersHolder .recipesNumbersHolderContent h4{
+    margin: 0px 0px 6px 0px;
+
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.recipesNumbersHolder hr{
+    width: 100%;
+    height: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+
+
+.recentOrdersHolder{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -145,7 +189,7 @@
     margin-top: 16px;
 }
 
-.recentRecipeHolder{
+.recentOrderHolder{
     width: 100%;
     padding: 16px;
     margin-bottom: 16px;
@@ -153,7 +197,7 @@
     justify-content: space-between;
 }
 
-.recentRecipeHolderTitle{
+.recentOrderHolderTitle{
     width: 100%;
     padding: 16px;
     margin-bottom: 16px;
@@ -161,38 +205,38 @@
     justify-content: space-between;
 }
 
-.recentRecipesHolder .recentRecipeHolderTitle h5{
+.recentOrdersHolder .recentOrderHolderTitle h5{
     font-size: 16px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
 }
 
-.recentRecipesHolder .recentRecipeHolder h5{
+.recentOrdersHolder .recentOrderHolder h5{
     font-size: 14px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
 }
 
-.recentRecipesHolder h5{
+.recentOrdersHolder h5{
     margin: 0px;
 }
 
-.recentRecipesHolder .recipeName{
+.recentOrdersHolder .orderName{
     flex: 3;
 }
 
-.recentRecipesHolder .recipeDate{
+.recentOrdersHolder .orderDate{
     flex: 1;
 }
 
-.recentRecipesHolder .recipeStatus{
+.recentOrdersHolder .orderStatus{
     flex: 1;
 }
 
-.recentRecipesHolder .recipeIngredient{
+.recentOrdersHolder .orderRecipe{
     flex: 1;
 }
 
-.recentRecipesHolder .recipeCost{
+.recentOrdersHolder .orderCost{
     flex: 1;
 }
