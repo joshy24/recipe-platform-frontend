@@ -37,7 +37,6 @@ const OrdersIndex = () => {
                 <div className={styles.ordersListHolder}>
                     <OrdersList />
                 </div>
-
                 
             </div>
 
