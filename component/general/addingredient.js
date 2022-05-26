@@ -4,7 +4,7 @@ import { useState } from "react"
 const AddIngredient = ({closeAddIngredient}) => {
 
     const [ingredient, setIngredient] = useState({name: "", purchase_quantity: "", purchase_size: "", price: 0})
-
+    
     const onChange = (e) => {
         const value = e.target.value
         const name = e.target.name

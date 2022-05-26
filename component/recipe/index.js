@@ -6,6 +6,8 @@ import IngredientList from "./ingredientlist"
 
 import RecipeDetails from "./details"
 
+import AddIngredients from "./addingredients"
+
 const recipe = {
     name: "Fufu",
     created: "December 10, 2022 03:24:00",
@@ -52,6 +54,11 @@ const RecipeIndex = () => {
                                 </div>
             }
         </div>
+
+        {
+            <AddIngredients />
+        }
+
     </div>
 }
 
