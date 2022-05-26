@@ -4,7 +4,7 @@ import styles from "../../styles/Dashboard.module.css"
 
 const IngredientCount = () => {
 
-    const [total, setTotal] = useState(4);
+    const [total, setTotal] = useState(81);
 
     return <div className={`whiteBox ${styles.ingredientsNumbersHolder}`}>
         <div className={styles.ingredientsNumbersHolderTitle}>

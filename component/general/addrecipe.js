@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const AddRecipe = ({closeAddRecipe}) => {
 
-    const [recipe, setRecipe] = useState({name: "", fulfillment_date: "",  status: "", labour_cost: 0, profit: 20, total_cost: 0})
+    const [recipe, setRecipe] = useState({name: "", labour_cost: 0, total_cost: 0})
 
     const onChange = (e) => {
         const value = e.target.value
@@ -26,27 +26,9 @@ const AddRecipe = ({closeAddRecipe}) => {
             </div>
 
             <div className="inputFieldHolder">
-                <h4>Fulfillment Date</h4>
+                <h4>Total cost</h4>
                 
-                <DatePicker minDate={new Date()} onChange={date => setRecipe({...recipe, fulfillment_date:date})} selected={recipe.fulfillment_date} />
-            </div>
-
-            <div className="inputFieldHolder">
-                <h4>Status</h4>
-                
-                <input onChange={onChange} type="text" name="status" value={recipe.status} placeholder="Enter Status" />
-            </div>
-
-            <div className="inputFieldHolder">
-                <h4>Labour Cost</h4>
-                
-                <input onChange={onChange} type="number" name="labour_cost" value={recipe.labour_cost} />
-            </div>
-
-            <div className="inputFieldHolder">
-                <h4>Profit Margin</h4>
-                
-                <input onChange={onChange} type="number" name="profit" value={recipe.profit} /> %
+                <input onChange={onChange} type="number" name="labour_cost" value={recipe.total_cost} />
             </div>
 
             <h5>You can add ingredients after saving recipe.</h5>

@@ -1,7 +1,8 @@
 import React from 'react'
 import IngredientCount from './IngredientCount'
-import RecentRecipes from './RecentRecipes'
-import RecipeNumbers from './RecipeNumbers'
+import RecentOrders from './RecentOrders'
+import OrderNumbers from './OrderNumbers'
+import RecipeCount from './RecipeCount'
 
 import styles from "../../styles/Dashboard.module.css"
 
@@ -12,13 +13,14 @@ function DashboardIndex() {
             <div>
                 <h2 className="pageTitle">Dashboard</h2>
             </div>
-            <div className={styles.recipesIngredientsCountHolder}>
-                <RecipeNumbers />
+            <div className={styles.ordersRecipesIngredientsCountHolder}>
+                <OrderNumbers />
+                <RecipeCount />
                 <IngredientCount />    
             </div>
              
-            <div className={styles.recentRecipesHolder}>
-                <RecentRecipes />
+            <div className={styles.recentOrdersHolder}>
+                <RecentOrders />
             </div>
              
         </div>

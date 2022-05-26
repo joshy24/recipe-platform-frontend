@@ -19,17 +19,8 @@ const RecipeItem = ({recipe}) => {
         <div className={styles.recipeDate}>
             <h5>{getDate(recipe.created)}</h5>
         </div>
-        <div className={styles.recipeStatus}>
-            <h5>{recipe.status}</h5>
-        </div>
         <div className={styles.recipeTotalCost}>
             <h5>{getAmount(recipe.tcost)}</h5>
-        </div>
-        <div className={styles.recipeFulfilled}>
-            <h5>{getDate(recipe.date)}</h5>
-        </div>
-        <div className={styles.recipeLabourCost}>
-            <h5>{getAmount(recipe.lcost)}</h5>
         </div>
         <div className={styles.recipeIngredientCount}>
             <h5>{recipe.ingredients}</h5>
