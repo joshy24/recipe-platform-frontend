@@ -5,6 +5,8 @@ import styles from "../../styles/Auth.module.css"
 
 import { useRouter } from "next/router"
 
+import Message from "../general/message"
+
 import AuthHelperMethods from '../../utils/AuthHelperMethods';
 
 const Auth = new AuthHelperMethods();
@@ -37,6 +39,11 @@ const Signin = () => {
         <h5 className={styles.authLinkText}>Dont have an account? <span className="link"><Link href="/auth/signup">Signup</Link></span></h5>
 
         <h5 className={styles.authLinkText}><Link href="/auth/forgotpassword">Forgot Password?</Link></h5>
+
+        {
+
+        }
+
     </div>
 }
 

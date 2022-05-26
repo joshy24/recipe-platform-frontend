@@ -4,8 +4,12 @@ import Link from "next/link"
 
 import { useRouter } from "next/router"
 
+import AuthHelperMethods from "../../utils/AuthHelperMethods"
+
 const SettingsIndex = () => {
-    const router = useRouter()
+    const router = useRouter() 
+
+    const Auth = new AuthHelperMethods();
 
     const [isEdit, setIsEdit] = useState(false)
 
@@ -23,19 +27,21 @@ const SettingsIndex = () => {
     }
 
     const doLogout = () => {
-        showPopUpMenu()
         Auth.logout();
         router.push("/auth/signin")
     }
 
     return <div className={styles.settingsIndex}>
         <div className={styles.settingsIndexTop}>
-            <h2 className="pageTitle">Settings
+            <h2 className="pageTitle">
+                Settings
             </h2>
         </div>
 
         <div className={styles.settingsDetails}>
-            <h4>Profit margin of Recipes - </h4>
+            <h4>
+                Profit margin of Recipes - 
+            </h4>
 
             <div className={styles.settingsInputFieldHolder}>
                 { 
@@ -46,21 +52,21 @@ const SettingsIndex = () => {
             </div>
 
             {
-            !isEdit && <button onClick={switchIsEdit} className={`colorWhite secondaryButton`}>Edit</button>
+                !isEdit && <button onClick={switchIsEdit} className={`colorWhite secondaryButton`}>Edit</button>
             }
         </div>
-
+        
         <div className={styles.settingsButtonsHolder}> 
             {
                 isEdit && <div>
                     <button onClick={switchIsEdit} className={`primaryButton`}>Save</button>
-                    <button onClick={switchIsEdit} className={`+greyButton`}>Cancel</button>
+                    <button onClick={switchIsEdit} className={`greyButton`}>Cancel</button>
                 </div>
             }
         </div>
         
         <div className={styles.settingsButtonsHolder}>
-        <button onClick={doLogout} className={`${styles.signOutButton} +greyButton`}>Sign Out</button>
+            <button onClick={doLogout} className={`${styles.signOutButton} greyButton`}>Sign Out</button>
         </div>
 
     </div>
