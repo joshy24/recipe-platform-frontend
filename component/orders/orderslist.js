@@ -56,6 +56,9 @@ const OrdersList = () => {
             <div className={styles.orderRecipeCount}>
                 <h5>Recipe<br />count</h5>
             </div>
+            <div className={styles.orderRecipeView}>
+                
+            </div>
             <div className={styles.orderRecipeDelete}>
                 
             </div>

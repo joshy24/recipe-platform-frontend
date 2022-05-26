@@ -82,7 +82,7 @@ const IngredientsIndex = () => {
         }
 
         {
-            showDelete && <DeleteDialog onPerformDeleteClicked={onPerformDeleteClicked} onCancelDeleteClicked={onCancelDeleteClicked} type={"Ingredient"} message={"Confirm that you want to remove this ingredient. It will also be removed from all recipes it is attached to"}  />
+            showDelete && <DeleteDialog onPerformDeleteClicked={onPerformDeleteClicked} onCancelDeleteClicked={onCancelDeleteClicked} type={"Ingredient"} message={"Confirm that you want to remove this ingredient. It will also be removed from all recipes it is attached to."}  />
         }
 
     </>
