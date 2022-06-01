@@ -253,6 +253,93 @@ recipe Details Holder
     flex: 1;
 }
 
-.ingredientsList .ingredientDelete{
+.ingredientsList .ingredientSelect{
+    flex: 1;
+}
+
+
+
+
+
+/*
+Add Ingredients Component
+*/
+
+.addIngredients{
+    width: 700px;
+    padding: 24px;
+}
+
+.addIngredients h3{
+    margin: 0px;
+    font-size: 24px;
+}
+
+
+
+.ingredientToAddItemHolder{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px; 
+    padding: 8px 8px;
+}
+
+.ingredientToAddItemHolder h5{
+    margin: 0px;
+}
+
+.ingredientToAddItemHolder .ingredientSelectAdd{
+    flex: 2;
+}
+
+.ingredientToAddItemHolder .ingredientNameAdd{
+    flex: 2;
+}
+
+.ingredientToAddItemHolder .ingredientPQAdd{
+    flex: 1;
+}
+
+.ingredientToAddItemHolder .ingredientPSAdd{
+    flex: 1;
+}
+
+.ingredientToAddItemHolder .ingredientPriceAdd{
+    flex: 1;
+}
+
+
+
+.ingredientsHolderTitleToAdd{
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 30px; 
+}
+
+.ingredientsHolderTitleToAdd h5{
+    font-weight: 600;
+}
+
+.ingredientsHolderTitleToAdd .ingredientSelectAdd{
+    flex: 2;
+}
+
+.ingredientsHolderTitleToAdd .ingredientNameAdd{
+    flex: 2;
+}
+
+.ingredientsHolderTitleToAdd .ingredientPQAdd{
+    flex: 1;
+}
+
+.ingredientsHolderTitleToAdd .ingredientPSAdd{
+    flex: 1;
+}
+
+.ingredientsHolderTitleToAdd .ingredientPriceAdd{
     flex: 1;
 }

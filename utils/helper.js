@@ -5,18 +5,19 @@ const Auth = new AuthHelperMethods();
 
 export const getDate = (d) => {
 
-  let date = new Date(d);
+    let date = new Date(d);
 
-  let year = date.getFullYear();
-  let month = date.getMonth()+1;
-  let dt = date.getDate();
+    let year = date.getFullYear();
+    let month = date.getMonth()+1;
+    let dt = date.getDate();
 
-  if (month < 10) {
-      month = '0' + month;
-  }
-  
-  return dt+' - '+month+' - '+year;
+    if (month < 10) {
+        month = '0' + month;
+    }
+    
+    return dt+' - '+month+' - '+year;
 }
+
 
 
 export const getBankDetails = () => {

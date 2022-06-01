@@ -248,7 +248,10 @@ box
 }
 
 .popUpInnerContent .popUpInnerContentTop{
-
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .popUpInnerContent h3{

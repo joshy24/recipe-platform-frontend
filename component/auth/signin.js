@@ -12,7 +12,7 @@ import AuthHelperMethods from '../../utils/AuthHelperMethods';
 const Auth = new AuthHelperMethods();
 
 const Signin = () => {
-
+    
     const router = useRouter()
 
     const doSignInAndNavigate = () => {

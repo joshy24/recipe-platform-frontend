@@ -16,6 +16,7 @@ const recipe = {
 
 const RecipeIndex = () => {
 
+    const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selected, setSelected] = useState(1)
 
     const switchSelected = (e,num) => {
@@ -23,12 +24,20 @@ const RecipeIndex = () => {
         setSelected(num)
     }
 
+    const showAddIngredientsModal = () => {
+        setShowAddIngredients(true)
+    }
+
+    const hideAddIngredientsModal = () => {
+        setShowAddIngredients(false)
+    }
+
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <h2 className="pageTitle">Recipe</h2>
             <div>
                 <button className="colorWhite secondaryButton">Edit</button>
-                <button className="colorWhite primaryButton">Add Ingredient</button>
+                <button onClick={showAddIngredientsModal} className="colorWhite primaryButton">Add Ingredient</button>
                 <button className="greyButton">Delete</button>
             </div>
         </div>
@@ -56,7 +65,7 @@ const RecipeIndex = () => {
         </div>
 
         {
-            <AddIngredients />
+            showAddIngredients && <AddIngredients hideAddIngredientsModal={hideAddIngredientsModal} />
         }
 
     </div>
