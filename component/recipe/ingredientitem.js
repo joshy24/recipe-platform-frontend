@@ -1,10 +1,29 @@
+import { useState } from "react"
 
 import styles from "../../styles/Recipes.module.css"
+
+import DeleteDialog from "../general/deletedialog"
 
 import {getDate, getAmount} from "../../utils/helper"
 
 const IngredientsItem = ({ingredient}) => {
-    return <div className={`whiteBox ${styles.ingredientItemHolder}`}>
+
+    const [showDelete, setShowDelete] = useState(false)
+
+    const showDeleteDialog = () => {
+        setShowDelete(true)
+    }
+
+    const onPerformDeleteClicked = () => {
+        setShowDelete(false);
+    }
+
+    const onCancelDeleteClicked = () => {
+        setShowDelete(false);
+    }
+
+    return <>
+        <div className={`whiteBox ${styles.ingredientItemHolder}`}>
        
             <div className={styles.ingredientName}>
                 <h5>{ingredient.name}</h5>
@@ -21,10 +40,14 @@ const IngredientsItem = ({ingredient}) => {
             <div className={styles.ingredientEdit}>
                 <button className="button secondaryButton colorWhite">Edit</button>
             </div>
-            <div className={styles.ingredientDelete}>
+            <div onClick={showDeleteDialog} className={styles.ingredientDelete}>
                 <button className="button greyButton colorBlack">Remove</button>
             </div>
-    </div>
+        </div>
+        {
+            showDelete && <DeleteDialog onPerformDeleteClicked={onPerformDeleteClicked} onCancelDeleteClicked={onCancelDeleteClicked} type={"Ingredient"} message={"Confirm that you want to delete this ingredient. It will also be removed from all orders this recipe is attached to inside of the recipe."}  />
+        }
+    </>
 }
 
 export default IngredientsItem;

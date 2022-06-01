@@ -92,11 +92,15 @@
     flex: 1;
 }
 
-.recipesListHolder .recipeIngredientDelete{
+
+.recipesListHolder .recipeIngredientView{
     flex: 1;
 }
 
 
+.recipesListHolder .recipeIngredientDelete{
+    flex: 1;
+}
 
 /*
 Recipe Content Holder
