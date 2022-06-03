@@ -30,7 +30,7 @@ const OrdersIndex = () => {
                     </div>
                 </div>
                 <div>
-                    <h4>Total - 500</h4>
+                    <h4>Total - 3</h4>
                 </div>
 
 

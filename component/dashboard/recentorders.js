@@ -6,19 +6,19 @@ import RecentOrder from "./recentorder"
 const today = new Date();
 
 const orders = [{
-    name: "Local",
+    name: "Mr Davids Wedding",
     created: "December 17, 2022 03:24:00",
     status: "pending", 
     ingredients: 3,
     cost: 500
 },{
-    name: "International",
+    name: "Folake's Birthday",
     created: "December 17, 2022 03:24:00",
     status: "pending", 
     ingredients: 12,
     cost: 40000
 },{
-    name: "Special",
+    name: "The Food Guys",
     created: "December 17, 2022 03:24:00",
     status: "pending", 
     ingredients: 8,

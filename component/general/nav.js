@@ -31,6 +31,7 @@ const Nav = ({setShowMobileMenu}) => {
 
             <div className={styles.navHolder}>
                 <h3><Link href="/dashboard">Dashboard</Link></h3>
+                <h3><Link href="/orders">Orders</Link></h3>
                 <h3><Link href="/recipes">Recipes</Link></h3>
                 <h3><Link href="/ingredients">Ingredients</Link></h3>
             </div>
