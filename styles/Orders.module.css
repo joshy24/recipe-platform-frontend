@@ -24,7 +24,7 @@
 }
 
 .ordersButton{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
     width: 150px;
     margin-left: 16px;
@@ -133,7 +133,7 @@ order Content Holder
 }
 
 .orderContentHolder .orderContentHolderTopContent .selected{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
 }
 
