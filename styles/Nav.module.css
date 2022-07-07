@@ -11,7 +11,7 @@
     top: 0;
     left: 0;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
-    background: #73956f;
+    background: #BD5BFC;
 }
 
 .nav .navHolder{
@@ -66,7 +66,7 @@ Mobile Nav
     position: fixed;
     top: 0;
     left: 0;
-    background: #73956f;
+    background: #BD5BFC;
     z-index: 20;
     display: flex;
     justify-content: center;
@@ -124,7 +124,7 @@ Nav PopUp Component
     top: 0;
     right: 0;
     width: 120px;
-    background: #73956f;
+    background: #BD5BFC;
     margin-top: 60px;
     margin-right: 60px;
 }
@@ -134,7 +134,7 @@ Nav PopUp Component
     font-size: 16px;
     margin-bottom: 12px;
     border: none;
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
 }
 

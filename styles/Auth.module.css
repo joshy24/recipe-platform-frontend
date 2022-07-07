@@ -49,14 +49,14 @@
 .authTitle{
     font-weight: 500;
     font-size: 30px;
-    color: #7bae7f;
+    color:#c465ff;
     margin: 0px 0px 30px 0px;
 }
 
 
 .authButton{
     margin-top: 30px;
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
     width: 200px;
     display: block;
