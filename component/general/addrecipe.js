@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const AddRecipe = ({closeAddRecipe}) => {
 
-    const [recipe, setRecipe] = useState({name: "", labour_cost: 0, total_cost: 0})
+    const [recipe, setRecipe] = useState({name: "", total_cost: 0})
 
     const onChange = (e) => {
         const value = e.target.value
@@ -28,7 +28,7 @@ const AddRecipe = ({closeAddRecipe}) => {
             <div className="inputFieldHolder">
                 <h4>Total cost</h4>
                 
-                <input onChange={onChange} type="number" name="labour_cost" value={recipe.total_cost} />
+                <input onChange={onChange} type="number" name="total_cost" value={recipe.total_cost} />
             </div>
 
             <h5>You can add ingredients after saving recipe.</h5>

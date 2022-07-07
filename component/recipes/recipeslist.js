@@ -8,8 +8,8 @@ const today = new Date();
 const recipes = [{
     name: "Shawarma",
     created: "December 17, 2022 03:24:00",
-    tcost: 500,
-    ingredients: 8
+    tcost: 1000,
+    ingredients: 9
 },{
     name: "Spag",
     created: "December 17, 2022 03:24:00",
@@ -18,8 +18,8 @@ const recipes = [{
 },{
     name: "Meatpie",
     created: "December 17, 2022 03:24:00",
-    tcost: 500,
-    ingredients: 8
+    tcost: 900,
+    ingredients: 7
 }]
 
 const RecipesList = () => {
@@ -38,6 +38,9 @@ const RecipesList = () => {
             </div>
             <div className={styles.recipeIngredientCount}>
                 <h5>Ingredient<br />count</h5>
+            </div>
+            <div className={styles.recipeIngredientView}>
+                
             </div>
             <div className={styles.recipeIngredientDelete}>
                 

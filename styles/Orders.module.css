@@ -24,7 +24,7 @@
 }
 
 .ordersButton{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
     width: 150px;
     margin-left: 16px;
@@ -92,6 +92,10 @@
     flex: 1;
 }
 
+.ordersListHolder .orderRecipeView{
+    flex: 1;
+}
+
 .ordersListHolder .orderRecipeDelete{
     flex: 1;
 }
@@ -129,7 +133,7 @@ order Content Holder
 }
 
 .orderContentHolder .orderContentHolderTopContent .selected{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
 }
 
@@ -250,6 +254,10 @@ order Details Holder
 }
 
 .recipesList .recipeEdit{
+    flex: 1;
+}
+
+.recipesList .recipeView{
     flex: 1;
 }
 

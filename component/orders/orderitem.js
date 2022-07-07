@@ -1,6 +1,10 @@
+import { useState } from "react"
+
 import styles from "../../styles/Orders.module.css"
 
 import { useRouter } from "next/router"
+
+import DeleteDialog from "../general/deletedialog"
 
 import {getDate, getAmount} from "../../utils/helper"
 
@@ -12,33 +16,58 @@ const OrderItem = ({order}) => {
 
         router.push("/order")
     }
-    return <div onClick={navigateToOrder} className={`whiteBox ${styles.orderItemHolder}`}>
-        <div className={styles.orderName}>
-            <h5 className="colorSecondary">{order.name}</h5>
-        </div>
-        <div className={styles.orderDate}>
-            <h5>{getDate(order.created)}</h5>
-        </div>
-        <div className={styles.orderStatus}>
-            <h5>{order.status}</h5>
-        </div>
-        <div className={styles.orderTotalCost}>
-            <h5>{getAmount(order.tcost)}</h5>
-        </div>
-        <div className={styles.orderFulfilled}>
-            <h5>{getDate(order.date)}</h5>
-        </div>
-        <div className={styles.orderLabourCost}>
-            <h5>{getAmount(order.lcost)}</h5>
-        </div>
-        <div className={styles.orderRecipeCount}>
-            <h5>{order.recipes}</h5>
-        </div>
-        <div className={styles.orderRecipeDelete}>
-            <button className="button greyButton colorBlack">Delete</button>
-        </div>
 
-    </div>
+    const [showDelete, setShowDelete] = useState(false)
+
+    const showDeleteDialog = () => {
+        setShowDelete(true)
+    }
+
+    const onPerformDeleteClicked = () => {
+        setShowDelete(false);
+    }
+
+    const onCancelDeleteClicked = () => {
+        setShowDelete(false);
+    }
+
+    return <>
+        <div className={`whiteBox ${styles.orderItemHolder}`}>
+            <div className={styles.orderName}>
+                <h5 className="colorSecondary">{order.name}</h5>
+            </div>
+            <div className={styles.orderDate}>
+                <h5>{getDate(order.created)}</h5>
+            </div>
+            <div className={styles.orderStatus}>
+                <h5>{order.status}</h5>
+            </div>
+            <div className={styles.orderTotalCost}>
+                <h5>{getAmount(order.tcost)}</h5>
+            </div>
+            <div className={styles.orderFulfilled}>
+                <h5>{getDate(order.date)}</h5>
+            </div>
+            <div className={styles.orderLabourCost}>
+                <h5>{getAmount(order.lcost)}</h5>
+            </div>
+            <div className={styles.orderRecipeCount}>
+                <h5>{order.recipes}</h5>
+            </div>
+            <div onClick={navigateToOrder} className={styles.orderRecipeView}>
+                <button className="button secondaryButton colorWhite">
+                    View
+                </button>
+            </div>
+            <div onClick={showDeleteDialog} className={styles.orderRecipeDelete}>
+                <button className="button greyButton colorBlack">Delete</button>
+            </div>
+
+        </div>
+        {
+            showDelete && <DeleteDialog onPerformDeleteClicked={onPerformDeleteClicked} onCancelDeleteClicked={onCancelDeleteClicked} type={"Recipe"} message={"Confirm that you want to delete this order."}  />
+        }
+    </>
 }
 
 export default OrderItem;

@@ -118,12 +118,12 @@ button:hover{
 }
 
 .primaryButton{
-    background: #73956f;
+    background:#BD5BFC;
     color: #FFFFFF;
 }
 
 .secondaryButton{
-    background: #7bae7f;
+    background:#bf64f8;
     color: #FFFFFF;
 }
 
@@ -176,11 +176,11 @@ colors
 */
 
 .colorPrimary{
-  color: #73956f;
+  color: #BD5BFC;
 }
 
 .colorSecondary{
-  color: #7bae7f;
+  color:#bf64f8;
 }
 
 
@@ -253,7 +253,7 @@ box
 
 .popUpInnerContent h3{
    margin-bottom: 30px;
-   color: #73956f;
+   color: #BD5BFC;
 }
 
 .popButtonHolder{
@@ -299,7 +299,7 @@ box
 }
 
 .indexMain button{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
     margin-top: 30px;
 }

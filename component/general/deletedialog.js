@@ -1,7 +1,7 @@
 
 import styles from "../../styles/Delete.module.css"
 
-const DeleteDialog = ({title,message, type, onPerformDeleteClicked, onCancelDeleteClicked}) => {
+const DeleteDialog = ({title, message, type, onPerformDeleteClicked, onCancelDeleteClicked}) => {
     return <div className="popUp">
         <div className={`popUpInnerContent ${styles.deleteHolder}`}>
 

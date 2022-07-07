@@ -1,12 +1,20 @@
 
 import { useState } from "react";
 import styles from "../../styles/Dashboard.module.css"
+import { useRouter } from "next/router"
 
 const OrderNumbers = () => {
 
+    const router = useRouter()
+
+    const navigateToOrder = () => {
+
+        router.push("/orders")
+    }
+
     const [numbers, setNumbers] = useState({pending: 3, fulfilled: 0, total: 3});
     
-    return <div className={`whiteBox ${styles.ordersNumbersHolder}`}>
+    return <div onClick={navigateToOrder} className={`whiteBox ${styles.ordersNumbersHolder}`}>
         <div className={styles.ordersNumbersHolderTitle}>
             <h3 className="colorPrimary">Orders</h3>
         </div>

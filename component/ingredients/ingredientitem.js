@@ -18,7 +18,7 @@ const IngredientsItem = ({ingredient, setShowDelete}) => {
         router.push("/ingredient/1")
     }
 
-    return <div onClick={navigateToIngredient} className={`whiteBox ${styles.ingredientItemHolder}`}>
+    return <div className={`whiteBox ${styles.ingredientItemHolder}`}>
        
             <div className={styles.ingredientName}>
                 <h5>{ingredient.name}</h5>
@@ -32,7 +32,7 @@ const IngredientsItem = ({ingredient, setShowDelete}) => {
             <div className={styles.ingredientPrice}>
                 <h5>{getAmount(ingredient.price)}</h5>
             </div>
-            <div className={styles.ingredientEdit}>
+            <div onClick={navigateToIngredient} className={styles.ingredientEdit}>
                 <button className="button secondaryButton colorWhite">Edit</button>
             </div>
             <div className={styles.ingredientDelete}>

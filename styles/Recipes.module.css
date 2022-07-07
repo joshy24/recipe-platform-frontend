@@ -24,7 +24,7 @@
 }
 
 .recipesButton{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
     width: 150px;
     margin-left: 16px;
@@ -92,11 +92,15 @@
     flex: 1;
 }
 
-.recipesListHolder .recipeIngredientDelete{
+
+.recipesListHolder .recipeIngredientView{
     flex: 1;
 }
 
 
+.recipesListHolder .recipeIngredientDelete{
+    flex: 1;
+}
 
 /*
 Recipe Content Holder
@@ -129,7 +133,7 @@ Recipe Content Holder
 }
 
 .recipeContentHolder .recipeContentHolderTopContent .selected{
-    background: #73956f;
+    background: #BD5BFC;
     color: #FFFFFF;
 }
 
