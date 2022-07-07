@@ -1,10 +1,10 @@
 import {useState} from 'react'
 import styles from "../../styles/Settings.module.css"
-import Link from "next/link"
 
 import { useRouter } from "next/router"
 
-import AuthHelperMethods from "../../utils/AuthHelperMethods"
+import AuthHelperMethods from "../../utils/AuthHelperMethods";
+const Auth = new AuthHelperMethods();
 
 const SettingsIndex = () => {
     const router = useRouter() 
