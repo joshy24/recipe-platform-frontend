@@ -29,16 +29,20 @@ const Nav = ({setShowMobileMenu}) => {
                 </h2>
             </div>
 
-            <div className={styles.navHolder}>
-                <h3><Link href="/dashboard">Dashboard</Link></h3>
-                <h3><Link href="/orders">Orders</Link></h3>
-                <h3><Link href="/recipes">Recipes</Link></h3>
-                <h3><Link href="/ingredients">Ingredients</Link></h3>
-            </div>
+            <div className={styles.navHolderTopRight}>
+                <div className={styles.navHolder}>
+                    <h3><Link href="/dashboard">Dashboard</Link></h3>
+                    <h3><Link href="/orders">Orders</Link></h3>
+                    <h3><Link href="/recipes">Products</Link></h3>
+                    <h3><Link href="/recipes">Recipes</Link></h3>
+                    <h3><Link href="/ingredients">Inventory</Link></h3>
+                    <button className={styles.profitableButton}>% Profitable</button>
+                </div>
 
-            <div onClick={showPopUpMenu} className={styles.navAvatar}>
-                <Image src="/images/avatar.png" width={50} height={50} />
-                <Image className={styles.navAvatarCaret} src="/images/caret.png" width={20} height={20}/>        
+                <div onClick={showPopUpMenu} className={styles.navAvatar}>
+                    <Image src="/images/avatar.png" width={50} height={50} />
+                    <Image className={styles.navAvatarCaret} src="/images/caret.png" width={20} height={20}/>        
+                </div>
             </div>
         </div>
 

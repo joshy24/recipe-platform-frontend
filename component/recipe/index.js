@@ -121,13 +121,9 @@ const RecipeIndex = () => {
                                         <td>1</td>
                                         <td>Kg</td>
                                         <td>#800</td>
-                                        <td>
-                                            <button>
-
-                                            </button>
-                                            <button>
-                                                
-                                            </button>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -135,13 +131,9 @@ const RecipeIndex = () => {
                                         <td>1</td>
                                         <td>Kg</td>
                                         <td>#150</td>
-                                        <td>
-                                            <button>
-
-                                            </button>
-                                            <button>
-                                                
-                                            </button>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -149,13 +141,9 @@ const RecipeIndex = () => {
                                         <td>1</td>
                                         <td>Kg</td>
                                         <td>#400</td>
-                                        <td>
-                                            <button>
-
-                                            </button>
-                                            <button>
-                                                
-                                            </button>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -163,13 +151,9 @@ const RecipeIndex = () => {
                                         <td>1</td>
                                         <td>Kg</td>
                                         <td>#600</td>
-                                        <td>
-                                            <button>
-
-                                            </button>
-                                            <button>
-                                                
-                                            </button>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
                                 </table>
