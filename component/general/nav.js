@@ -25,7 +25,7 @@ const Nav = ({setShowMobileMenu}) => {
             <div className={styles.navHolderTop}>
                 <span onClick={showMobileMenu} className={styles.mobileNavMenuBtn}></span>
                 <h2 className="nameLogo">
-                    <Link href="/">Recipe Platform</Link>
+                    <Link href="/">Profit Table</Link>
                 </h2>
             </div>
 

@@ -365,6 +365,7 @@ New UI's
 
 .tabbedListTable tr{
     background: #F2F2F2;
+    max-height: 80px;
 }
 
 .tabbedListTable th{
@@ -375,6 +376,7 @@ New UI's
     margin-bottom: 16px;
     font-weight: 400;
     border-right: 1px solid #BD5BFC;
+    max-height: 80px;
 }
 
 .tabbedListTable td{
@@ -383,6 +385,7 @@ New UI's
     padding-top: 30px;
     padding-bottom: 30px;
     border-right: 1px solid #BD5BFC;
+    max-height: 80px;
 }
 
 .tabbedListTable th:last-child{

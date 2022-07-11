@@ -8,6 +8,10 @@ import RecipeDetails from "./details"
 
 import AddIngredients from "./addingredients"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+
 const recipe = {
     name: "Fufu",
     created: "December 10, 2022 03:24:00",
@@ -42,23 +46,27 @@ const RecipeIndex = () => {
 
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
-            <div>
-                <h2 className="pageTitle">Recipe - <span>Shawarma</span></h2>
+            <div className="pageHolderContentTopLeft">
+                <h2 className="pageTitle">Recipe - <span className="pageTitleContentHeader">Shawarma</span></h2>
 
-                <h5>Description - </h5>
+                <h5>
+                    Description - <span>is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</span>
+                </h5>
 
-                <h5>Category - </h5>
+                <h5>
+                    Category - <span>Pastery</span>
+                </h5>
             </div>
 
-            <div>
+            <div className="pageHolderContentTopCenter">
                 <h4>Total Cost</h4>
                 <h5>#30,000</h5>
             </div>
 
-            <div>
-                <button className="colorWhite secondaryButton">Edit</button>
-                <button onClick={showAddIngredientsModal} className="colorWhite primaryButton">Add Ingredient</button>
-                <button className="greyButton">Delete</button>
+            <div className="pageHolderContentTopRight">
+                <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                <button onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
+                <button className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
             </div>
         </div>
 
@@ -86,7 +94,11 @@ const RecipeIndex = () => {
                         </tr>
                         <tr>
                             <td>Yield</td>
-                            <td> 20kg</td>
+                            <td className="tabbedListContentHorizontalTableContent"> 
+                                20kg
+                                <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faRotateLeft} /></button>
+                            </td>
                         </tr>
                         <tr>
                             <td>Category</td>

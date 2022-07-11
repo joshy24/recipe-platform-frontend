@@ -14,7 +14,7 @@ export default function Home() {
                 </Head>
 
                 <div className="indexMain">
-                    <h4>Recipe Platform</h4>
+                    <h4>Profit Table</h4>
                     <h3>Organize your ingredients, recipes and costings.</h3>
 
                     <button><Link href="/auth/signin">Get Started</Link></button>

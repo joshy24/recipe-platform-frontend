@@ -51,15 +51,43 @@ h1, h2, h3, h4, h5, h6{
 .pageHolder .pageHolderContent{
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     flex-direction: column;
+}
+
+.pageHolder .pageHolderContentTopRight{
+    display: flex;
+    width: 33.33%;
+    justify-content: flex-end;
+}
+
+.pageHolder .pageHolderContentTopCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 33.33%;
+}
+
+.pageHolder .pageTitleContentHeaderDescription{
+    display: flex;
+}
+
+.pageHolder .pageHolderContentTopLeft{
+    display: flex;
+    flex-direction: column;
+    width: 33.33%;
+}
+
+.pageHolder .pageHolderContentTopLeft h5{
+    margin-top: 20px;
 }
 
 .pageHolder .pageHolderContent .pageHolderContentTop{
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .pageHolderContent .pageHolderContentTop div button{
@@ -96,6 +124,36 @@ button{
     font-weight: 400;
     padding: 12px 24px;
     border: none;
+}
+
+.squareButtonPrimary{
+    width: 42px;
+    height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    color: #FFFFFF;
+
+    background: rgba(189, 91, 252, 0.85);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.squareButtonSecondary{
+    width: 42px;
+    height: 42px;
+    max-width: 42px;
+    max-height: 42px;
+    color: #E46E14;
+
+    background: #FFFFFF;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button:hover{
@@ -168,9 +226,39 @@ text
 
 
 .pageTitle{
-    font-size: 30px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans';
+    font-style: normal;
     font-weight: 500;
+    font-size: 24px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.pageTitleContentHeader{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 15px;
+    margin-left: 4px;
+}
+
+.pageTitleLowerContent{
+    display: flex;
+    max-width: 400px;
+
+}
+
+.pageTitleLowerContent h5{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #4D4D4C;
+    word-wrap: break-word;
+    flex-wrap: wrap;
 }
 
 .colorWhite{
@@ -370,6 +458,10 @@ New UI stuff
     height: 100%;
 }
 
+.tabbedListTabsItem:hover{
+    cursor: pointer;
+}
+
 .tabbedListTabsItem h5{
     font-family: 'DM Sans';
     font-style: normal;
@@ -399,4 +491,9 @@ New UI stuff
     padding: 16px;
     display: flex;
     justify-content: flex-start;
+}
+
+.tabbedListContentHorizontalTableContent{
+    display: flex;
+    align-items: center;
 }
