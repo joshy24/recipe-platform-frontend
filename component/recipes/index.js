@@ -26,12 +26,17 @@ const RecipesIndex = () => {
                 <div  className={styles.recipesTop}>
                     <h2 className="pageTitle">Recipes</h2>
                     <div>
+                        <h4>Total cost</h4>
+                        <h4>#50,000</h4>
+                    </div>
+                    <div>
                         <button className={styles.recipesButton}>Search</button>
                         <button onClick={showAddRecipe} className={styles.recipesButton}>Add Recipe</button>
                     </div>
                 </div>
-                <div>
-                    <h4>Total - 3</h4>
+                <div className={styles.recipesTop}>
+                    <h4>Description - </h4>
+
                 </div>
 
 

@@ -36,10 +36,20 @@ const RecipeIndex = () => {
         <div className="pageHolderContentTop">
             <h2 className="pageTitle">Recipe</h2>
             <div>
+                <h4>Ingredients - 10</h4>
+            </div>
+            <div>
                 <button className="colorWhite secondaryButton">Edit</button>
                 <button onClick={showAddIngredientsModal} className="colorWhite primaryButton">Add Ingredient</button>
                 <button className="greyButton">Delete</button>
             </div>
+        </div>
+
+        <div>
+            <h4>Description -</h4>
+        </div>
+        <div>
+            <h4>Category - Pastry</h4>
         </div>
         
         <div className={styles.recipeContentHolder}>

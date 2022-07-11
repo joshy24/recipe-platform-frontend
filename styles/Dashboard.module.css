@@ -11,7 +11,7 @@
 
 
 
-.ordersRecipesIngredientsCountHolder{
+.ordersRecipesInventoryCountHolder{
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -21,12 +21,20 @@
 
 
 
-
-
-.recentOrdersHolder h2{
-    font-size: 24px;
+.recentOrders {
+    font-size: 18px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
+    width: 100%;
+    background: rgba(189, 91, 252, 0.85);
+    color:#FFFFFF;
+    display:flex;
+    padding: 18px; 
+    justify-content: center;
+}
+
+.recentOrders h2{
+    font-size: 18px;
 }
 
 
@@ -92,7 +100,7 @@
 
 
 
-.ingredientsNumbersHolder{
+.inventoryNumbersHolder{
     padding-bottom: 24px;
     padding-top: 24px;
     width: 200px;
@@ -100,24 +108,24 @@
     flex-direction: column;
 }
 
-.ingredientsNumbersHolderTitle{
+.inventoryNumbersHolderTitle{
     padding: 0px 24px;
 }
 
-.ingredientsNumbersHolderTitle h3{
+.inventoryNumbersHolderTitle h3{
     font-size: 24px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
     margin: 0px;
 }
 
-.ingredientsNumbersHolder .ingredientsNumbersHolderContent{
+.inventoryNumbersHolder .inventoryNumbersHolderContent{
     padding: 0px 24px;
     display: flex;
     justify-content: center;
 }
 
-.ingredientsNumbersHolder .ingredientsNumbersHolderContent h4{
+.inventoryNumbersHolder .inventoryNumbersHolderContent h4{
     margin: 0px 0px 6px 0px;
 
     font-size: 16px;
@@ -125,7 +133,48 @@
     font-weight: 500;
 }
 
-.ingredientsNumbersHolder hr{
+.inventoryNumbersHolder hr{
+    width: 100%;
+    height: 2px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.productNumbersHolder{
+    padding-bottom: 24px;
+    padding-top: 24px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.productNumbersHolderTitle{
+    padding: 0px 24px;
+}
+
+.productNumbersHolderTitle h3{
+    font-size: 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    margin: 0px;
+}
+
+.productNumbersHolder .productNumbersHolderContent{
+    padding: 0px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.productNumbersHolder .productNumbersHolderContent h4{
+    margin: 0px 0px 6px 0px;
+
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+}
+
+.productNumbersHolder hr{
     width: 100%;
     height: 2px;
     margin-top: 20px;
@@ -185,8 +234,12 @@
     width: 100%;
     align-items: flex-start;
     justify-content: space-between;
-    padding: 0px 26px 30px 26px;
-    margin-top: 16px;
+    padding: 0px 0px 0px 0px;
+    border:1px solid rgba(189, 91, 252, 0.85);
+    border-radius: 10px;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    
 }
 
 .recentOrderHolder{

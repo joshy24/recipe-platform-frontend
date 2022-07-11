@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import styles from "../../styles/Recipes.module.css"
+import styles from "../../styles/Orders.module.css"
 
 import RecipeList from "./recipelist"
 
@@ -27,7 +27,11 @@ const OrderIndex = () => {
 
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
-            <h2 className="pageTitle">Order</h2>
+            <div>
+                <h2 className="pageTitle">Order</h2>
+                
+            </div>
+            
             <div>
                 <h4>Total cost of order - 500</h4>
             </div>
@@ -37,13 +41,18 @@ const OrderIndex = () => {
                 <button className="greyButton">Delete</button>
             </div>
         </div>
-        <div>
-            <h4 className="description">Description</h4>
+        <div className={styles.orderDescriptionDetails}>
+            <h4 className={styles.orderDescriptionDetail}>Description </h4>
+            <h4 className={styles.orderDescriptionDetail}>-</h4>
+            <h4> huhuh gi hyg jug fugi gkhjgkhg ujhuhuh uh uhg iu gig i ugjvkgkygiiygiygy giy giy giy gi yg iyg iyg iuyg iuygi yg iygii giygiyug iyg iuyg iyg iyugi ugh iygiy gi ygiu giy giy gi u ghi ugi ughi uhg kiuhkj hi gi ghiu </h4>
+        </div>
+        <div className={styles.orderDescriptionDetails}>
+            <h4>what are orders?</h4>
         </div>
         
-        <div className={styles.recipeContentHolder}>
-            <div className={styles.recipeContentHolderTopContent}>
-                <div onClick={e => switchSelected(e, 1)} className={`${styles.recipeContentHolderTopContentDetails} ${selected == 1 ? styles.selected : ""}`}>
+        <div className={styles.orderContentHolder}>
+            <div className={styles.orderContentHolderTopContent}>
+                <div onClick={e => switchSelected(e, 1)} className={`${styles.orderContentHolderTopContentDetails} ${selected == 1 ? styles.selected : ""}`}>
                     <h4>Details</h4>
                 </div>
                 <div onClick={e => switchSelected(e, 2)} className={selected == 2 ? styles.selected : ""}>
@@ -54,7 +63,7 @@ const OrderIndex = () => {
 
         <div className="pageHolderContent">
             {
-                (selected == 1) ? <div className={styles.recipeDetails}>
+                (selected == 1) ? <div className={styles.orderDetails}>
                                     <OrderDetails order={order} />
                                 </div>
                               : <div className={styles.orderRecipes}>

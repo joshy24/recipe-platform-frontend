@@ -27,7 +27,9 @@ const orders = [{
 
 const RecentOrders = () => {
     return <div className={styles.recentOrdersHolder}>
-        <h2 className="colorPrimary">Recent Orders</h2>
+        <div className={styles.recentOrders}>
+            <h2>Recent Orders</h2>
+        </div>
 
         <div className={styles.recentOrderHolderTitle}>
             <div className={styles.orderName}>
