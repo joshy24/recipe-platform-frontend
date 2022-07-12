@@ -1,7 +1,9 @@
 
 import React from 'react'
 import OrdersList from './OrdersList'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { faPen, faAdd, faTrash, faSearch, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
 
@@ -27,9 +29,9 @@ const OrdersIndex = () => {
                     <div>
                         <h4>Total - 3</h4>
                     </div>
-                    <div>
-                        <button className={styles.ordersButton}>Search</button>
-                        <button onClick={showAddOrder} className={styles.ordersButton}>Add Order</button>
+                    <div className="pageHolderContentTopRight">
+                        <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                        <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
                     </div>
                 </div>
                 

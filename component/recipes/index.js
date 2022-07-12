@@ -1,6 +1,9 @@
 import React from 'react'
 
 import RecipesList from './RecipesList'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import { faPen, faAdd, faTrash, faSearch, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 import styles from "../../styles/Recipes.module.css"
 
@@ -29,9 +32,9 @@ const RecipesIndex = () => {
                         <h4>Total cost</h4>
                         <h4>#50,000</h4>
                     </div>
-                    <div>
-                        <button className={styles.recipesButton}>Search</button>
-                        <button onClick={showAddRecipe} className={styles.recipesButton}>Add Recipe</button>
+                    <div className="pageHolderContentTopRight">
+                        <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.recipesButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                        <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.recipesButton}`}><FontAwesomeIcon icon={faAdd} /></button>
                     </div>
                 </div>
                 <div className={styles.recipesTop}>
