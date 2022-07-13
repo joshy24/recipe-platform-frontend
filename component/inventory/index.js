@@ -66,7 +66,8 @@ const IngredientsIndex = () => {
         <div className={styles.ingredientsIndex}>
                 <div className={styles.ingredientsTop}>
                     <div>
-                        <h2 className="pageTitle">Ingredients</h2>
+                        <h2 className="pageTitle">Inventory</h2>
+                        <h5>Ingredients and Materials</h5>
                     </div>
                     <div className={styles.ingredientsTopRightContent}>
                         <button className="secondaryButton colorWhite">Search</button>
