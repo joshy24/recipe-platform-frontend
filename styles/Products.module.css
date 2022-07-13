@@ -1,5 +1,5 @@
 
-.ordersIndex{
+.productsIndex{
     width: 100%;
     height: 100vh;
     display: flex;
@@ -8,40 +8,29 @@
     justify-content: flex-start;
 }
 
-.ordersIndex .ordersTop{
+.productsIndex .productsTop{
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.ordersIndex .ordersTop h2{
+.productsIndex .productsTop h2{
     margin: 0;
 }
 
-.ordersIndex h4{
+.productsIndex h4{
     margin: 8px 0px;
 }
 
-.orderDescriptionDetail{
-    width:100%;
-    margin-right: 5px;
-    display: flex;
-}
-
-.orderDescriptionDetails{
-    max-width: 20%;
-    display: flex;
-}
-
-.ordersButton{
+.productsButton{
     background: #BD5BFC;
     color: #FFFFFF;
     width: 150px;
     margin-left: 16px;
 }
 
-.ordersListHolder{
+.productsListHolder{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -51,7 +40,7 @@
     margin-top: 16px;
 }
 
-.ordersListHolderTitle{
+.productsListHolderTitle{
     width: 100%;
     padding: 16px;
     margin-bottom: 16px;
@@ -60,7 +49,7 @@
     
 }
 
-.orderItemHolder{
+.productItemHolder{
     width: 100%;
     display: flex;
     padding: 16px;
@@ -68,63 +57,63 @@
     align-items: center;
 }
 
-.ordersListHolderTitle h5{
+.productsListHolderTitle h5{
     font-size: 16px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
 }
 
 
-.ordersListHolder .orderName{
+.productsListHolder .productName{
     flex: 3;
 }
 
-.ordersListHolder .orderDate{
+.productsListHolder .productDate{
     flex: 1;
 }
 
-.ordersListHolder .orderStatus{
+.productsListHolder .productStatus{
     flex: 1;
 }
 
-.ordersListHolder .orderTotalCost{
+.productsListHolder .productTotalCost{
     flex: 1;
 }
 
-.ordersListHolder .orderFulfilled{
+.productsListHolder .productFulfilled{
     flex: 1;
 }
 
-.ordersListHolder .orderLabourCost{
+.productsListHolder .productLabourCost{
     flex: 1;
 }
 
-.ordersListHolder .orderRecipeCount{
-    flex: 1;
-}
-
-.ordersListHolder .orderRecipeView{
-    flex: 1;
-}
-
-.ordersListHolder .orderRecipeDelete{
+.productsListHolder .productIngredientCount{
     flex: 1;
 }
 
 
+.productsListHolder .productIngredientView{
+    flex: 1;
+}
+
+
+.productsListHolder .productIngredientDelete{
+    flex: 1;
+}
 
 /*
-order Content Holder
+product Content Holder
 */
 
-.orderContentHolder{
+.productContentHolder{
     width: 100%;
     border: 1px solid #000000;
     border-radius: 8px;
     margin-top: 50px;
 }
 
-.orderContentHolder .orderContentHolderTopContent{
+.productContentHolder .productContentHolderTopContent{
     width: 100%;
     display: flex;
 }
@@ -133,33 +122,33 @@ order Content Holder
     margin-left: 16px;
 }
 
-.orderContentHolder .orderContentHolderTopContent div{
+.productContentHolder .productContentHolderTopContent div{
     width: 130px;
     padding: 12px;
     border-right: 1px solid #000000;
 }
 
-.orderContentHolder .orderContentHolderTopContent div:hover{
+.productContentHolder .productContentHolderTopContent div:hover{
     cursor: pointer;
 }
 
-.orderContentHolder .orderContentHolderTopContent .selected{
+.productContentHolder .productContentHolderTopContent .selected{
     background: #BD5BFC;
     color: #FFFFFF;
 }
 
 
-.orderContentHolderTopContentDetails{
+.productContentHolderTopContentDetails{
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
 }
 
 
 /*
-order Details Holder
+Product Details Holder
 */
 
-.orderDetailsHolder{
+.productDetailsHolder{
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -204,7 +193,7 @@ order Details Holder
 
 
 
-.recipesList{
+.ingredientsList{
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -216,7 +205,7 @@ order Details Holder
     padding: 12px;
 }
 
-.recipeItemHolder{
+.ingredientItemHolder{
     width: 100%;
     padding: 16px;
     margin-bottom: 16px;
@@ -225,54 +214,137 @@ order Details Holder
     align-items: center;
 }
 
-.recipesHolderTitle{
+.ingredientsHolderTitle{
     width: 100%;
     margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
 }
 
-.recipesList .recipesHolderTitle h5{
+.ingredientsList .ingredientsHolderTitle h5{
     font-size: 16px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
 }
 
-.recipesList .recipeItemHolder h5{
+.ingredientsList .ingredientItemHolder h5{
     font-size: 14px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
 }
 
-.recipesList h5{
+.ingredientsList h5{
     margin: 0px;
 }
 
-.recipesList .recipeName{
+.ingredientsList .ingredientName{
     flex: 3;
 }
 
-.recipesList .recipePQ{
+.ingredientsList .ingredientPQ{
     flex: 2;
 }
 
-.recipesList .recipePS{
+.ingredientsList .ingredientPS{
     flex: 2;
 }
 
-.recipesList .recipeCost{
+.ingredientsList .ingredientPrice{
     flex: 2;
 }
 
-.recipesList .recipeEdit{
+.ingredientsList .ingredientEdit{
     flex: 1;
 }
 
-.recipesList .recipeView{
+.ingredientsList .ingredientSelect{
     flex: 1;
 }
 
-.recipesList .recipeDelete{
+
+
+
+
+/*
+Add Ingredients Component
+*/
+
+.addIngredients{
+    width: 700px;
+    padding: 24px;
+}
+
+.addIngredients h3{
+    margin: 0px;
+    font-size: 24px;
+}
+
+
+
+.ingredientToAddItemHolder{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px; 
+    padding: 8px 8px;
+}
+
+.ingredientToAddItemHolder h5{
+    margin: 0px;
+}
+
+.ingredientToAddItemHolder .ingredientSelectAdd{
+    flex: 2;
+}
+
+.ingredientToAddItemHolder .ingredientNameAdd{
+    flex: 2;
+}
+
+.ingredientToAddItemHolder .ingredientPQAdd{
+    flex: 1;
+}
+
+.ingredientToAddItemHolder .ingredientPSAdd{
+    flex: 1;
+}
+
+.ingredientToAddItemHolder .ingredientPriceAdd{
+    flex: 1;
+}
+
+
+
+.ingredientsHolderTitleToAdd{
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 30px; 
+}
+
+.ingredientsHolderTitleToAdd h5{
+    font-weight: 600;
+}
+
+.ingredientsHolderTitleToAdd .ingredientSelectAdd{
+    flex: 2;
+}
+
+.ingredientsHolderTitleToAdd .ingredientNameAdd{
+    flex: 2;
+}
+
+.ingredientsHolderTitleToAdd .ingredientPQAdd{
+    flex: 1;
+}
+
+.ingredientsHolderTitleToAdd .ingredientPSAdd{
+    flex: 1;
+}
+
+.ingredientsHolderTitleToAdd .ingredientPriceAdd{
     flex: 1;
 }
 
@@ -282,22 +354,8 @@ order Details Holder
 
 
 /*
-New UI
+New UI's
 */
-
-.launchProfitTableHolder{
-    width:58.4%;
-    align-items: left;
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0px 40px 0px;
-}
-
-.launchProfitTableDetail{
-    font-size: 16px;
-    max-width: 60%;
-}
-
 
 .tabbedListTable{
     border-spacing: 1px 10px;

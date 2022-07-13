@@ -12,7 +12,7 @@ const MobileNavMenu = ({setShowMobileMenu}) => {
         <div className={styles.mobileNavHolder}>
             <div className={styles.mobileNavHolderTop}>
                 <h2 className="nameLogo">
-                    Recipe's
+                    Profit Table
                 </h2>
                 <span onClick={closeMobileMenu} className={styles.closeBtn}></span>
             </div>

@@ -1,27 +1,24 @@
 
 import { useState } from "react";
-import styles from "../../styles/Recipes.module.css"
+import styles from "../../styles/Products.module.css"
 
-import IngredientList from "./ingredientlist"
+//import IngredientList from "./ingredientlist"
 
-import RecipeDetails from "./details"
+//import RecipeDetails from "./details"
 
-import AddIngredients from "./addingredients"
+//import AddIngredients from "./addingredients"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
-const recipe = {
-    name: "Fufu",
-    created: "December 10, 2022 03:24:00",
-    total_cost: 8000
-}
 
 const DetailsTab = "Details"
-const IngredientsTab = "Ingredients"
+const RecipesTab = "Recipes"
+const MaterialsTab = "Materials"
 
-const RecipeIndex = () => {
+
+const ProductIndex = () => {
 
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
@@ -47,7 +44,7 @@ const RecipeIndex = () => {
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
-                <h2 className="pageTitle">Recipe - <span className="pageTitleContentHeader">Shawarma</span></h2>
+                <h2 className="pageTitle">Product - <span className="pageTitleContentHeader">Shawarma</span></h2>
 
                 <h5>
                     Description - <span>is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</span>
@@ -75,8 +72,11 @@ const RecipeIndex = () => {
                 <div onClick={e => switchSelectedTab(e, DetailsTab)} className={`${selectedTab == DetailsTab ? "selected" : ""} tabbedListTabsItem`}>
                     <h5>Details</h5>
                 </div>
-                <div onClick={e => switchSelectedTab(e, IngredientsTab)} className={`${selectedTab == IngredientsTab ? "selected" : ""} tabbedListTabsItem`}>
-                    <h5>Ingredients</h5>
+                <div onClick={e => switchSelectedTab(e, RecipesTab)} className={`${selectedTab == RecipesTab ? "selected" : ""} tabbedListTabsItem`}>
+                    <h5>Recipes</h5>
+                </div>
+                <div onClick={e => switchSelectedTab(e, MaterialsTab)} className={`${selectedTab == MaterialsTab ? "selected" : ""} tabbedListTabsItem`}>
+                    <h5>Materials</h5>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@ const RecipeIndex = () => {
                         </tr>
                         <tr>
                             <td>Description</td>
-                            <td>A short description of the recipe</td>
+                            <td>A short description of the product</td>
                         </tr>
                         <tr>
                             <td>Yield</td>
@@ -108,7 +108,55 @@ const RecipeIndex = () => {
                             <td>Total Cost</td>
                             <td>#30,000</td>
                         </tr>
-                    </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
+                    </table> :  selectedTab == RecipesTab ? <table className={styles.tabbedListTable} style={{width: "100%"}}>
+                                    <tr style={{marginBottom: "24px"}}>
+                                        <th style={{width: "20%"}}>Name</th>
+                                        <th style={{width: "20%"}}>Quantity</th>
+                                        <th style={{width: "20%"}}>Unit</th>
+                                        <th style={{width: "20%"}}>Cost</th>
+                                        <th style={{width: "20%"}}></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Shawarma</td>
+                                        <td>1</td>
+                                        <td>Kg</td>
+                                        <td>#800</td>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Kebab</td>
+                                        <td>1</td>
+                                        <td>Kg</td>
+                                        <td>#150</td>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Giz Dodo</td>
+                                        <td>1</td>
+                                        <td>Kg</td>
+                                        <td>#400</td>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Milk Bar</td>
+                                        <td>1</td>
+                                        <td>Kg</td>
+                                        <td>#600</td>
+                                        <td className="tabbedListContentHorizontalTableContent">
+                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                        </td>
+                                    </tr>
+                                </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
                                     <tr style={{marginBottom: "24px"}}>
                                         <th style={{width: "20%"}}>Name</th>
                                         <th style={{width: "20%"}}>Quantity</th>
@@ -169,4 +217,4 @@ const RecipeIndex = () => {
     </div>
 }
 
-export default RecipeIndex;
+export default ProductIndex;

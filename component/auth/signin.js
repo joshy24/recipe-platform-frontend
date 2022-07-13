@@ -19,9 +19,6 @@ const Signin = () => {
 
     const initialState = { email: '', password: ''}
     const [userData, setUserData] = useState(initialState)
-    const { email, password } = userData
-
-
 
     const router = useRouter()
 
@@ -46,12 +43,12 @@ const Signin = () => {
 
         <div className={styles.authInputFieldHolder}>
             <h4>Email</h4>
-            <input type="email" name="email" placeholder="Enter email" value={email} onChange={handleChangeInput} /> 
+            <input type="email" name="email" placeholder="Enter email" value={userData.email} onChange={handleChangeInput} /> 
         </div>
 
         <div className={styles.authInputFieldHolder}>
             <h4>Password</h4>
-            <input type="password" name="password" placeholder="Enter password" value={password} onChange={handleChangeInput} />
+            <input type="password" name="password" placeholder="Enter password" value={userData.password} onChange={handleChangeInput} />
         </div>
 
         <button onClick={doSignInAndNavigate} className={styles.authButton}>Continue</button>

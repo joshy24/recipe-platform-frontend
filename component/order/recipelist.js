@@ -6,33 +6,27 @@ import RecipesItem from "./recipesitem"
 const recipes = [
     {
         _id: 1,
-        name: "Amala",
-        purchase_quantity: 1,
+        name: "Pancake",
+        purchase_quantity: 3,
         total_cost: 200,
     },
     {
         _id: 2,
-        name: "Ewedu",
-        purchase_quantity: 1,
+        name: "Shawarma",
+        purchase_quantity: 2,
         total_cost: 500,
     },
     {
         _id: 3,
-        name: "Gbegiri",
-        purchase_quantity: 1,
+        name: "Ice Cream",
+        purchase_quantity: 10,
         total_cost: 2000,
     },
     {
         _id: 4,
-        name: "Pomo",
+        name: "Fruit Salad",
         purchase_quantity: 1,
         total_cost: 650,
-    },
-    {
-        _id: 4,
-        name: "Shaki",
-        purchase_quantity: 1,
-        total_cost: 750,
     }
 ]
 
