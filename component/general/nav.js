@@ -33,7 +33,7 @@ const Nav = ({setShowMobileMenu}) => {
                 <div className={styles.navHolder}>
                     <h3><Link href="/dashboard">Dashboard</Link></h3>
                     <h3><Link href="/orders">Orders</Link></h3>
-                    <h3><Link href="/recipes">Products</Link></h3>
+                    <h3><Link href="/products">Products</Link></h3>
                     <h3><Link href="/recipes">Recipes</Link></h3>
                     <h3><Link href="/ingredients">Inventory</Link></h3>
                     <button className={styles.profitableButton}>% Profitable</button>
