@@ -64,10 +64,36 @@ h1, h2, h3, h4, h5, h6{
 
 .pageHolder .pageHolderContentTopCenter{
     display: flex;
+    justify-content: center;
+    width: 33.33%;
+}
+
+.pageHolder .pageHolderContentTopCenter div{
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: 33.33%;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.pageHolder .pageHolderContentTopCenter div h5{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 15px;
+    color: #4D4D4C;
+}
+
+.pageHolder .pageHolderContentTopCenter div h4{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 15px;
+    color: #4D4D4C;
+    margin-bottom: 8px;
 }
 
 .pageHolder .pageTitleContentHeaderDescription{
@@ -98,6 +124,10 @@ h1, h2, h3, h4, h5, h6{
 /*
 Padding
 */
+
+.tinyPadding{
+    padding: 8px;
+  }
 
 .smallPadding{
   padding: 16px;
@@ -133,7 +163,18 @@ button{
     max-width: 42px;
     max-height: 42px;
     color: #FFFFFF;
+    background: rgba(189, 91, 252, 0.85);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.rectangleButtonPrimary{
+    height: 42px;
+    max-height: 42px;
+    color: #FFFFFF;
     background: rgba(189, 91, 252, 0.85);
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
@@ -234,6 +275,7 @@ text
     line-height: 15px;
     display: flex;
     align-items: center;
+    color: #4D4D4C;
 }
 
 .pageTitleContentHeader{
@@ -418,6 +460,51 @@ box
 New UI stuff
 */
 
+.whatIsCaret{
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+.whatIsHolder{
+    display: flex;
+    align-items: center;
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 15px;
+    color: #4D4D4C;
+    margin-top: 20px;
+}
+
+.whatIsHolder:hover{
+    cursor: pointer;
+}
+
+.whatIsContent{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    color: #4D4D4C;
+}
+
+.whatIsContentHolder{
+    margin-top: 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.whatIsContentCloseBtn{
+    margin-right: -12px;
+    margin-top: -12px;
+}
+
+.whatIsContentCloseBtn:hover{
+    cursor: pointer;
+}
 
 .tabbedListMainHolder{
     width: 100%;
@@ -498,3 +585,104 @@ New UI stuff
     display: flex;
     align-items: center;
 }
+
+
+
+/*Tabbed Table*/
+
+/*
+New UI's
+*/
+
+.tabbedListTable{
+    border-spacing: 1px 10px;
+    border-collapse: separate;
+    padding: 30px 45px 30px 45px;
+}
+
+.tabbedListTable .header{
+    height: 70px;
+    max-height: 70px;
+    min-height: 70px;
+}
+
+.tabbedListTable .header th{
+    font-weight: 700;
+    color: #4D4D4C;
+}
+
+.tabbedListTable .notHeader{
+    background: #F2F2F2;
+    height: 70px;
+    max-height: 70px;
+    min-height: 70px;
+}
+
+.tabbedListTable th{
+    text-align: left;
+    padding-left: 60px;
+    margin-bottom: 16px;
+    font-weight: 400;
+    border-right: 1px solid #BD5BFC;
+    height: 70px;
+    max-height: 70px;
+    min-height: 70px;
+}
+
+.tabbedListTable .notHeader th{
+    text-align: left;
+    padding-left: 60px;
+    margin-bottom: 16px;
+    font-weight: 400;
+    border-right: 1px solid #BD5BFC;
+    height: 70px;
+    max-height: 70px;
+    min-height: 70px;
+    color: #4D4D4C;
+}
+
+.tabbedListTable td{
+    text-align: left;
+    padding-left: 60px;
+    border-right: 1px solid #BD5BFC;
+    height: 70px;
+    max-height: 70px;
+    min-height: 70px;
+}
+
+.tabbedListTable th:last-child{
+    border-right: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tabbedListTable td:last-child {
+    border-right: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tabbedListTable .notHeader th:first-child {
+    color: #BD5BFC;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.tabbedListTable .notHeader th {
+    color: #4D4D4C;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.tabbedListTable .header:first-child {
+    color: #4D4D4C;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.tabbedListTable td:first-child {
+    color: #BD5BFC;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+

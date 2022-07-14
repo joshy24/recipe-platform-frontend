@@ -59,8 +59,10 @@ const RecipeIndex = () => {
             </div>
 
             <div className="pageHolderContentTopCenter">
-                <h4>Total Cost</h4>
-                <h5>#30,000</h5>
+                <div>
+                    <h4>Total Cost</h4>
+                    <h5>#30,000</h5>
+                </div>
             </div>
 
             <div className="pageHolderContentTopRight">
@@ -83,16 +85,16 @@ const RecipeIndex = () => {
             <div className="tabbedListTableHolder"> 
                 {
                     selectedTab == DetailsTab ? 
-                    <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                        <tr style={{marginBottom: "24px"}}>
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
                             <th style={{width: "80%"}}>Ife</th>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Description</td>
                             <td>A short description of the recipe</td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Yield</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
                                 20kg
@@ -100,23 +102,23 @@ const RecipeIndex = () => {
                                 <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faRotateLeft} /></button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Category</td>
                             <td>Pastery</td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Total Cost</td>
                             <td>#30,000</td>
                         </tr>
-                    </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                                    <tr style={{marginBottom: "24px"}}>
+                    </table> : <table className="tabbedListTable" style={{width: "100%"}}>
+                                    <tr className="header" style={{marginBottom: "24px"}}>
                                         <th style={{width: "20%"}}>Name</th>
                                         <th style={{width: "20%"}}>Quantity</th>
                                         <th style={{width: "20%"}}>Unit</th>
                                         <th style={{width: "20%"}}>Cost</th>
                                         <th style={{width: "20%"}}></th>
                                     </tr>
-                                    <tr>
+                                    <tr className="notHeader">
                                         <td>Shawarma</td>
                                         <td>1</td>
                                         <td>Kg</td>
@@ -126,7 +128,7 @@ const RecipeIndex = () => {
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="notHeader">
                                         <td>Kebab</td>
                                         <td>1</td>
                                         <td>Kg</td>
@@ -136,7 +138,7 @@ const RecipeIndex = () => {
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="notHeader">
                                         <td>Giz Dodo</td>
                                         <td>1</td>
                                         <td>Kg</td>
@@ -146,7 +148,7 @@ const RecipeIndex = () => {
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <tr className="notHeader">
                                         <td>Milk Bar</td>
                                         <td>1</td>
                                         <td>Kg</td>

@@ -2,11 +2,11 @@
 import { useState } from "react";
 import styles from "../../styles/Orders.module.css"
 
-
+import Image from "next/image"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
 
 const order = {
@@ -28,6 +28,12 @@ const IngredientsTab = "Ingredients"
 
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
+    const [whatIsOpen, setWhatIsOpen] = useState(false)
+
+    const switchWhatIs = (e) => {
+        e.preventDefault();
+        setWhatIsOpen(!whatIsOpen)
+    }
 
     const switchSelected = (e,num) => {
         e.preventDefault();
@@ -50,20 +56,25 @@ const IngredientsTab = "Ingredients"
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
-                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">Shawarma</span></h2>
+                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">Dele Momodu</span></h2>
 
-                <h5>
-                    Description - <span>is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</span>
+                <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                    What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
                 </h5>
 
-                <h5>
-                    Category - <span>Pastery</span>
-                </h5>
+                {
+                    whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                        <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                        <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                    </div>
+                }
             </div>
 
             <div className="pageHolderContentTopCenter">
-                <h4>Total Cost</h4>
-                <h5>#30,000</h5>
+                <div>
+                    <h4>Products</h4>
+                    <h5>10</h5>
+                </div>
             </div>
 
             <div className="pageHolderContentTopRight">
@@ -89,7 +100,7 @@ const IngredientsTab = "Ingredients"
                     <table className={styles.tabbedListTable} style={{width: "100%"}}>
                         <tr style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
-                            <th style={{width: "80%"}}>Ife</th>
+                            <th style={{width: "80%"}}>Dele Momodu</th>
                         </tr>
                         <tr>
                             <td>Date</td>
@@ -99,7 +110,7 @@ const IngredientsTab = "Ingredients"
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
                                 Pending
-                                <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary">Fulfill</button>
+                                <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="rectangleButtonPrimary">Fulfill</button>
                             </td>
                         </tr>
                         <tr>

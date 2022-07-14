@@ -40,42 +40,37 @@ function DashboardIndex() {
                     </div>
                 </div>
                 <div className="tabbedListTableHolder">
-                    <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                        <tr style={{marginBottom: "24px"}}>
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        <tr className="header" style={{marginBottom: "24px"}}>
                             <th style={{width: "36%"}}>Name</th>
                             <th style={{width: "13%"}}>Created</th>
                             <th style={{width: "13%"}}>Status</th>
                             <th style={{width: "13%"}}>Recipe</th>
                             <th style={{width: "13%"}}>Total cost</th>
                         </tr>
-                        <tr>
-                            <td style={{width: "36%"}}>Mr David's wedding</td>
-                            <td style={{width: "13%"}}>17-12-2022</td>
-                            <td style={{width: "13%"}}>Pending</td>
-                            <td style={{width: "13%"}}>3</td>
-                            <td style={{width: "13%"}}>#200,000</td>
+                        <tr className="notHeader">
+                            <td >Mr David's wedding</td>
+                            <td >17-12-2022</td>
+                            <td >Pending</td>
+                            <td >3</td>
+                            <td >#200,000</td>
                         </tr>
-                        <tr>
-                            <td style={{width: "36%"}}>Folake's wedding</td>
-                            <td style={{width: "13%"}}>17-12-2022</td>
-                            <td style={{width: "13%"}}>Pending</td>
-                            <td style={{width: "13%"}}>3</td>
-                            <td style={{width: "13%"}}>#200,000</td>
+                        <tr className="notHeader">
+                            <td >Folake's wedding</td>
+                            <td >17-12-2022</td>
+                            <td >Pending</td>
+                            <td >3</td>
+                            <td >#200,000</td>
                         </tr>
-                        <tr>
-                            <td style={{width: "36%"}}>The Food Guys</td>
-                            <td style={{width: "13%"}}>17-12-2022</td>
-                            <td style={{width: "13%"}}>Pending</td>
-                            <td style={{width: "13%"}}>3</td>
-                            <td style={{width: "13%"}}>#200,000</td>
+                        <tr className="notHeader">
+                            <td>The Food Guys</td>
+                            <td >17-12-2022</td>
+                            <td >Pending</td>
+                            <td >3</td>
+                            <td >#200,000</td>
                         </tr>
                     </table>
                 </div>
-            </div>
-            
-             
-            <div className={styles.recentOrdersHolder}>      
-                <RecentOrders />
             </div>
              
         </div>
@@ -84,7 +79,10 @@ function DashboardIndex() {
 
 export default DashboardIndex;
 
-
-           
+/*
+<div className={styles.recentOrdersHolder}>      
+    <RecentOrders />
+</div>
+*/
             
            
