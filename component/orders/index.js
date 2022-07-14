@@ -8,13 +8,18 @@ import Image from "next/image"
 import { faPen, faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
-
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 const OrdersIndex = () => {
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
+    const router = useRouter()
+    const navigateToOrder = () => {
+
+        router.push("/order")
+    }
 
     const switchWhatIs = (e) => {
         e.preventDefault();
@@ -76,7 +81,7 @@ const OrdersIndex = () => {
                             <td >Pending</td>
                             <td >#200,000</td>
                             <td className="tabbedListContentHorizontalTableContent">
-                                <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
                                 <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                             </td>
                         </tr>
@@ -86,7 +91,7 @@ const OrdersIndex = () => {
                             <td >Pending</td>
                             <td >#200,000</td>
                             <td className="tabbedListContentHorizontalTableContent">
-                                <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
                                 <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                             </td>
                         </tr>
@@ -96,7 +101,7 @@ const OrdersIndex = () => {
                             <td >Pending</td>
                             <td >#200,000</td>
                             <td className="tabbedListContentHorizontalTableContent">
-                                <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
                                 <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                             </td>
                         </tr>
