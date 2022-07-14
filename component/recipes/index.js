@@ -1,63 +1,125 @@
-import React from 'react'
 
-import RecipesList from './RecipesList'
+import React from 'react'
+//import OrdersList from './OrdersList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faPen, faAdd, faTrash, faSearch, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import Image from "next/image"
 
-import styles from "../../styles/Recipes.module.css"
-
-import AddRecipe from '../general/addrecipe'
+import { faPen, faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import styles from "../../styles/Orders.module.css"
+import AddOrder from '../general/addorder'
 
 import { useState } from "react"
+import { useRouter } from "next/router"
 
-const RecipesIndex = () => {
+
+
+const OrdersIndex = () => {
+
+    const router = useRouter()
+
+    const navigateToRecipe = () => {
+
+        router.push("/recipe")
+    }
 
     const [showAdd, setShowAdd] = useState(false)
+    const [whatIsOpen, setWhatIsOpen] = useState(false)
 
-    const showAddRecipe = () => {
+    const switchWhatIs = (e) => {
+        e.preventDefault();
+        setWhatIsOpen(!whatIsOpen)
+    }
+
+    const showAddOrder = () => {
         setShowAdd(true)
     }
 
-    const closeAddRecipe = () => {
+    const closeAddOrder = () => {
         setShowAdd(false)
     }
 
-    return (
-        <>
-            <div className={styles.recipesIndex}>
-                <div  className={styles.recipesTop}>
+    return ( <>
+        <div className="pageHolderContent">
+            <div className="pageHolderContentTop">
+                <div className="pageHolderContentTopLeft">
                     <h2 className="pageTitle">Recipes</h2>
+
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are Recipes? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
+                </div>
+
+                <div className="pageHolderContentTopCenter">
                     <div>
-                        <h4>Total cost</h4>
-                        <h4>#50,000</h4>
-                    </div>
-                    <div className="pageHolderContentTopRight">
-                        <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.recipesButton}`}><FontAwesomeIcon icon={faSearch} /></button>
-                        <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.recipesButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                        <h4>Total</h4>
+                        <h5>3</h5>
                     </div>
                 </div>
-                <div className={styles.recipesTop}>
-                    <h4>Description - </h4>
 
+                <div className="pageHolderContentTopRight">
+                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
                 </div>
-
-
-                <div className={styles.recipesListHolder}>
-                    <RecipesList />
-                </div>
-
-                
             </div>
 
-            {
-                showAdd && <AddRecipe closeAddRecipe={closeAddRecipe} />
-            }
+            <div className="tabbedListMainHolder">
+                <div className="tabbedListTableHolder">
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        <tr className="header" style={{marginBottom: "24px"}}>
+                            <th style={{width: "31%"}}>Name</th>
+                            <th style={{width: "23%"}}>Created</th>
+                            <th style={{width: "23%"}}>Total cost</th>
+                            <th style={{width: "23%"}}></th>
+                        </tr>
+                        <tr className="notHeader">
+                            <td >Ewedu</td>
+                            <td >17-12-2022</td>
+                            <td >#200,000</td>
+                            <td className="tabbedListContentHorizontalTableContent">
+                                <button onClick={navigateToRecipe} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                            </td>
+                        </tr>
+                        <tr className="notHeader">
+                            <td >Gbegiri</td>
+                            <td >17-12-2022</td>
+                            <td >#200,000</td>
+                            <td className="tabbedListContentHorizontalTableContent">
+                                <button onClick={navigateToRecipe} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                            </td>
+                        </tr>
+                        <tr className="notHeader">
+                            <td>Amala</td>
+                            <td >17-12-2022</td>
+                            <td >#200,000</td>
+                            <td className="tabbedListContentHorizontalTableContent">
+                                <button onClick={navigateToRecipe} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        {
+            showAdd && <AddOrder closeAddOrder={closeAddOrder} />
+        }
         </>
     )
 }
 
-export default RecipesIndex;
+export default OrdersIndex;
 
 
            
