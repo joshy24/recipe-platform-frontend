@@ -50,7 +50,7 @@ const ProductIndex = () => {
                 <h2 className="pageTitle">Product - <span className="pageTitleContentHeader">Pancake</span></h2>
 
                 <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
-                    What are products? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    What are Products? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
                 </h5>
 
                 {
@@ -138,15 +138,17 @@ const ProductIndex = () => {
                                     <tr className="header" style={{marginBottom: "24px"}}>
                                         <th style={{width: "20%"}}>Name</th>
                                         <th style={{width: "20%"}}>Amount</th>
-                                        <th style={{width: "20%"}}>Unit</th>
                                         <th style={{width: "20%"}}>Cost</th>
+                                        <th style={{width: "20%"}}>Unit</th>
+                                        
                                         <th style={{width: "20%"}}></th>
                                     </tr>
                                     <tr className="notHeader">
                                         <td>Shawarma</td>
                                         <td>1</td>
-                                        <td>Kg</td>
                                         <td>#800</td>
+                                        <td>Kg</td>
+                                        
                                         <td className="tabbedListContentHorizontalTableContent">
                                             <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
@@ -155,8 +157,9 @@ const ProductIndex = () => {
                                     <tr className="notHeader">
                                         <td>Kebab</td>
                                         <td>1</td>
-                                        <td>Kg</td>
                                         <td>#150</td>
+                                        <td>Kg</td>
+                                        
                                         <td className="tabbedListContentHorizontalTableContent">
                                             <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
@@ -165,8 +168,9 @@ const ProductIndex = () => {
                                     <tr className="notHeader">
                                         <td>Giz Dodo</td>
                                         <td>1</td>
-                                        <td>Kg</td>
                                         <td>#400</td>
+                                        <td>Kg</td>
+                                        
                                         <td className="tabbedListContentHorizontalTableContent">
                                             <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
@@ -175,8 +179,9 @@ const ProductIndex = () => {
                                     <tr className="notHeader">
                                         <td>Milk Bar</td>
                                         <td>1</td>
-                                        <td>Kg</td>
                                         <td>#600</td>
+                                        <td>Kg</td>
+                                        
                                         <td className="tabbedListContentHorizontalTableContent">
                                             <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                             <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
@@ -185,8 +190,9 @@ const ProductIndex = () => {
                                     <tr className="header">
                                         <td></td>
                                         <td></td>
-                                        <td></td>
                                         <td><b>#20,000</b></td>
+                                        <td></td>
+                                        
                                         <td className="tabbedListContentHorizontalTableContent"></td>
                                     </tr>
                                 </table> : <table className="tabbedListTable" style={{width: "100%"}}>
