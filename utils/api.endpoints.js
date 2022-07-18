@@ -1,35 +1,53 @@
-export const BASE_URL = "https://apc-api-ng.herokuapp.com"
+//export const BASE_URL = "https://apc-api-ng.herokuapp.com"
 
 //export const BASE_URL = "http://localhost:3999"
 
-export const SEARCH_MEMBER_ID = "/api/v1/payee/search_id/"
-
-export const SEARCH_PROFILE = "/api/v1/payee/search_profile/"
-
-export const VERIFY_TRANSACTION = "/api/v1/payee/verify_transaction/"
 
 
+//Auth
 
-//ADMIN
+export const LOGIN_URL = "/api/v1/login"
 
-export const ADMIN_LOGIN = "/api/v1/admin/login/"
 
-export const ADMIN_SEARCH_PROFILES = "/api/v1/admin/search_profiles/"
+//Dasboard
 
-export const ADMIN_SEARCH_PROFILES_NAME = "/api/v1/admin/search_profiles_name/"
+export const GET_RECENT_ORDERS = "/api/v1/login"
 
-export const ADMIN_SEARCH_PROFILES_ID = "/api/v1/admin/search_profiles_id/"
+export const GET_ALL_PRODUCTS = "/api/v1/login"
 
-export const ADMIN_GET_PAYMENTS = "/api/v1/admin/get_payments/"
+export const SEARCH_PRODUCTS = "/api/v1/login"
 
-export const ADMIN_COUNT_PAYMENTS = "/api/v1/admin/counts_payments/"
 
-export const ADMIN_SEARCH_PAYMENTS = "/api/v1/admin/search_payments/"
+//Orders
 
-export const CREATE_PAYMENT = "/api/v1/admin/create_payment/"
+export const CREATE_ORDER = "/api/v1/login"
 
-export const EDIT_PAYMENT = "/api/v1/admin/edit_payment/"
+export const GET_ALL_ORDERS = "/api/v1/login"
 
-export const DELETE_PAYMENT = "/api/v1/admin/delete_payment/"
+export const SEARCH_ORDERS = "/api/v1/login"
 
-export const RESET_PAYMENT = "/api/v1/admin/reset_payment/"
+
+
+//Products
+
+export const CREATE_PRODUCT = "/api/v1/login"
+
+export const GET_ALL_PRODUCTS = "/api/v1/login"
+
+export const SEARCH_PRODUCTS = "/api/v1/login"
+
+
+//Recipes
+
+export const CREATE_RECIPE = "/api/v1/login"
+
+export const GET_ALL_RECIPES = "/api/v1/login"
+
+export const SEARCH_RECIPES = "/api/v1/login"
+
+
+//Inventory
+
+export const GET_ALL_INVENTORY = "/api/v1/login"
+
+export const SEARCH_INVENTORY = "/api/v1/login"
