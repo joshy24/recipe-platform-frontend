@@ -1,20 +1,20 @@
 
 import React from 'react'
-//import OrdersList from './OrdersList'
+//import OrdersList from './ProductsList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
 
 import { faPen, faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
-import styles from "../../styles/Orders.module.css"
-import AddOrder from '../general/addorder'
+import styles from "../../styles/Products.module.css"
+//import AddProduct from '../general/addproduct'
 
 import { useState } from "react"
 import { useRouter } from "next/router"
 
 
 
-const OrdersIndex = () => {
+const ProductsIndex = () => {
 
     const router = useRouter()
 
@@ -31,13 +31,66 @@ const OrdersIndex = () => {
         setWhatIsOpen(!whatIsOpen)
     }
 
-    const showAddOrder = () => {
+    const showAddProduct = () => {
         setShowAdd(true)
     }
 
-    const closeAddOrder = () => {
+    const closeAddProduct = () => {
         setShowAdd(false)
     }
+
+
+
+    /*
+    New functions
+    */
+
+    const showSearchProduct = () => {
+
+    }
+
+    const closeSearchProduct = () => {
+
+    }
+
+    const searchProduct = async () => {
+
+    }
+
+    const addProduct = async () => {
+
+    }
+
+    const loadProducts = () => {
+
+    }
+
+    const showProducts = () => {
+
+    }
+
+    const showDeleteProduct = () => {
+
+    }
+
+    const closeDeleteProduct = () => {
+
+    }
+
+    const deleteProduct = async () => {
+
+    }
+
+    const showProductLoading = () => {
+
+    }
+
+    const showSkeletonLoading = () => {
+        
+    }
+
+
+
 
     return ( <>
         <div className="pageHolderContent">
@@ -65,8 +118,8 @@ const OrdersIndex = () => {
                 </div>
 
                 <div className="pageHolderContentTopRight">
-                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
-                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                    <button onClick={showAddProduct} className={`squareButtonPrimary ${styles.productsButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                    <button onClick={showAddProduct} className={`squareButtonPrimary ${styles.productsButton}`}><FontAwesomeIcon icon={faAdd} /></button>
                 </div>
             </div>
 
@@ -113,13 +166,13 @@ const OrdersIndex = () => {
 
 
         {
-            showAdd && <AddOrder closeAddOrder={closeAddOrder} />
+            showAdd && <AddProduct closeAddProduct={closeAddProduct} />
         }
         </>
     )
 }
 
-export default OrdersIndex;
+export default ProductsIndex;
 
 
            

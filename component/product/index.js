@@ -44,6 +44,99 @@ const ProductIndex = () => {
         setSelectedTab(tab)
     }
 
+
+    /*
+    New functions
+    */
+
+    const loadProduct = () => {
+
+    }
+
+    const loadProductRecipes = () => {
+
+    }
+
+    const loadProductMaterials = () => {
+
+    }
+
+    const showSkeletonLoaders = () => {
+
+    }
+
+    const hideSkeletonLoaders = () => {
+
+    }
+
+    const showEditProduct = () => {
+
+    }
+
+    const hideEditProduct = () => {
+
+    }
+
+    const editProduct = async () => {
+
+    }
+
+    const showAddRecipe = () => {
+
+    }
+
+    const hideAddRecipe = () => {
+
+    }
+
+    const showAddMaterial = () => {
+
+    }
+
+    const hideAddMaterial = () => {
+
+    }
+
+    const showDeleteProduct = () => {
+
+    }
+
+    const hideDeleteProduct = () => {
+
+    }
+
+    const deleteProduct = async () => {
+
+    }
+
+    const showEditProductRecipe = () => {
+
+    }
+
+    const hideEditProductRecipe = () => {
+
+    }
+
+    const editProductRecipe = async () => {
+
+    }
+
+    const showDeleteProductRecipe = () => {
+
+    }
+
+    const hideDeleteProductRecipe = () => {
+
+    }
+
+    const deleteProductRecipe = async () => {
+
+    }
+
+
+
+
+
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">

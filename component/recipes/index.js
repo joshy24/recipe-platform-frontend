@@ -39,6 +39,56 @@ const OrdersIndex = () => {
         setShowAdd(false)
     }
 
+
+
+    /*
+    New functions
+    */
+
+    const showSearchRecipe = () => {
+
+    }
+
+    const closeSearchRecipe = () => {
+
+    }
+
+    const searchRecipe = async () => {
+
+    }
+
+    const addRecipe = async () => {
+
+    }
+
+    const loadRecipes = () => {
+
+    }
+
+    const showRecipes = () => {
+
+    }
+
+    const showDeleteRecipe = () => {
+
+    }
+
+    const closeDeleteRecipe = () => {
+
+    }
+
+    const deleteRecipe = async () => {
+
+    }
+
+    const showRecipeLoading = () => {
+
+    }
+
+    const showSkeletonLoading = () => {
+        
+    }
+
     return ( <>
         <div className="pageHolderContent">
             <div className="pageHolderContentTop">
