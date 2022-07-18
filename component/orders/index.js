@@ -34,6 +34,58 @@ const OrdersIndex = () => {
         setShowAdd(false)
     }
 
+
+
+    /*
+    New functions
+    */
+
+
+    const showSearchOrder = () => {
+
+    }
+
+    const closeSearchOrder = () => {
+
+    }
+
+    const searchOrder = async () => {
+
+    }
+
+    const addOrder = async () => {
+
+    }
+
+    const loadOrders = () => {
+
+    }
+
+    const showOrders = () => {
+
+    }
+
+    const showDeleteOrder = () => {
+
+    }
+
+    const closeDeleteOrder = () => {
+
+    }
+
+    const deleteOrder = async () => {
+
+    }
+
+    const showOrderLoading = () => {
+
+    }
+
+    const showSkeletonLoading = () => {
+        
+    }
+
+
     return ( <>
         <div className="pageHolderContent">
             <div className="pageHolderContentTop">

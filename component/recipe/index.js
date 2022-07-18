@@ -44,6 +44,72 @@ const RecipeIndex = () => {
         setSelectedTab(tab)
     }
 
+    
+
+
+    /*
+    New functions
+    */
+
+    const showRecipesSkeleton = () => {
+
+    }
+
+    const hideRecipesSkeleton = () => {
+
+    }
+
+    const showEditRecipe = () => {
+
+    }
+
+    const hideEditRecipe = () => {
+        
+    }
+
+    const editRecipe = async () => {
+
+    }
+
+    const showEditIngredient = () => {
+        
+    }
+
+    const editIngredient = async () => {
+        
+    }
+
+    const hideEditIngredient = () => {
+
+    }
+
+    const showDeleteRecipe = () => {
+        
+    }
+
+    const hideDeleteRecipe = () => {
+        
+    }
+
+    const deleteRecipe = async () => {
+        
+    }
+
+    const showDeleteIngredient = () => {
+        
+    }
+
+    const hideDeleteIngredient = () => {
+        
+    }
+
+    const deleteIngredient = async () => {
+        
+    }
+
+    
+
+
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
