@@ -62,6 +62,67 @@ const IngredientsIndex = () => {
         setShowDelete(false);
     }
 
+    const showSkeletonLoaders = () => {
+
+    }
+
+    const hideSkeletonLoaders = () => {
+
+    }
+
+    const showAddInventory = () => {
+
+    }
+
+    const hideAddInventory = () => {
+
+    }
+
+    const showSearch = () => {
+
+    }
+
+    const hideSearch = () => {
+
+    }
+
+    const search = async () => {
+
+    }
+
+    const showExport = () => {
+
+    }
+
+    const hideExport = () => {
+
+    }
+
+    const showEditInventory = () => {
+
+    }
+
+    const hideEditInventory = () => {
+
+    }
+
+    const performExport = async () => {
+
+    }
+
+    const showDeleteInventoryItem = () => {
+
+    }
+
+    const hideDeleteInventoryItem = () => {
+
+    }
+
+    const deleteInventoryItem = async () => {
+
+    }
+
+
     return <>
         <div className={styles.ingredientsIndex}>
                 <div className={styles.ingredientsTop}>

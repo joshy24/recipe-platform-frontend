@@ -23,8 +23,8 @@ const OrderIndex = () => {
 
     const [selected, setSelected] = useState(1)
 
-const DetailsTab = "Details"
-const IngredientsTab = "Ingredients"
+    const DetailsTab = "Details"
+    const IngredientsTab = "Ingredients"
 
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
@@ -51,6 +51,88 @@ const IngredientsTab = "Ingredients"
     const switchSelectedTab = (e, tab) => {
         e.preventDefault()
         setSelectedTab(tab)
+    }
+
+
+
+    /*
+    New functions
+    */
+
+    const loadOrder = () => {
+
+    }
+
+    const loadOrderProducts = () => {
+
+    }
+
+    /*const loadProductMaterials = () => {
+
+    }*/
+
+    const showSkeletonLoaders = () => {
+
+    }
+
+    const hideSkeletonLoaders = () => {
+
+    }
+
+    const showEditOrder = () => {
+
+    }
+
+    const hideEditOrder = () => {
+
+    }
+
+    const editOrder = async () => {
+
+    }
+
+    const showAddProduct = () => {
+
+    }
+
+    const hideAddProduct = () => {
+
+    }
+
+    const addProduct = async () => {
+
+    }
+
+    const showDeleteOrder = () => {
+
+    }
+
+    const hideDeleteOrder = () => {
+
+    }
+
+    const deleteOrder = async () => {
+
+    }
+
+    const showEditOrderProduct = () => {
+
+    }
+
+    const hideEditOrderProduct = () => {
+
+    }
+
+    const editOrderProduct = async () => {
+
+    }
+
+    const showConfirmFulfilled = () => {
+
+    }
+
+    const hideConfirmFulfilled = () => {
+
     }
 
     return <div className="pageHolderContent">
