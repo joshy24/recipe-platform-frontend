@@ -1,20 +1,33 @@
 
-import React from 'react'
-import OrdersList from './OrdersList'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
 
-import { faPen, faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare, faXmark } from '@fortawesome/free-solid-svg-icons'
 import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
 import { useRouter } from "next/router"
-import { useState } from "react"
+
+import SearchInput from "../general/searchInput"
+
+import EmptyResult from "../general/emptyResult"
+
+import { getRequest, postRequest } from "../../utils/api.requests"
+
+import { BASE_URL, CREATE_ORDER, SEARCH_ORDERS} from "../../utils/api.endpoints"
+
+const create_order_url = BASE_URL + CREATE_ORDER
 
 const OrdersIndex = () => {
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
+    const [isSearchOpen, setIsSearchOpen] = useState(false)
+    const [searchTerm, setSearchTerm] = useState(false)
+
+    const [orders, setOrders] = useState([])
+
     const router = useRouter()
     const navigateToOrder = () => {
 
@@ -41,24 +54,61 @@ const OrdersIndex = () => {
     */
 
 
-    const showSearchOrder = () => {
-
+    const showSearchOrders = () => {
+        setIsSearchOpen(true)
     }
 
-    const closeSearchOrder = () => {
-
+    const closeSearchOrders = () => {
+        setIsSearchOpen(false)
     }
 
-    const searchOrder = async () => {
+    const searchOrders = async () => {
+        if(searchTerm && searchTerm.length > 0){
+            try{
+                const result = await getRequest(SEARCH_ORDERS+"?searchTerm="+searchTerm)
 
+                console.log(result)
+            }
+            catch(err){
+                console.log(result)
+            }
+        }
     }
 
-    const addOrder = async () => {
+    const addOrder = async (e, order) => {
+        e.preventDefault();
+        try{
+            var result = await postRequest(create_order_url, order)
 
+            setLoading(false)
+            
+            setVisits(result)
+            
+        }
+        catch(err){
+            setLoading(false)
+
+            setMessage("An error occurred performing the search.")
+            setErrorMessageVisible(true)
+        }
     }
 
-    const loadOrders = () => {
+    const loadOrders = async() => {
+        setIsLoading(true)
 
+        try{
+            const result = await getRequest(get_products_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
+
+            console.log(result)
+
+            setProducts(result.response)
+
+            setIsLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            setIsLoading(false)
+        }
     }
 
     const showOrders = () => {
@@ -83,6 +133,12 @@ const OrdersIndex = () => {
 
     const showSkeletonLoading = () => {
         
+    }
+
+    const onSearchChanged = (event) => {
+        const value = event.target.value
+
+        setSearchTerm(value)
     }
 
 
@@ -112,8 +168,12 @@ const OrdersIndex = () => {
                 </div>
 
                 <div className="pageHolderContentTopRight">
-                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
-                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                    {
+                        isSearchOpen ? <SearchInput searchClicked={searchOrders} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchOrders} /> : <div style={{display: "flex"}}>
+                        <button onClick={showSearchOrders} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                        <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                    </div>
+                    }
                 </div>
             </div>
 
@@ -127,44 +187,35 @@ const OrdersIndex = () => {
                             <th style={{width: "18%"}}>Total cost</th>
                             <th style={{width: "18%"}}></th>
                         </tr>
-                        <tr className="notHeader">
-                            <td >Mr David's wedding</td>
-                            <td >17-12-2022</td>
-                            <td >Pending</td>
-                            <td >#200,000</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                            </td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td >Folake's wedding</td>
-                            <td >17-12-2022</td>
-                            <td >Pending</td>
-                            <td >#200,000</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                            </td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>The Food Guys</td>
-                            <td >17-12-2022</td>
-                            <td >Pending</td>
-                            <td >#200,000</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                            </td>
-                        </tr>
+                        {
+                            orders && orders.docs && orders.docs.length && order.docs.map(order => {
+                                return <tr className="notHeader">
+                                <td >{order.name}</td>
+                                <td >{order.created}</td>
+                                <td >{order.status}</td>
+                                <td >{order.totalCost}</td>
+                                <td className="tabbedListContentHorizontalTableContent">
+                                    <button onClick={navigateToOrder} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                </td>
+                            </tr>
+                            })
+                        }
+
+                        
+
                     </table>
+
+                    {
+                        orders && orders.docs && orders.docs.length == 0 && !isLoading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrder} emptyButtonText={"Try Again"} />
+                    }
                 </div>
             </div>
         </div>
 
 
         {
-            showAdd && <AddOrder closeAddOrder={closeAddOrder} />
+            showAdd && <AddOrder addOrder={addOrder} closeAddOrder={closeAddOrder} />
         }
         </>
     )

@@ -24,7 +24,7 @@ export default function withAuth(AuthComponent) {
       prior to granting them enterance into the app. */
       componentDidMount() {
         if (!Auth.loggedIn()) {
-          window.location = '/admin';
+          window.location = '/auth/signin';
         } else {
           /* Try to get confirmation message from the Auth helper. */
           try {
@@ -38,7 +38,7 @@ export default function withAuth(AuthComponent) {
             /* Oh snap! Looks like there's an error so we'll print it out and log the user out for security reasons. */
             //console.log(err);
             Auth.logout();
-            window.location = '/admin';
+            window.location = '/auth/signin';
           }
         }
       }

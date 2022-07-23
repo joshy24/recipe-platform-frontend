@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router"
 import styles from "../../styles/Dashboard.module.css"
 
-const InventoryCount = () => {
+const InventoryCount = ({count}) => {
 
     const router = useRouter()
 
@@ -19,7 +19,7 @@ const InventoryCount = () => {
         </div>
         <hr />
         <div className={styles.inventoryNumbersHolderContent}>
-            <h4>Total - {total}</h4>
+            <h4>Total - {count}</h4>
         </div>
     </div>
 }

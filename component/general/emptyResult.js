@@ -1,16 +1,16 @@
 
-const emptyResult = ({message, onEmptyButtonClicked}) => {
+const EmptyResult = ({message, onEmptyButtonClicked, emptyButtonText}) => {
 
     return <div className="empyResultHolder">
         <div className="emptyResultInnerContent">
-            <h5>
+            <h5 style={{textAlign: "center", marginBottom: "8px"}}>
                 {
                     message ? message : "No content was found"
                 }
             </h5>
-            <button className="rectangleButtonSecondary" onClick={e => onEmptyButtonClicked(e)}></button>
+            <button className="rectangleButtonSecondary" onClick={e => onEmptyButtonClicked(e)}>{emptyButtonText ? emptyButtonText : "Try Again"}</button>
         </div>
     </div>
 }
 
-module.exports.emptyResult = emptyResult;
+export default EmptyResult;

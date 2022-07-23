@@ -3,9 +3,19 @@ import ProductIndex from '../../component/product/index'
 
 import withAuth from "../../utils/withAuth"
 
-function Product() {
+export async function getServerSideProps(context) {
+  const {
+     id
+  } = context.query;
+
+  return {
+      props: { id }
+  }
+}
+
+function Product({id}) {
   return <div className="pageHolder">
-      <ProductIndex />
+      <ProductIndex id={id} />
   </div>
 }
 

@@ -1,41 +1,67 @@
 
-import React from 'react'
-//import OrdersList from './OrdersList'
+import React, { useState,useEffect } from 'react'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
 
-import { faPen, faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import styles from "../../styles/Orders.module.css"
-import AddOrder from '../general/addorder'
+import AddRecipe from '../general/addrecipe'
 
-import { useState } from "react"
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+import SearchInput from "../general/searchInput"
+
+import {getDate} from "../../utils/helper"
+
 import { useRouter } from "next/router"
 
+import { postRequest, getRequest } from "../../utils/api.requests"
 
+import { BASE_URL, CREATE_RECIPE, GET_ALL_RECIPES, SEARCH_RECIPES_URL } from "../../utils/api.endpoints"
 
-const OrdersIndex = () => {
+const create_recipe_url = BASE_URL + CREATE_RECIPE
 
+const get_recipes_url = BASE_URL + GET_ALL_RECIPES
+
+const RecipesIndex = () => {
     const router = useRouter()
-
-    const navigateToRecipe = () => {
-
-        router.push("/recipe")
-    }
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
+    const [recipes, setRecipes] = useState({})
+
+    const [isLoading, setIsLoading] = useState(true)
+
+    const [pagination, setPagination] = useState({offset:0, limit: 30})
+
+    const [isSearchOpen, setIsSearchOpen] = useState(false)
+    const [searchTerm, setSearchTerm] = useState(false)
+    const [searchResult, setSearchResult] = useState([])
+
+    useEffect(() => {
+        loadRecipes()
+    }, [])
+
+    
+
+    const navigateToRecipe = (e, id) => {
+        e.preventDefault()
+        router.push(`/recipe/${id}`)
+    }
 
     const switchWhatIs = (e) => {
         e.preventDefault();
         setWhatIsOpen(!whatIsOpen)
     }
 
-    const showAddOrder = () => {
+    const showAddRecipe = () => {
         setShowAdd(true)
     }
 
-    const closeAddOrder = () => {
+    const closeAddRecipe = () => {
         setShowAdd(false)
     }
 
@@ -45,24 +71,69 @@ const OrdersIndex = () => {
     New functions
     */
 
-    const showSearchRecipe = () => {
-
+    const showSearchRecipes = () => {
+        setIsSearchOpen(true)
     }
 
-    const closeSearchRecipe = () => {
-
+    const closeSearchRecipes = () => {
+        setIsSearchOpen(false)
     }
 
-    const searchRecipe = async () => {
+    const searchRecipes = async () => {
+        if(searchTerm && searchTerm.length > 0){
+            try{
+                setIsLoading(true)
+                const result = await getRequest(SEARCH_RECIPES_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+                setIsLoading(false)
+                console.log(result)
 
+                setSearchResult(result.response)
+            }
+            catch(err){
+                console.log(err)
+                setIsLoading(false)
+            }
+        }
     }
 
-    const addRecipe = async () => {
+    const onSearchChanged = (event) => {
+        const value = event.target.value
 
+        setSearchTerm(value)
     }
 
-    const loadRecipes = () => {
+    const addRecipe = async (e, data) => {
+        e.preventDefault();
+        try{
+            const result = await postRequest(create_recipe_url, data)
 
+            console.log(result)
+
+            closeAddRecipe()
+
+            loadRecipes();
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    const loadRecipes = async () => {
+        try{
+            const url = get_recipes_url+"?limit="+pagination.limit+"&offset="+pagination.offset
+
+            const result = await getRequest(url)
+
+            console.log(result.response.docs)
+
+            setRecipes(result.response)
+
+            setIsLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            setIsLoading(false)
+        }
     }
 
     const showRecipes = () => {
@@ -110,66 +181,65 @@ const OrdersIndex = () => {
                 <div className="pageHolderContentTopCenter">
                     <div>
                         <h4>Total</h4>
-                        <h5>3</h5>
+                        <h5>{recipes ? recipes.totalDocs : 0}</h5>
                     </div>
                 </div>
 
                 <div className="pageHolderContentTopRight">
-                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
-                    <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                    {
+                        isSearchOpen ? <SearchInput searchClicked={searchRecipes} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchRecipes} /> :
+                        <div style={{display: "flex"}}>
+                            <button onClick={showSearchRecipes} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                            <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                        </div>
+                    }
                 </div>
             </div>
 
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}>
-                        <tr className="header" style={{marginBottom: "24px"}}>
-                            <th style={{width: "31%"}}>Name</th>
-                            <th style={{width: "23%"}}>Created</th>
-                            <th style={{width: "23%"}}>Total cost</th>
-                            <th style={{width: "23%"}}></th>
-                        </tr>
-                        <tr className="notHeader">
-                            <td >Ewedu</td>
-                            <td >17-12-2022</td>
-                            <td >#200,000</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                <button onClick={navigateToRecipe} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                            </td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td >Gbegiri</td>
-                            <td >17-12-2022</td>
-                            <td >#200,000</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                <button onClick={navigateToRecipe} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                            </td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Amala</td>
-                            <td >17-12-2022</td>
-                            <td >#200,000</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                <button onClick={navigateToRecipe} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                            </td>
-                        </tr>
+                        {
+                            !isLoading ? <tbody>
+                                <tr className="header" style={{marginBottom: "24px"}}>
+                                    <th style={{width: "31%"}}>Name</th>
+                                    <th style={{width: "23%"}}>Created</th>
+                                    <th style={{width: "23%"}}>Total cost</th>
+                                    <th style={{width: "23%"}}></th>
+                                </tr>
+
+                                {
+                                    recipes.docs && recipes.docs.length > 0 && recipes.docs.map(recipe => {
+                                        return <tr className="notHeader">
+                                                    <td >{recipe.name}</td>
+                                                    <td >{getDate(recipe.created)}</td>
+                                                    <td >₦{0}</td>
+                                                    <td className="tabbedListContentHorizontalTableContent">
+                                                        <button onClick={e => navigateToRecipe(e, recipe._id)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
+                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                    </td>
+                                                </tr>
+                                    })
+                                }
+
+                                
+                            </tbody>
+                            : <Skeleton count={8} height={40} />
+                        }
+                        
                     </table>
                 </div>
             </div>
         </div>
 
-
         {
-            showAdd && <AddOrder closeAddOrder={closeAddOrder} />
+            showAdd && <AddRecipe closeAddRecipe={closeAddRecipe} addRecipe={addRecipe} />
         }
         </>
     )
 }
 
-export default OrdersIndex;
+export default RecipesIndex;
 
 
            

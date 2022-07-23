@@ -18,27 +18,30 @@ const Auth = new AuthHelperMethods();
 const Signin = () => {
 
     const initialState = { email: '', password: ''}
+
     const [userData, setUserData] = useState(initialState)
 
     const router = useRouter()
 
-    const doSignInAndNavigate = () => {
-        Auth.login(null,null);
+    const doSignInAndNavigate = async () => {
+        
+        try{
+            await Auth.login(userData.email,userData.password);
 
-        router.push("/dashboard")
+            router.push("/dashboard")
+        }
+        catch(err){
+            console.log(err)
+        }
     }
 
     const handleChangeInput = e => {
         const {name, value} = e.target
-        setUserData({})
+
+        setUserData({...userData, [name]: value})
     }
 
-    const handleSubmit = async e => {
-        e.preventDefault()
-        const res = await postRequest(userData) //makes a request to get userdata
-        if(res.error) return //What it should do if request is unsuccessful
-    }
-    return <div  onSubmit={handleSubmit} className={styles.authHolderInnerContent}>
+    return <div className={styles.authHolderInnerContent}>
         <h2 className={styles.authTitle}>SignIn</h2>
 
         <div className={styles.authInputFieldHolder}>
@@ -51,7 +54,7 @@ const Signin = () => {
             <input type="password" name="password" placeholder="Enter password" value={userData.password} onChange={handleChangeInput} />
         </div>
 
-        <button onClick={doSignInAndNavigate} className={styles.authButton}>Continue</button>
+        <button onClick={doSignInAndNavigate} className="rectangleButtonPrimary">Continue</button>
 
         <h5 className={styles.authLinkText}>Dont have an account? <span className="link"><Link href="/auth/signup">Signup</Link></span></h5>
 

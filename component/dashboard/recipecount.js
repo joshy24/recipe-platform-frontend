@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "../../styles/Dashboard.module.css"
 import { useRouter } from "next/router"
 
-const RecipeCount = () => {
+const RecipeCount = ({count = 0}) => {
 
     const router = useRouter()
 
@@ -12,7 +12,6 @@ const RecipeCount = () => {
         router.push("/recipes")
     }
 
-    const [total, setTotal] = useState(9);
 
     return <div onClick={navigateToRecipe} className={`whiteBox ${styles.recipesNumbersHolder}`}>
         <div className={styles.recipesNumbersHolderTitle}>
@@ -20,7 +19,7 @@ const RecipeCount = () => {
         </div>
         <hr />
         <div className={styles.recipesNumbersHolderContent}>
-            <h4>Total - {total}</h4>
+            <h4>Total - {count}</h4>
         </div>
     </div>
 }

@@ -58,14 +58,14 @@ h1, h2, h3, h4, h5, h6{
 
 .pageHolder .pageHolderContentTopRight{
     display: flex;
-    width: 33.33%;
+    width: 40%;
     justify-content: flex-end;
 }
 
 .pageHolder .pageHolderContentTopCenter{
     display: flex;
     justify-content: center;
-    width: 33.33%;
+    width: 20%;
 }
 
 .pageHolder .pageHolderContentTopCenter div{
@@ -103,7 +103,7 @@ h1, h2, h3, h4, h5, h6{
 .pageHolder .pageHolderContentTopLeft{
     display: flex;
     flex-direction: column;
-    width: 33.33%;
+    width: 40%;
 }
 
 .pageHolder .pageHolderContentTopLeft h5{
@@ -777,4 +777,117 @@ select field styling
 
   .emptyResultInnerContent{
       max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
   }
+
+  .emptyResultInnerContent button{
+    font-size: 14px;
+  }
+
+
+
+  /*
+  Add Dialog
+  */
+
+  .popUpAdd{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+    background: rgba(0,0,0,0.3);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }
+ 
+ .popUpAddInnerContent{
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    width: 1000px;
+    min-width: 250px;
+    margin: 16px;
+ }
+ 
+ .popUpAddInnerContent .popUpAddInnerContentTop{
+     width: 100%;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+     background: #FFFFFF;
+     border-radius: 8px 8px 0px 0px;
+     padding: 24px;
+ }
+
+ .popUpAddInnerContent .popUpAddInnerContentBottom{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 0px 8px 8px;
+    margin-top: 8px;
+    height: 100%;
+    padding: 16px;
+}
+
+.close_button_add_modal{
+    position: absolute;
+}
+
+
+.ptSearchInput{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(189, 91, 252, 0.85);
+    border-radius: 4px;
+    border: 0.5px solid rgba(189, 91, 252, 0.85);
+    box-shadow: 0px 1.6px 4px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 400px;
+    height: 42px;
+    max-height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 16px;
+}
+
+.ptSearchInput input{
+    border: none;
+    height: 26px;
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(189, 91, 252, 0.85);
+    background: #FFFFFF !important;
+}
+
+.ptSearchInput button{
+    border: none;
+    background: none;
+    box-shadow: none;
+    margin: 0px;
+    padding: 2px;
+    color: rgba(189, 91, 252, 0.85);
+    width: 36px;
+    height: 36px;
+}
+
+.ptSearchInput input:focus{
+    outline: none;
+    background: #FFFFFF !important;
+}

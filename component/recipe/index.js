@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../../styles/Recipes.module.css"
 
 import IngredientList from "./ingredientlist"
@@ -12,6 +12,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+import { postRequest, getRequest } from "../../utils/api.requests"
+
+import { BASE_URL, GET_RECIPE } from "../../utils/api.endpoints"
+
+const get_recipe_url = BASE_URL + GET_RECIPE
+
 const recipe = {
     name: "Fufu",
     created: "December 10, 2022 03:24:00",
@@ -21,10 +30,21 @@ const recipe = {
 const DetailsTab = "Details"
 const IngredientsTab = "Ingredients"
 
-const RecipeIndex = () => {
+const RecipeIndex = ({id}) => {
 
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
+
+    const [recipe, setRecipe] = useState({})
+
+    const [ingredients, setIngredients] = useState([])
+
+    const [isLoading, setIsLoading] = useState(true)
+
+
+    useEffect(() => {
+        loadRecipe()
+    }, [])
 
     const switchSelected = (e,num) => {
         e.preventDefault();
@@ -46,10 +66,24 @@ const RecipeIndex = () => {
 
     
 
-
     /*
     New functions
     */
+
+    const loadRecipe = async() => {
+        try{
+            const url = get_recipe_url+"/?id="+id
+
+            const aRecipe = await getRequest(url)
+
+            console.log(aRecipe.response)
+
+            setRecipe(aRecipe.response);
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
 
     const showRecipesSkeleton = () => {
 
@@ -113,21 +147,21 @@ const RecipeIndex = () => {
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
-                <h2 className="pageTitle">Recipe - <span className="pageTitleContentHeader">Shawarma</span></h2>
+                <h2 className="pageTitle">Recipe - <span className="pageTitleContentHeader">{recipe && recipe.name}</span></h2>
 
                 <h5>
-                    Description - <span>is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</span>
+                    Description - <span>{recipe && recipe.description}</span>
                 </h5>
 
                 <h5>
-                    Category - <span>Pastery</span>
+                    Category - <span></span>
                 </h5>
             </div>
 
             <div className="pageHolderContentTopCenter">
                 <div>
                     <h4>Total Cost</h4>
-                    <h5>#30,000</h5>
+                    <h5>₦0</h5>
                 </div>
             </div>
 
@@ -154,77 +188,57 @@ const RecipeIndex = () => {
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
-                            <th style={{width: "80%"}}>Ife</th>
+                            <th style={{width: "80%"}}>{recipe && recipe.name}</th>
                         </tr>
                         <tr className="notHeader">
                             <td>Description</td>
-                            <td>A short description of the recipe</td>
+                            <td>{recipe && recipe.description}</td>
                         </tr>
                         <tr className="notHeader">
                             <td>Yield</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                20kg
+                                0
                                 <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                 <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faRotateLeft} /></button>
                             </td>
                         </tr>
                         <tr className="notHeader">
                             <td>Category</td>
-                            <td>Pastery</td>
+                            <td></td>
                         </tr>
                         <tr className="notHeader">
                             <td>Total Cost</td>
-                            <td>#30,000</td>
+                            <td>₦0</td>
                         </tr>
-                    </table> : <table className="tabbedListTable" style={{width: "100%"}}>
-                                    <tr className="header" style={{marginBottom: "24px"}}>
-                                        <th style={{width: "20%"}}>Name</th>
-                                        <th style={{width: "20%"}}>Quantity</th>
-                                        <th style={{width: "20%"}}>Unit</th>
-                                        <th style={{width: "20%"}}>Cost</th>
-                                        <th style={{width: "20%"}}></th>
-                                    </tr>
-                                    <tr className="notHeader">
-                                        <td>Shawarma</td>
-                                        <td>1</td>
-                                        <td>Kg</td>
-                                        <td>#800</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr className="notHeader">
-                                        <td>Kebab</td>
-                                        <td>1</td>
-                                        <td>Kg</td>
-                                        <td>#150</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr className="notHeader">
-                                        <td>Giz Dodo</td>
-                                        <td>1</td>
-                                        <td>Kg</td>
-                                        <td>#400</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr className="notHeader">
-                                        <td>Milk Bar</td>
-                                        <td>1</td>
-                                        <td>Kg</td>
-                                        <td>#600</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                </table>
+                    </table> : <table className="tabbedListTable" style={{width: "100%"}}>      
+                                {
+                                    !isLoading ? <tbody>
+                                        <tr className="header" style={{marginBottom: "24px"}}>
+                                            <th style={{width: "20%"}}>Name</th>
+                                            <th style={{width: "20%"}}>Quantity</th>
+                                            <th style={{width: "20%"}}>Unit</th>
+                                            <th style={{width: "20%"}}>Cost</th>
+                                            <th style={{width: "20%"}}></th>
+                                        </tr>
+
+                                        {
+                                            ingredients && ingredients.length > 0 && ingredients.map(ingredient => {
+                                                return <tr className="notHeader">
+                                                    <td>Shawarma</td>
+                                                    <td>1</td>
+                                                    <td>Kg</td>
+                                                    <td>#800</td>
+                                                    <td className="tabbedListContentHorizontalTableContent">
+                                                        <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                    </td>
+                                                </tr>
+                                            })
+                                            
+                                        }
+                                    </tbody> : <Skeleton height={70} count={6} />
+                                }
+                            </table>
                 }
             </div>
 

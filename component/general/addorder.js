@@ -4,7 +4,7 @@ import { useState } from "react"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const AddOrder = ({closeAddOrder}) => {
+const AddOrder = ({closeAddOrder, addOrder}) => {
 
     const [order, setOrder] = useState({name: "", fulfillment_date: "",  status: "", labour_cost: 0, profit: 20, total_cost: 0})
 
@@ -52,7 +52,7 @@ const AddOrder = ({closeAddOrder}) => {
             <h5>You can add recipes after saving order.</h5>
 
             <div className="popButtonHolder">
-                <button onClick={closeAddOrder} className="colorWhite secondaryButton">Save</button>
+                <button onClick={e => addOrder(e, order)} className="colorWhite secondaryButton">Save</button>
                 <button onClick={closeAddOrder} className="colorBlack greyButton">Close</button>
             </div>
         </div>

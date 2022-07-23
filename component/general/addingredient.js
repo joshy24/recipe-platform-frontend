@@ -1,9 +1,9 @@
 
 import { useState } from "react"
 
-const AddIngredient = ({closeAddIngredient}) => {
+const AddIngredient = ({closeAddIngredient, addInventory}) => {
 
-    const [ingredient, setIngredient] = useState({name: "", purchase_quantity: "", purchase_size: "", price: 0})
+    const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_size: "", price: 0, quantity_in_stock: 0})
     
     const onChange = (e) => {
         const value = e.target.value
@@ -12,14 +12,31 @@ const AddIngredient = ({closeAddIngredient}) => {
         setIngredient({...ingredient, [name]:value});
     }
 
+    const toUpperCase = (aString) =>{
+        return aString.charAt(0).toUpperCase() + aString.slice(1)
+    }
+
     return <div className="popUp">
         <div className="popUpInnerContent">
-                <h3 className="pageTitle">{ingredient.name ? ingredient.name : "New Ingredient"}</h3>
+                <h3 className="pageTitle">{ingredient.name ? toUpperCase(ingredient.name) : "New "+ingredient.type}</h3>
                 
+                <div className="inputFieldHolder">
+                    <h4>Type</h4>
+
+                    <select style={{marginLeft: "0px"}} onChange={onChange} name="type" className="pageContentTopSelectField">
+                        <option value="Material">
+                            Material
+                        </option>
+                        <option value="Ingredient">
+                            Ingredient
+                        </option>
+                    </select>
+                </div>
+
                 <div className="inputFieldHolder">
                     <h4>Name</h4>
 
-                    <input onChange={onChange} type="text" name="name" value={ingredient.name} placeholder="Enter ingredient name" />
+                    <input onChange={onChange} type="text" name="name" value={ingredient.name} placeholder={ `Enter ${ingredient.type.toLowerCase()} name`} />
                 </div>
 
                 <div className="inputFieldHolder">
@@ -40,9 +57,15 @@ const AddIngredient = ({closeAddIngredient}) => {
                     <input onChange={onChange} type="number" name="price" value={ingredient.price} />
                 </div>
 
+                <div className="inputFieldHolder">
+                    <h4>Quantity In Stock</h4>
+                    
+                    <input onChange={onChange} type="number" name="quantity_in_stock" value={ingredient.quantity_in_stock} />
+                </div>
+
                 <div className="popButtonHolder">
-                    <button onClick={closeAddIngredient} className="colorWhite secondaryButton">Save</button>
-                    <button onClick={closeAddIngredient} className="colorBlack greyButton">Close</button>
+                    <button onClick={e => addInventory(e, ingredient)} className="colorWhite rectangleButtonPrimary">Save</button>
+                    <button onClick={closeAddIngredient} className="colorBlack rectangleButtonSecondary">Close</button>
                 </div>
         </div>
     </div>

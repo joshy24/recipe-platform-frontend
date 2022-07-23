@@ -1,13 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import InventoryCount from './InventoryCount'
-import RecentOrders from './RecentOrders'
 import OrderNumbers from './OrderNumbers'
 import ProductCount from './ProductCount'
 import RecipeCount from './RecipeCount'
 
 import styles from "../../styles/Dashboard.module.css"
 
+import { postRequest, getRequest } from "../../utils/api.requests"
+
+import { BASE_URL, GET_ENTITIES_COUNT} from "../../utils/api.endpoints"
+
+const entities_count_url = BASE_URL + GET_ENTITIES_COUNT
+
 function DashboardIndex() {
+
+    const [entitiesCount, setEntitiesCount] = useState({})
+
+    useEffect(() => {
+        loadEntitiesCount();
+    }, [])
+
+    const loadEntitiesCount = async () => {
+        try{
+            const result = await getRequest(entities_count_url)
+            
+            setEntitiesCount(result.response)
+        }
+        catch(err){
+
+        }
+    }
 
     return (
         <div className={styles.dashboardIndex}>
@@ -15,10 +37,10 @@ function DashboardIndex() {
                 <h2 className="pageTitle">Dashboard</h2>
             </div>
             <div className={styles.ordersRecipesInventoryCountHolder}>
-                <OrderNumbers />
-                <ProductCount />
-                <RecipeCount />
-                <InventoryCount />
+                <OrderNumbers count={entitiesCount.ordersCount} />
+                <ProductCount count={entitiesCount.productCount} />
+                <RecipeCount count={entitiesCount.recipesCount} />
+                <InventoryCount count={entitiesCount.inventoryCount} />
                     
             </div>
 

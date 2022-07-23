@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router"
 import styles from "../../styles/Dashboard.module.css"
 
-const ProductCount = () => {
+const ProductCount = ({count = 0}) => {
 
     const router = useRouter()
 
@@ -19,7 +19,7 @@ const ProductCount = () => {
         </div>
         <hr />
         <div className={styles.productNumbersHolderContent}>
-            <h4>Total - {total}</h4>
+            <h4>Total - {count}</h4>
         </div>
     </div>
 }

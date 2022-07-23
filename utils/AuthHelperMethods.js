@@ -2,27 +2,30 @@ import axios from 'axios';
 
 import decode from 'jwt-decode'
 
-const login_url = '/api/v1/admin/login'
-const logout_url = '/api/va/admin/logout'
+const login_url = '/api/v1/login'
+const signup_url = '/api/v1/signup'
+const logout_url = '/api/v1/admin/logout'
 
 export default class AuthHelperMethods{
 
-    login = (username, password) => {
-        /*return  this.axios(login_url, {username,password}, "post")
+    login = (email, password) => {
+        console.log(email,password)
+        return  this.axios(login_url, {email,password}, "post")
                     .then(res => {
-                        this.setToken(res.data.data.token); 
-                        this.setAdmin(res.data.data.admin)
+                        this.setToken(res.data.token); 
+                        this.setAdmin(res.data.tenant)
                         return res.data;
                     })
                     .catch(err => {
-                        return "error";
-                    })*/
 
-        localStorage.setItem("loggedIn", true)
+                        return "error";
+                    })
+
+        //localStorage.setItem("loggedIn", true)
     }
 
-    signup = (email, firstname, lastname, business_name, password, password_again) => {
-        return  this.axios(signup_url, {email,password,password_again,firstname, lastname, business_name}, "post")
+    signup = (data) => {
+        return  this.axios(signup_url, data, "post")
                     .then(res => {
                         this.setToken(res.data.token); 
                         this.setAdmin(res.data.business)
@@ -47,14 +50,10 @@ export default class AuthHelperMethods{
     }
 
     loggedIn = () => {
-        return localStorage.getItem("loggedIn");
-    }
-
-    /*loggedIn = () => {
         // Checks if there is a saved token and it's still valid
         const token = this.getToken(); // Getting token from localstorage
         return !!token && !this.isTokenExpired(token); // handwaiving here
-    };*/
+    };
 
     isTokenExpired = token => {
         try {
@@ -95,24 +94,16 @@ export default class AuthHelperMethods{
     };
 
     logout = () => {
-        localStorage.removeItem("loggedIn");
-    };
-
-    /*logout = () => {
         localStorage.removeItem("id_token");
         localStorage.removeItem("admin");
-    };*/
-
-    getConfirm = () => {
-        return localStorage.getItem("loggedIn");
     };
 
-    /*getConfirm = () => {
+    getConfirm = () => {
         // Using jwt-decode npm package to decode the token
         let answer = decode(this.getToken());
         
         return answer;
-    };*/
+    };
     
     axios = (url, data, method) => {
         // performs api calls sending the required authentication headers
@@ -137,8 +128,8 @@ export default class AuthHelperMethods{
             method: method,
             data: method === "get" ? {}: data, 
             params: method ? data: {},
-            //baseURL: 'http://localhost:3999',
-            baseURL: 'https://apc-api-ng.herokuapp.com',
+            baseURL: 'http://localhost:4000',
+            //baseURL: 'https://apc-api-ng.herokuapp.com',
             timeout: 30000,
             headers: headers,
             withCredentials: false,

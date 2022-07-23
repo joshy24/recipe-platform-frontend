@@ -3,7 +3,7 @@ import { useState } from "react";
 import styles from "../../styles/Dashboard.module.css"
 import { useRouter } from "next/router"
 
-const OrderNumbers = () => {
+const OrderNumbers = ({count}) => {
 
     const router = useRouter()
 
@@ -22,7 +22,7 @@ const OrderNumbers = () => {
         <div className={styles.ordersNumbersHolderContent}>
             <div className={styles.ordersNumbersHolderContentItem}>
                 <h5>Pending</h5>
-                <h4>{numbers.pending}</h4>
+                <h4>{count}</h4>
             </div>
             <div className={styles.ordersNumbersHolderContentItem}>
                 <h5>Fulfilled</h5>
@@ -30,7 +30,7 @@ const OrderNumbers = () => {
             </div>
             <div className={styles.ordersNumbersHolderContentItem}>
                 <h5>Total</h5>
-                <h4>{numbers.total}</h4>
+                <h4>{count}</h4>
             </div>
         </div>
     </div>

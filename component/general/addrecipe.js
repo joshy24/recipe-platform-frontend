@@ -1,12 +1,12 @@
 
 import { useState } from "react"
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { toUpperCase } from "../../utils/helper"
 
-const AddRecipe = ({closeAddRecipe}) => {
 
-    const [recipe, setRecipe] = useState({name: "", total_cost: 0})
+const AddRecipe = ({closeAddRecipe, addRecipe}) => {
+
+    const [recipe, setRecipe] = useState({name: "", description: ""})
 
     const onChange = (e) => {
         const value = e.target.value
@@ -17,7 +17,7 @@ const AddRecipe = ({closeAddRecipe}) => {
 
     return <div className="popUp">
         <div className="popUpInnerContent">
-            <h3 className="pageTitle">{recipe.name.length>0 ? recipe.name : "New Recipe"}</h3>
+            <h3 className="pageTitle">{recipe.name.length>0 ? toUpperCase(recipe.name) : "New Recipe"}</h3>
             
             <div className="inputFieldHolder">
                 <h4>Name</h4>
@@ -26,16 +26,17 @@ const AddRecipe = ({closeAddRecipe}) => {
             </div>
 
             <div className="inputFieldHolder">
-                <h4>Total cost</h4>
-                
-                <input onChange={onChange} type="number" name="total_cost" value={recipe.total_cost} />
+                <h4>Description</h4>
+
+                <input onChange={onChange} type="text" name="description" value={recipe.description} placeholder="Enter recipe description" />
             </div>
 
-            <h5>You can add ingredients after saving recipe.</h5>
+        
+            <h5>You can add ingredients and set the yield after saving the recipe.</h5>
 
             <div className="popButtonHolder">
-                <button onClick={closeAddRecipe} className="colorWhite secondaryButton">Save</button>
-                <button onClick={closeAddRecipe} className="colorBlack greyButton">Close</button>
+                <button onClick={e => addRecipe(e, recipe)} className="colorWhite rectangleButtonPrimary">Save</button>
+                <button onClick={closeAddRecipe} className="colorBlack rectangleButtonSecondary">Close</button>
             </div>
         </div>
     </div>
