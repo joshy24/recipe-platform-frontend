@@ -7,7 +7,7 @@ import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg
 
 import { getAmount, toUpperCase } from "../../utils/helper"
 
-const materialToAdd = ({material, selectedMaterials, addToSelected}) => {
+const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
     const [quantity, setQuantity] = useState(1)
     const [isAdded, setIsAdded] = useState(false)
 
@@ -18,23 +18,19 @@ const materialToAdd = ({material, selectedMaterials, addToSelected}) => {
     }
 
     const doAddToSelected = () => {
-        material.quantity = quantity;
+        recipe.quantity = quantity;
 
         setIsAdded(!isAdded)
 
-        addToSelected(material)
+        addToSelected(recipe)
     }
     
     return <tr className="notHeader">
-        <td style={{paddingLeft: "30px"}}>{toUpperCase(material.name)}</td>
-        <td style={{paddingLeft: "30px"}}>{material.purchase_quantity && material.purchase_quantity.amount}</td>
-        <td style={{paddingLeft: "30px"}}>{material.purchase_size}</td>
-        <td style={{paddingLeft: "30px"}}>{getAmount(material.price)}</td>
+        <td style={{paddingLeft: "30px"}}>{toUpperCase(recipe.name)}</td>
+        <td style={{paddingLeft: "30px"}}>{recipe.yield && recipe.yield.amount} {recipe.yield && recipe.yield.unit}</td>
+        <td style={{paddingLeft: "30px"}}>{getAmount(recipe.cost)}</td>
         <td style={{paddingLeft: "30px"}}>
-            <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
-        </td>
-        <td style={{paddingLeft: "30px"}} >
-            {getAmount(quantity * material.price)}
+            <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter yield" value={recipe.yield ? (quantity > recipe.yield.amount ? recipe.yield.amount : quantity) : quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>
@@ -42,4 +38,4 @@ const materialToAdd = ({material, selectedMaterials, addToSelected}) => {
     </tr>
 }
 
-export default materialToAdd;
+export default recipeToAdd;

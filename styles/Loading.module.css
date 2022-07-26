@@ -1,0 +1,40 @@
+
+.loadingHolder{
+    width: 100px;
+    height: 100px;
+    max-height: 100px;
+    max-width: 100px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+    right: 0;
+    margin: 24px;
+    z-index: 1000;
+}
+
+.blockingLoadingHolder{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.3);
+}
+
+.blockingLoadingInnerContent{
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 36px;
+}
+
+.blockingLoadingInnerContent h5{
+    margin-top: 16px;
+}

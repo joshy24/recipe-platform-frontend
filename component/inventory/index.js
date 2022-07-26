@@ -3,9 +3,13 @@ import styles from "../../styles/Ingredients.module.css"
 
 import AddIngredient from "../general/addingredient"
 
+import EditIngredient from "../general/editingredient"
+
 import DeleteDialog from "../general/deletedialog"
 
-import { useEffect, useState } from "react"
+import AppContext from "../../pages/AppContext";
+
+import { useEffect, useState, useContext } from "react"
 
 import Image from "next/image"
 
@@ -15,12 +19,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faTrash, faSearch, faFileExport, faEdit, faAdd, faPen } from '@fortawesome/free-solid-svg-icons'
 
+import { toUpperCase, getAmount } from "../../utils/helper"
+
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-import { postRequest, getRequest } from "../../utils/api.requests"
+import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, CREATE_INGREDIENT, CREATE_MATERIAL, GET_ALL_INVENTORY, SEARCH_INVENTORY_URL} from "../../utils/api.endpoints"
+import { BASE_URL, DELETE_INGREDIENT_URL, DELETE_MATERIAL_URL, CREATE_INGREDIENT, CREATE_MATERIAL, GET_ALL_INVENTORY, EDIT_INGREDIENT_URL, EDIT_MATERIAL_URL} from "../../utils/api.endpoints"
 
 const create_ingredient_url = BASE_URL + CREATE_INGREDIENT
 const create_material_url = BASE_URL + CREATE_MATERIAL
@@ -28,9 +34,13 @@ const get_inventory_url = BASE_URL + GET_ALL_INVENTORY
 
 const IngredientsIndex = () => {
 
+    const value = useContext(AppContext);
+
     const [showAdd, setShowAdd] = useState(false)
 
-    const [showDelete, setShowDelete] = useState(false)
+    const [showEdit, setShowEdit] = useState(false)
+
+    const [isDelete, setIsDelete] = useState({visible: false, title:"", message:"", type:""})
 
     const [filters, setFilters] = useState({type: "materials", status: "All", searchTerm: ""})
 
@@ -43,6 +53,7 @@ const IngredientsIndex = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
     const [searchResult, setSearchResult] = useState([])
+    const [inventoryInFocus, setInventoryInFocus] = useState({})
 
 
     useEffect(() => {
@@ -65,14 +76,6 @@ const IngredientsIndex = () => {
         setShowDelete(false);
     }
 
-    const showSkeletonLoaders = () => {
-
-    }
-
-    const hideSkeletonLoaders = () => {
-
-    }
-
     const showSearch = () => {
         setIsSearchOpen(true)
     }
@@ -81,21 +84,20 @@ const IngredientsIndex = () => {
         setIsSearchOpen(false)
     }
 
-    const search = async (type) => {
+    const search = async (type, status) => {
+        value.setLoading(true)
+
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (type ? type : filters.type)+"&searchTerm="+searchTerm
+            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (type ? type : filters.type)+"&searchTerm="+searchTerm+"&status="+(status ? status : filters.status)
             
             var result = await getRequest(url)
 
-            console.log(result)
-        
             setInventory(result.response.docs)
 
-            setIsLoading(false)
+            value.setLoading(false)
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setLoading(false)
         }
     }
 
@@ -113,48 +115,96 @@ const IngredientsIndex = () => {
 
     }
 
-    const showEditInventory = () => {
-
+    const showEditInventory = (e, inventory) => {
+        e.preventDefault()
+        setInventoryInFocus(inventory)
+        setShowEdit(true)
     }
 
     const hideEditInventory = () => {
+        setInventoryInFocus({})
+        setShowEdit(false)
+    }
 
+    const editInventory = async(e, inventorytoEdit) => {
+        e.preventDefault();
+        
+        value.setBlockingLoading(true)
+
+        try{
+            var result = filters.type == "ingredients" ? 
+             await putRequest(EDIT_INGREDIENT_URL, {ingredient: {...inventorytoEdit, _id: inventoryInFocus._id}})
+             : await putRequest(EDIT_MATERIAL_URL, {material: {...inventorytoEdit, _id: inventoryInFocus._id}});
+
+            hideEditInventory()
+
+            search();
+
+            value.setBlockingLoading(false)
+        }
+        catch(err){
+            value.setBlockingLoading(false)
+            setMessage("An error occurred processing the request.")
+            setErrorMessageVisible(true)
+        }
     }
 
     const performExport = async () => {
 
     }
 
-    const showDeleteInventoryItem = () => {
+    const showDeleteInventoryItem = (e, inventory) => {
+        e.preventDefault()
 
+        setInventoryInFocus(inventory)
+
+        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(inventory.name)}`})
     }
 
     const hideDeleteInventoryItem = () => {
-
+        setIsDelete({visible: false, title: "", message:"", type: ""})
     }
 
     const deleteInventoryItem = async () => {
+        hideDeleteInventoryItem()
+        
+        value.setBlockingLoading(true)
+        
+        try{
+            await deleteRequest(filters.type == "ingredients" ? DELETE_INGREDIENT_URL : DELETE_MATERIAL_URL, {id:inventoryInFocus._id})
 
+            value.setBlockingLoading(false)
+
+            setInventoryInFocus({})
+
+            search()
+        }
+        catch(err){
+            console.log(err)
+
+            value.setBlockingLoading(false)
+        }
     }
 
     const addInventory = async (e, inventoryToAdd) => {
         e.preventDefault();
-        console.log(inventoryToAdd)
+        
+        value.setLoading(true)
+
         try{
             var result = inventoryToAdd.type == "Ingredient" ? 
              await postRequest(create_ingredient_url, {ingredient: inventoryToAdd})
              : await postRequest(create_material_url, {material: inventoryToAdd});
 
-            console.log(result)
-
             closeShowAdd()
 
             search();
-            
+
+            value.setLoading(false)
         }
         catch(err){
-
-            setMessage("An error occurred performing the search.")
+            value.setLoading(false)
+            setMessage("An error occurred processing the request.")
             setErrorMessageVisible(true)
         }
     }
@@ -195,7 +245,7 @@ const IngredientsIndex = () => {
                             <button onClick={openShowAdd} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faAdd} /></button>
 
 
-                            
+
                             <button className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
                         </div>
                     }
@@ -208,7 +258,7 @@ const IngredientsIndex = () => {
             <div className="tabbedListTableHolder">
                 <table className="tabbedListTable" style={{width: "100%"}}>
                     {
-                        !isLoading ? 
+                        !value.state.isLoading ? 
                             <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Name</th>
@@ -223,16 +273,16 @@ const IngredientsIndex = () => {
                                 {
                                     inventory.map(invent => {
                                         return <tr className="notHeader">
-                                            <td style={{paddingLeft: "30px"}}>{invent.name}</td>
+                                            <td style={{paddingLeft: "30px"}}>{toUpperCase(invent.name)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_quantity && invent.purchase_quantity.amount}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_size}</td>
-                                            <td style={{paddingLeft: "30px"}}>{invent.price}</td>
+                                            <td style={{paddingLeft: "30px"}}>{getAmount(invent.price)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.quantity_in_stock}</td>
-                                            <td style={{paddingLeft: "30px"}}>{invent.price * invent.quantity_in_stock}</td>
+                                            <td style={{paddingLeft: "30px"}}>{getAmount(invent.price * invent.quantity_in_stock)}</td>
                                             <td style={{paddingLeft: "30px"}}>NORMAL</td>
                                             <td style={{paddingLeft: "30px"}} className="tabbedListContentHorizontalTableContent">
-                                                <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                                <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                <button onClick={e => showEditInventory(e, invent)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                <button onClick={e => showDeleteInventoryItem(e, invent)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                             </td>
                                         </tr>
                                     })
@@ -244,7 +294,17 @@ const IngredientsIndex = () => {
             </div>
         </div>
 
-        { showAdd ? <AddIngredient closeAddIngredient={closeShowAdd} addInventory={addInventory} /> : "" }
+        { 
+            showAdd && <AddIngredient closeAddIngredient={closeShowAdd} addInventory={addInventory} /> 
+        }
+
+        {
+            showEdit && <EditIngredient closeEditIngredient={hideEditInventory} saveEditedInventory={editInventory} inventoryToEdit={inventoryInFocus} inventoryType={filters.type} />
+        }
+
+        {
+            isDelete.visible && <DeleteDialog onPerformDeleteClicked={deleteInventoryItem} onCancelDeleteClicked={hideDeleteInventoryItem} type={isDelete.type} message={isDelete.message} title={isDelete.title} />
+        }
     </>
 }
 

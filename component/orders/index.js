@@ -16,6 +16,8 @@ import SearchInput from "../general/searchInput"
 
 import EmptyResult from "../general/emptyResult"
 
+import AppContext from "../../pages/AppContext";
+
 import { getRequest, postRequest } from "../../utils/api.requests"
 
 import { BASE_URL, GET_ALL_ORDERS, ADD_ORDER, SEARCH_ORDERS_URL} from "../../utils/api.endpoints"
@@ -25,6 +27,8 @@ const get_orders_url = BASE_URL + GET_ALL_ORDERS
 const add_order_url = BASE_URL + ADD_ORDER
 
 const OrdersIndex = () => {
+
+    const value = useContext(AppContext);
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
@@ -80,6 +84,8 @@ const OrdersIndex = () => {
     }
 
     const searchOrders = async () => {
+        value.setLoading(true)
+
         if(searchTerm && searchTerm.length > 0){
             try{
                 setIsLoading(true)
@@ -120,7 +126,7 @@ const OrdersIndex = () => {
     }
 
     const loadOrders = async() => {
-        setIsLoading(true)
+        value.setIsLoading(true)
 
         try{
             const result = await getRequest(get_orders_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
@@ -129,11 +135,10 @@ const OrdersIndex = () => {
 
             setOrders(result.response)
 
-            setIsLoading(false)
+            value.setIsLoading(false)
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setIsLoading(false)
         }
     }
 

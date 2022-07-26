@@ -197,7 +197,7 @@ const RecipeIndex = ({id}) => {
                         <tr className="notHeader">
                             <td>Yield</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                0
+                                <h5>{recipe && recipe.yield && recipe.yield.amount} {recipe && recipe.yield && recipe.yield.unit} {!recipe || !recipe.yield && 0}</h5>
                                 <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                 <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faRotateLeft} /></button>
                             </td>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 
 import EmptyResult from "../general/emptyResult"
 
@@ -23,12 +23,7 @@ const mediumTextStyle = {
     marginTop: "12px"
 }
 
-
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import AppContext from "../../pages/AppContext";
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -37,22 +32,19 @@ import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { BASE_URL, MATERIALS_TO_ADD, ADD_MATERIALS_TO_PRODUCT } from "../../utils/api.endpoints"
 
-const materials_to_add_url = BASE_URL + MATERIALS_TO_ADD
-
 const add_materials_url = BASE_URL + ADD_MATERIALS_TO_PRODUCT
 
-const materialObject = {
-    material: null,
-    quantity: 1
-}
-
 const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
+
+    const value = useContext(AppContext);
     
     const [materials, setMaterials] = useState([])
 
     const [selectedMaterials, setSelectedMaterials] = useState([])
 
     const [isLoading, setIsLoading] = useState(true)
+
+    const [error, setError] = useState("")
 
     useEffect(() => {
         getMaterialsToAdd()
@@ -75,10 +67,9 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
     }
 
     const getMaterialsToAdd = async() => {
+        setIsLoading(true)
         try{
-            const result = await getRequest(materials_to_add_url+"?product_id="+product._id)
-
-            console.log(result)
+            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id)
 
             const new_result = result.response.map(material => {
                 return {...material, quantity: 0}
@@ -94,31 +85,35 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
     }
 
     const addMaterialToSelected = (material) => {
+        setError("")
+        
         const sm = selectedMaterials;
 
         const foundIndex = selectedMaterials.findIndex(aMaterial => aMaterial.material == material._id)
 
         if(foundIndex == -1){
-            materialObject.material = material._id
-            materialObject.quantity = material.quantity
-
-            sm.push(materialObject)
+            sm.push({
+                material: material._id,
+                quantity: material.quantity
+            })
         }
         else{
             sm.splice(foundIndex, 1)
         }
-
-        console.log(sm)
 
         setSelectedMaterials(sm)
     }
 
     const doAddMaterials = async()=>{
         if(selectedMaterials.length > 0){
+            value.setBlockingLoading(true)
+
+            setError("")
+           
             try{
                 const response = await postRequest(add_materials_url, {id: product._id, materials: selectedMaterials})
 
-                console.log(response)
+                value.setBlockingLoading(false)
 
                 loadProductMaterials()
 
@@ -126,6 +121,12 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
             }
             catch(err){
                 console.log(err)
+                value.setBlockingLoading(false)
+            }
+        }
+        else{
+            if(materials.length > 0){
+                setError("Add materials to product by clicking/tapping the add button")
             }
         }
     }
@@ -135,16 +136,16 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
             <div className="popUpAddInnerContentTop">
                 <div>
                     <h4 style={BigTextStyle}>Add Materials to {product.name}</h4>
-                    <h5 style={mediumTextStyle}>Select Materials to add - {selectedMaterials.length}</h5>
+                    <h5 style={mediumTextStyle}>Select Materials to add</h5>
                 </div>
 
                 <div style={{display: "flex"}}>
-                    
-                    <button onClick={doAddMaterials} className="rectangleButtonPrimary">Continue</button>
+                    <button onClick={doAddMaterials} className="rectangleButtonPrimary">Save</button>
                     <button onClick={hideAddMaterial} style={{marginLeft: "16px"}} className="rectangleButtonSecondary">Close</button>
                 </div>
             </div>
             <div className="popUpAddInnerContentBottom">
+                <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
                     !isLoading ? 
@@ -167,7 +168,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
                                 }
                             </tbody>
 
-                            : <EmptyResult  message={"No Materials found to add. You may want to add materials"} onEmptyButtonClicked={loadProductMaterials} emptyButtonText={"Try Again"} />
+                                : <EmptyResult  message={"No Materials found to add. Add materials to inventory"} onEmptyButtonClicked={getMaterialsToAdd} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

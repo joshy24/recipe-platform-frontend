@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react"
 
+import EmptyResult from "../general/emptyResult"
+
+import RecipeToAdd from "./recipeToAdd"
+
 const BigTextStyle = {
     fontFamily: 'DM Sans',
     fontStyle: "normal",
@@ -15,56 +19,108 @@ const mediumTextStyle = {
     fontWeight: "400",
     fontSize: "16px",
     lineHeight: "15px",
-    color: "#4D4D4C"
+    color: "#4D4D4C",
+    marginTop: "12px"
 }
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
-import { BASE_URL, MATERIALS_TO_ADD } from "../../utils/api.endpoints"
+import { RECIPES_TO_ADD, ADD_RECIPES_TO_PRODUCT } from "../../utils/api.endpoints"
 
-const materials_to_add_url = BASE_URL + MATERIALS_TO_ADD
-
-const materialObject = {
-    material: null,
-    quantity: 1
-}
-
-const AddRecipes = ({closeAddMaterial, addMaterial, product_id}) => {
-
-    //const [material, setMaterial] = useState({name: "", purchase_quantity: "", purchase_size: "", price: 0, quantity_in_stock: 0})
+const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
     
-    const [materials, setMaterials] = useState([])
+    const [recipes, setRecipes] = useState([])
 
-    const [selectedMaterials, setSelectedMaterials] = useState([])
+    const [selectedRecipes, setSelectedRecipes] = useState([])
 
+    const [isLoading, setIsLoading] = useState(true)
+
+    const [error, setError] = useState("")
 
     useEffect(() => {
-        getMaterialsToAdd()
+        getRecipesToAdd()
     }, [])
 
-    const onChange = (e) => {
+    const onChange = (e, recipe) => {
         const value = e.target.value
-        const name = e.target.name
 
-        setMaterial({...material, [name]:value});
+        recipe.quantity = value
+
+        const foundIndex = recipes.findIndex(aRecipe => aRecipe._id == recipe._id)
+
+        if(foundIndex != -1){
+            const sm = selectedRecipes
+
+            sm.splice(foundIndex,1,recipe)
+
+            setRecipes(sm)
+        }
     }
 
-    const getMaterialsToAdd = async() => {
+    const getRecipesToAdd = async() => {
+        setIsLoading(true)
         try{
-            const result = await getRequest(materials_to_add_url+"?product_id="+product_id)
+            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id)
 
-            setMaterials(result.response)
+            const new_result = result.response.map(recipe => {
+                return {...recipe, quantity: 0}
+            })
+
+            console.log(new_result)
+
+            setRecipes(new_result)
+
+            setIsLoading(false)
         }
         catch(err){
             console.log(err)
+        }
+    }
+
+    const addRecipesToSelected = (recipe) => {
+        setError("")
+        
+        const sm = selectedRecipes;
+
+        const foundIndex = selectedRecipes.findIndex(aRecipe => aRecipe.recipe == recipe._id)
+
+        if(foundIndex == -1){
+            sm.push({
+                recipe: recipe._id,
+                quantity: recipe.quantity
+            })
+        }
+        else{
+            sm.splice(foundIndex, 1)
+        }
+
+        setSelectedRecipes(sm)
+    }
+
+    const doAddRecipes = async()=>{
+        if(selectedRecipes.length > 0){
+            setError("")
+           
+            try{
+                const response = await postRequest(ADD_RECIPES_TO_PRODUCT, {id: product._id, recipes: selectedRecipes})
+
+                console.log(response)
+
+                loadProductRecipes()
+
+                hideAddRecipe()
+            }
+            catch(err){
+                console.log(err)
+            }
+        }
+        else{
+            if(recipes.length > 0){
+                setError("Add recipes to product by clicking/tapping the add button")
+            }
         }
     }
 
@@ -72,40 +128,42 @@ const AddRecipes = ({closeAddMaterial, addMaterial, product_id}) => {
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
                 <div>
-                    <h4 style={BigTextStyle}>Add Materials</h4>
-                    <h5 style={mediumTextStyle}>Select Materials to add</h5>
+                    <h4 style={BigTextStyle}>Add Recipes to {product.name}</h4>
+                    <h5 style={mediumTextStyle}>Select Recipes to add</h5>
                 </div>
 
-                <button className="rectangleButtonPrimary">Continue</button>
+                <div style={{display: "flex"}}>
+                    <button onClick={doAddRecipes} className="rectangleButtonPrimary">Save</button>
+                    <button onClick={hideAddRecipe} style={{marginLeft: "16px"}} className="rectangleButtonSecondary">Close</button>
+                </div>
             </div>
             <div className="popUpAddInnerContentBottom">
+                <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
-                    {
-                        <tbody>
-                            <tr className="header" style={{marginBottom: "24px"}}>
-                                <th style={{width: "20%"}}>Name</th>
-                                <th style={{width: "20%"}}>Quantity</th>
-                                <th style={{width: "20%"}}>Unit</th>
-                                <th style={{width: "20%"}}>Cost</th>
-                                <th style={{width: "20%"}}></th>
-                            </tr>
-
+                {
+                    !isLoading ? 
+                        <>
                             {
-                                materials && materials.length > 0 && materials.map(material => {
-                                    <tr className="notHeader">
-                                        <td>{material.name}</td>
-                                        <td>{material.purchase_quantity}</td>
-                                        <td>{material.purchase_size}</td>
-                                        <td>₦{material.price}</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                })
+                                recipes && recipes.length > 0 ? <tbody>
+                                <tr className="header" style={{marginBottom: "24px"}}>
+                                    <th style={{width: "20%", paddingLeft: "20px"}}>Name</th>
+                                    <th style={{width: "20%", paddingLeft: "20px"}}>Yield</th>
+                                    <th style={{width: "20%", paddingLeft: "20px"}}>Cost</th>
+                                    <th style={{width: "20%", paddingLeft: "20px"}}>Yield To Add</th>
+                                    <th style={{width: "20%", paddingLeft: "20px"}}></th>
+                                </tr>
+                                {
+                                    recipes.map(recipe => {
+                                        return <RecipeToAdd addToSelected={addRecipesToSelected} recipe={recipe} onChange={onChange} selectedRecipes={selectedRecipes} />
+                                    })
+                                }
+                            </tbody>
+
+                                : <EmptyResult  message={"No Recipes found to add. Add recipes on the recipes pages"} onEmptyButtonClicked={getRecipesToAdd} emptyButtonText={"Try Again"} />
                             }
-                        </tbody> 
-                    }
+                        </>
+                    : <Skeleton count={8} height={40} />
+                }
                 </table>
             </div>
         </div>

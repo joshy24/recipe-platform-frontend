@@ -22,6 +22,16 @@ export const toUpperCase = (aString) =>{
   return aString.charAt(0).toUpperCase() + aString.slice(1)
 }
 
+export const checkValidProductToAdd = (product) => {
+    //name: "", labour_cost: 0, actual_selling_price:0, overhead_cost:0, profit_margin: 20
+
+    if(!product.name || product.name.length == 0 || !product.profit_margin || product.profit_margin.length<=0 || !product.labour_cost || !product.overhead_cost){
+        return false
+    }
+
+    return true;
+}
+
 export const getBankDetails = () => {
     return [
         {

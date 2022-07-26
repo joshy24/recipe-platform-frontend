@@ -142,6 +142,12 @@ Padding
 }
 
 
+.ptAlignTextLeft{
+    text-align: left;
+    width: 100%;
+}
+
+
 
 /*
 Buttons
@@ -189,7 +195,6 @@ button{
     max-width: 42px;
     max-height: 42px;
     color: #E46E14;
-
     background: #FFFFFF;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
@@ -225,8 +230,22 @@ input{
     width: 100%;
 }
 
+.inputHorizontalHolder{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.inputHorizontalHolder .inputFieldHolder{
+    width: 48%;
+}
+
+.inputHorizontalHolder .ptSearchInput{
+    width: 100%;
+}
+
 button:hover{
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .primaryButton{
@@ -328,6 +347,10 @@ text
     color: #E46E14;
 }
 
+.colorRed{
+    color: #E41F26;
+}
+
 
 
 
@@ -405,7 +428,8 @@ box
    display: flex;
    flex-direction: column;
    min-width: 200px;
-   width: 400px;
+   width: 500px;
+   max-width: 500;
 }
 
 .popUpInnerContent .popUpInnerContentTop{
@@ -829,6 +853,7 @@ select field styling
  .popUpAddInnerContent .popUpAddInnerContentBottom{
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     background: #FFFFFF;
@@ -889,5 +914,8 @@ select field styling
 
 .ptSearchInput input:focus{
     outline: none;
-    background: #FFFFFF !important;
+}
+
+.ptSearchInput:focus{
+    outline: none;
 }

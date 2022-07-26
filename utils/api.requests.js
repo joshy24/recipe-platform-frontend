@@ -34,8 +34,8 @@ export const getRequest = async(url) => {
         return data;
 }
 
-export const deleteRequest = async(url) => {
-    const data = await Axios(url, {}, "delete")
+export const deleteRequest = async(url, payload = {}) => {
+    const data = await Axios(url, payload, "delete")
         .then(resp => resp.data)
         .catch(err => {
             return {err}
