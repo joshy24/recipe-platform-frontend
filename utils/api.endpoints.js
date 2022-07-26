@@ -24,7 +24,11 @@ export const GET_ALL_ORDERS = "/api/v1/login"
 
 export const SEARCH_ORDERS_URL = BASE_URL+"/api/v1/orders/search"
 
+export const GET_ORDER = "/api/v1/order"
 
+export const ADD_ORDER = "/api/v1/orders/add"
+
+export const ALL_PRODUCTS = "/api/v1/order/products"
 
 //Products
 
