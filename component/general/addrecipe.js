@@ -7,12 +7,20 @@ import { toUpperCase } from "../../utils/helper"
 const AddRecipe = ({closeAddRecipe, addRecipe}) => {
 
     const [recipe, setRecipe] = useState({name: "", description: ""})
+    const [ayield, setYield] = useState({ amount: 0, unit: ""})
 
     const onChange = (e) => {
         const value = e.target.value
         const name = e.target.name
 
         setRecipe({...recipe, [name]:value});
+    }
+
+    const onYieldChange = (e) => {
+        const value = e.target.value
+        const name = e.target.name
+
+        setYield({...ayield, [name]:value});
     }
 
     return <div className="popUp">
@@ -31,11 +39,23 @@ const AddRecipe = ({closeAddRecipe, addRecipe}) => {
                 <input onChange={onChange} type="text" name="description" value={recipe.description} placeholder="Enter recipe description" />
             </div>
 
+            <div className="inputFieldHolder">
+                <h4>Yield</h4>
+
+                <input onChange={onYieldChange} type="text" name="amount" value={ayield.amount} placeholder="Enter recipe description" />
+            </div>
+
+            <div className="inputFieldHolder">
+                <h4>Unit</h4>
+
+                <input onChange={onYieldChange} type="text" name="unit" value={ayield.description} placeholder="Enter recipe unit" />
+            </div>
+
         
             <h5>You can add ingredients and set the yield after saving the recipe.</h5>
 
             <div className="popButtonHolder">
-                <button onClick={e => addRecipe(e, recipe)} className="colorWhite rectangleButtonPrimary">Save</button>
+                <button onClick={e => addRecipe(e, {...recipe, yield: ayield})} className="colorWhite rectangleButtonPrimary">Save</button>
                 <button onClick={closeAddRecipe} className="colorBlack rectangleButtonSecondary">Close</button>
             </div>
         </div>

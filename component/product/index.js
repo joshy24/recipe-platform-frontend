@@ -1,27 +1,31 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "../../styles/Products.module.css"
 
 import EmptyResult from "../general/emptyResult"
 
+import AppContext from "../../pages/AppContext";
+
 import AddMaterials from "./addmaterials"
 import AddRecipes from "./addrecipes"
 
+import DeleteDialog from "../general/deletedialog"
+
 import Image from "next/image"
+
+import { toUpperCase, getAmount } from "../../utils/helper"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
-import { postRequest, getRequest } from "../../utils/api.requests"
+import { postRequest, getRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_PRODUCT, ALL_MATERIALS, ALL_RECIPES } from "../../utils/api.endpoints"
+
+
+import { BASE_URL, GET_PRODUCT, ALL_MATERIALS_URL, ALL_RECIPES_URL, DELETE_PRODUCT_MATERIAL, DELETE_PRODUCT_RECIPE } from "../../utils/api.endpoints"
 
 const get_product_url = BASE_URL + GET_PRODUCT
-
-const get_all_recipes_url = BASE_URL + ALL_RECIPES
-
-const get_all_materials_url = BASE_URL + ALL_MATERIALS
 
 const DetailsTab = "Details"
 const RecipesTab = "Recipes"
@@ -29,6 +33,7 @@ const MaterialsTab = "Materials"
 
 
 const ProductIndex = ({id}) => {
+    const value = useContext(AppContext);
 
     const [showAddRecipe, setShowAddRecipe] = useState(false)
     const [showAddMaterial, setShowAddMaterial] = useState(false)
@@ -36,17 +41,27 @@ const ProductIndex = ({id}) => {
     const [whatIsOpen, setWhatIsOpen] = useState(false)
 
     const [product, setProduct] = useState({})
-    const [materials, setMaterials] = useState([])
-    const [recipes, setRecipes] = useState([])
+    const [materials, setMaterials] = useState({})
+    const [recipes, setRecipes] = useState({})
+    const [materialPaginate, setMaterialPaginate] = useState({offset: 0, limit: 30})
+    const [recipePaginate, setRecipePaginate] = useState({offset: 0, limit: 30})
 
+    const [entityInFocus, setEntityInFocus] = useState({})
 
+    const [isDelete, setIsDelete] = useState({visible: false, title:"", message:"", type:""})
+    
 
     useEffect(() => {
-        loadProduct()
-
-        loadProductMaterials()
+        loadAllAsync()
     }, [])
 
+    const loadAllAsync = async () => {
+        await loadProduct()
+
+        await loadProductMaterials()
+
+        await loadProductRecipes();
+    }
 
     const switchWhatIs = (e) => {
         e.preventDefault();
@@ -72,38 +87,47 @@ const ProductIndex = ({id}) => {
     */
 
     const loadProduct = async() => {
+        value.setLoading(true)
         try{
             const result = await getRequest(get_product_url+"?id="+id)
             
             setProduct(result.response)
+
+            value.setLoading(false)
         }
         catch(err){
             console.log(err)
+            value.setLoading(false)
         }
-    }
-
-    const addMaterials = async(data) => {
-        console.log(data)
-        /*try{
-            const result  = await postRequest()
-        }
-        catch(err){
-
-        }*/
     }
 
     const loadProductRecipes = async() => {
-        
-    }
-
-    const loadProductMaterials = async() => {
+        value.setLoading(true)
         try{
-            const result = await getRequest(get_all_materials_url+"?id="+id)
+            const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&offset=${recipePaginate.offset}&limit=${recipePaginate.limit}`)
 
-            console.log(result)
+            setRecipes(result.response)
+
+            value.setLoading(false)
         }
         catch(err){
             console.log(err)
+            value.setLoading(false)
+        }
+    }
+
+    const loadProductMaterials = async() => {
+        value.setLoading(true)
+        try{
+            const result = await getRequest(ALL_MATERIALS_URL+`?id=${id}&offset=${materialPaginate.offset}&limit=${materialPaginate.limit}`)
+
+            setMaterials(result.response)
+
+            value.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            value.setLoading(false)
         }
     }   
 
@@ -152,7 +176,7 @@ const ProductIndex = ({id}) => {
     }
 
     const deleteProduct = async () => {
-
+        
     }
 
     const showEditProductRecipe = () => {
@@ -179,6 +203,39 @@ const ProductIndex = ({id}) => {
 
     }
 
+    const showDeleteProductMaterial = (e, aMaterial) => {
+        
+        setEntityInFocus(aMaterial)
+        
+        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(aMaterial.name)} from ${product.name}`, type: "Product"})
+    }
+
+    const hideDeleteProductMaterial = () => {
+        setIsDelete({visible: false, title: "", message:``, type: ""})
+    }
+
+    const deleteProductMaterial = async () => {
+
+        hideDeleteProductMaterial()
+        
+        value.setBlockingLoading(true)
+        
+        try{
+            await deleteRequest(DELETE_PRODUCT_MATERIAL, {id:id, material_id: entityInFocus._id})
+
+            value.setBlockingLoading(false)
+
+            setEntityInFocus({})
+
+            loadProductMaterials()
+        }
+        catch(err){
+            console.log(err)
+
+            value.setBlockingLoading(false)
+        }
+        
+    }
 
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
@@ -200,12 +257,12 @@ const ProductIndex = ({id}) => {
             <div className="pageHolderContentTopCenter">
                 <div>
                     <h4>Recipes</h4>
-                    <h5>{recipes.totalDocs || 0}</h5>
+                    <h5>{(recipes && recipes.totalDocs) || 0}</h5>
                 </div>
 
                 <div>
                     <h4>Materials</h4>
-                    <h5>{materials.totalDocs || 0}</h5>
+                    <h5>{ (materials && materials.totalDocs) || 0}</h5>
                 </div>
             </div>
 
@@ -236,7 +293,7 @@ const ProductIndex = ({id}) => {
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <th style={{width: "24%"}}>Profit Margin</th>
-                            <th style={{width: "18%"}}>{product.profit_margin}%</th>
+                            <th style={{width: "18%"}}>{product && product.profit_margin}%</th>
                             <th style={{width: "58%"}}><button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button></th>
                         </tr>
                         <tr className="notHeader">
@@ -252,17 +309,17 @@ const ProductIndex = ({id}) => {
                         </tr>
                         <tr className="notHeader">
                             <td>Labour Cost</td>
-                            <td>₦{product.labour_cost}</td>
+                            <td>{product && getAmount(product.labour_cost)}</td>
                             <td><button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button></td>
                         </tr>
                         <tr className="notHeader">
                             <td>Overhead Cost</td>
-                            <td>₦{product.overhead_cost}</td>
+                            <td>{product && getAmount(product.overhead_cost)}</td>
                             <td><button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button></td>
                         </tr>
                         <tr className="notHeader">
                             <td>Actual Selling Price</td>
-                            <td>₦{product.actual_selling_price}</td>
+                            <td>{product && getAmount(product.actual_selling_price)}</td>
                             <td><button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button></td>
                         </tr>
                         <tr className="notHeader">
@@ -309,18 +366,25 @@ const ProductIndex = ({id}) => {
                                 <th style={{width: "20%"}}>Price</th>
                                 <th style={{width: "20%"}}></th>
                             </tr>
-                            <tr className="notHeader">
-                                <td>Shawarma</td>
-                                <td>1</td>
-                                <td>Kg</td>
-                                <td>#800</td>
-                                <td className="tabbedListContentHorizontalTableContent">
-                                    <button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                </td>
-                            </tr>
+                            {
+                                materials && materials.docs && materials.docs.length > 0 && materials.docs.map(aMaterial => {
+                                    return <tr key={aMaterial._id} className="notHeader">
+                                                <td>{toUpperCase(aMaterial.name)}</td>
+                                                <td>{aMaterial.quantity}</td>
+                                                <td>{aMaterial.purchase_size}</td>
+                                                <td>{getAmount(aMaterial.totalCost)}</td>
+                                                <td className="tabbedListContentHorizontalTableContent">
+                                                    <button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                    <button onClick={e => showDeleteProductMaterial(e, aMaterial)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                </td>
+                                            </tr>
+                                })
+                            }
                         </table> :  <div style={{marginTop: "40px"}}> <EmptyResult  message={"No Materials found for this product"} onEmptyButtonClicked={loadProductMaterials} emptyButtonText={"Try Again"} /> </div>
                         }
+
+
+
                     </>
                 }
             </div>
@@ -328,7 +392,15 @@ const ProductIndex = ({id}) => {
         </div>
 
         {
-            showAddMaterial && <AddMaterials loadProductMaterials={loadProductMaterials} product={product} hideAddMaterial={hideAddMaterial} addMaterials={addMaterials}  />
+            showAddMaterial && <AddMaterials loadProductMaterials={loadProductMaterials} product={product} hideAddMaterial={hideAddMaterial} />
+        }
+
+        {
+            showAddRecipe && <AddRecipes  loadProductRecipes={loadProductRecipes} product={product} hideAddRecipe={hideAddRecipe} />
+        }
+
+        {
+            isDelete.visible && <DeleteDialog onPerformDeleteClicked={deleteProductMaterial} onCancelDeleteClicked={hideDeleteProductMaterial} type={isDelete.type} message={isDelete.message} title={isDelete.title} />
         }
 
     </div>

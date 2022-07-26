@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
@@ -13,6 +13,8 @@ import SearchInput from "../general/searchInput"
 
 import EmptyResult from "../general/emptyResult"
 
+import AppContext from "../../pages/AppContext";
+
 import { getRequest, postRequest } from "../../utils/api.requests"
 
 import { BASE_URL, CREATE_ORDER, SEARCH_ORDERS} from "../../utils/api.endpoints"
@@ -20,6 +22,8 @@ import { BASE_URL, CREATE_ORDER, SEARCH_ORDERS} from "../../utils/api.endpoints"
 const create_order_url = BASE_URL + CREATE_ORDER
 
 const OrdersIndex = () => {
+
+    const value = useContext(AppContext);
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
@@ -63,30 +67,36 @@ const OrdersIndex = () => {
     }
 
     const searchOrders = async () => {
+        value.setLoading(true)
+
         if(searchTerm && searchTerm.length > 0){
             try{
                 const result = await getRequest(SEARCH_ORDERS+"?searchTerm="+searchTerm)
 
                 console.log(result)
+                value.setIsLoading(false)
             }
             catch(err){
+                value.setIsLoading(false)
                 console.log(result)
             }
         }
     }
 
     const addOrder = async (e, order) => {
+        value.setLoading(true)
+
         e.preventDefault();
         try{
             var result = await postRequest(create_order_url, order)
 
-            setLoading(false)
+            value.setLoading(false)
             
             setVisits(result)
             
         }
         catch(err){
-            setLoading(false)
+            value.setLoading(false)
 
             setMessage("An error occurred performing the search.")
             setErrorMessageVisible(true)
@@ -94,20 +104,17 @@ const OrdersIndex = () => {
     }
 
     const loadOrders = async() => {
-        setIsLoading(true)
+        value.setIsLoading(true)
 
         try{
             const result = await getRequest(get_products_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
 
-            console.log(result)
-
             setProducts(result.response)
 
-            setIsLoading(false)
+            value.setIsLoading(false)
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setIsLoading(false)
         }
     }
 

@@ -1,5 +1,5 @@
 
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,useContext  } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -18,6 +18,8 @@ import {getDate} from "../../utils/helper"
 
 import { useRouter } from "next/router"
 
+import AppContext from "../../pages/AppContext";
+
 import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { BASE_URL, CREATE_RECIPE, GET_ALL_RECIPES, SEARCH_RECIPES_URL } from "../../utils/api.endpoints"
@@ -27,13 +29,13 @@ const create_recipe_url = BASE_URL + CREATE_RECIPE
 const get_recipes_url = BASE_URL + GET_ALL_RECIPES
 
 const RecipesIndex = () => {
+    const value = useContext(AppContext);
+
     const router = useRouter()
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [recipes, setRecipes] = useState({})
-
-    const [isLoading, setIsLoading] = useState(true)
 
     const [pagination, setPagination] = useState({offset:0, limit: 30})
 
@@ -82,16 +84,16 @@ const RecipesIndex = () => {
     const searchRecipes = async () => {
         if(searchTerm && searchTerm.length > 0){
             try{
-                setIsLoading(true)
+                value.setLoading(true)
                 const result = await getRequest(SEARCH_RECIPES_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
-                setIsLoading(false)
+                value.setLoading(false)
                 console.log(result)
 
                 setSearchResult(result.response)
             }
             catch(err){
                 console.log(err)
-                setIsLoading(false)
+                value.setLoading(false)
             }
         }
     }
@@ -119,20 +121,19 @@ const RecipesIndex = () => {
     }
 
     const loadRecipes = async () => {
+        value.setLoading(true)
+        
         try{
             const url = get_recipes_url+"?limit="+pagination.limit+"&offset="+pagination.offset
 
             const result = await getRequest(url)
 
-            console.log(result.response.docs)
-
             setRecipes(result.response)
 
-            setIsLoading(false)
+            value.setLoading(false)
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setLoading(false)
         }
     }
 
@@ -200,7 +201,7 @@ const RecipesIndex = () => {
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         {
-                            !isLoading ? <tbody>
+                            !value.state.isLoading ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "31%"}}>Name</th>
                                     <th style={{width: "23%"}}>Created</th>

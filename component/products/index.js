@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
@@ -20,6 +20,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import EmptyResult from "../general/emptyResult"
 
+import AppContext from "../../pages/AppContext";
+
 import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { BASE_URL, GET_ALL_PRODUCTS, ADD_PRODUCT, SEARCH_PRODUCTS_URL } from "../../utils/api.endpoints"
@@ -29,6 +31,8 @@ const get_products_url = BASE_URL + GET_ALL_PRODUCTS
 const add_product_url = BASE_URL + ADD_PRODUCT
 
 const ProductsIndex = () => {
+
+    const value = useContext(AppContext);
 
     const router = useRouter()
 
@@ -41,7 +45,6 @@ const ProductsIndex = () => {
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [products, setProducts] = useState({})
     
-    const [isLoading, setIsLoading] = useState(true)
     const [pagination, setPagination] = useState({offset:0, limit: 30})
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -82,18 +85,18 @@ const ProductsIndex = () => {
     }
 
     const searchProducts = async () => {
+        value.setLoading(true)
+
         if(searchTerm && searchTerm.length > 0){
             try{
-                setIsLoading(true)
+                value.setLoading(true)
                 const result = await getRequest(SEARCH_PRODUCTS_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
-                setIsLoading(false)
-                console.log(result)
+                value.setLoading(false)
 
                 setSearchResult(result.response)
             }
             catch(err){
-                console.log(err)
-                setIsLoading(false)
+                value.setLoading(false)
             }
         }
     }
@@ -104,38 +107,35 @@ const ProductsIndex = () => {
         setSearchTerm(value)
     }
 
-    const addProduct = async (e, data) => {
-        e.preventDefault()
-        setIsLoading(true)
+    const addProduct = async (data) => {
+        value.setLoading(true)
 
         try{
             const result = await postRequest(add_product_url, data)
 
             closeAddProduct()
 
-            loadProducts()
+            value.setLoading(false)
+
+            router.push("/product/"+result.response._id)
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setLoading(false)
         }
     }
 
     const loadProducts = async() => {
-        setIsLoading(true)
+        value.setLoading(true)
 
         try{
             const result = await getRequest(get_products_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
 
-            console.log(result)
-
             setProducts(result.response)
 
-            setIsLoading(false)
+            value.setLoading(false)
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setLoading(false)
         }
     }
 
@@ -211,7 +211,7 @@ const ProductsIndex = () => {
                             </tr>
                             
                             {
-                                !isLoading ? <>
+                                !value.state.Loading ? <>
                                     {
                                         searchResult && searchResult.length > 0 ? searchResult.map(product => {
                                             return <tr className="notHeader">
@@ -250,7 +250,7 @@ const ProductsIndex = () => {
                     </table>
 
                     {             
-                        (products && products.docs && products.docs.length==0) && !isLoading && <EmptyResult message="No products found" onEmptyButtonClicked={loadProducts} emptyButtonText="Reload" />    
+                        (products && products.docs && products.docs.length==0) && !value.state.Loading && <EmptyResult message="No products found" onEmptyButtonClicked={loadProducts} emptyButtonText="Reload" />    
                     }
                 </div>
             </div>
