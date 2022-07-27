@@ -68,14 +68,6 @@ const ProductIndex = ({id}) => {
         setWhatIsOpen(!whatIsOpen)
     }
 
-    const showAddIngredientsModal = () => {
-        setShowAddIngredients(true)
-    }
-
-    const hideAddIngredientsModal = () => {
-        setShowAddIngredients(false)
-    }
-
     const switchSelectedTab = (e, tab) => {
         e.preventDefault()
         setSelectedTab(tab)

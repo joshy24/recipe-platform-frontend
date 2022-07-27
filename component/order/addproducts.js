@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 
 import EmptyResult from "../general/emptyResult"
 
@@ -23,39 +23,28 @@ const mediumTextStyle = {
     marginTop: "12px"
 }
 
-const dataState = {
-    
-}
-
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import AppContext from "../../pages/AppContext";
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
-import { BASE_URL, PRODUCTS_TO_ADD, ADD_PRODUCTS_TO_PRODUCT } from "../../utils/api.endpoints"
+import { BASE_URL, PRODUCTS_TO_ADD, ADD_PRODUCTS_TO_ORDER } from "../../utils/api.endpoints"
 
-const products_to_add_url = BASE_URL + PRODUCTS_TO_ADD
+const add_products_url = BASE_URL + ADD_PRODUCTS_TO_ORDER
 
-const add_products_url = BASE_URL + ADD_PRODUCTS_TO_PRODUCT
+const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
-const productObject = {
-    product: null,
-    quantity: 1
-}
-
-const AddProducts = ({hideAddProduct, loadProductProducts, order}) => {
+    const value = useContext(AppContext);
     
     const [products, setProducts] = useState([])
 
     const [selectedProducts, setSelectedProducts] = useState([])
 
     const [isLoading, setIsLoading] = useState(true)
+
+    const [error, setError] = useState("")
 
     useEffect(() => {
         getProductsToAdd()
@@ -77,11 +66,10 @@ const AddProducts = ({hideAddProduct, loadProductProducts, order}) => {
         }
     }
 
-    const getProductsToAdd = async() => {
+    const getProductsToAdd = async () => {
+        setIsLoading(true)
         try{
-            const result = await getRequest(products_to_add_url+"?product_id="+order._id)
-
-            console.log(result)
+            const result = await getRequest(PRODUCTS_TO_ADD+"?order_id="+order._id)
 
             const new_result = result.response.map(product => {
                 return {...product, quantity: 0}
@@ -92,43 +80,54 @@ const AddProducts = ({hideAddProduct, loadProductProducts, order}) => {
             setIsLoading(false)
         }
         catch(err){
+            setIsLoading(false)
             console.log(err)
         }
     }
 
     const addProductToSelected = (product) => {
+        setError("")
+        
         const sm = selectedProducts;
 
         const foundIndex = selectedProducts.findIndex(aProduct => aProduct.product == product._id)
 
         if(foundIndex == -1){
-            productObject.product = product._id
-            productObject.quantity = product.quantity
-
-            sm.push(productObject)
+            sm.push({
+                product: product._id,
+                quantity: product.quantity
+            })
         }
         else{
             sm.splice(foundIndex, 1)
         }
-
-        console.log(sm)
 
         setSelectedProducts(sm)
     }
 
     const doAddProducts = async()=>{
         if(selectedProducts.length > 0){
+            value.setBlockingLoading(true)
+
+            setError("")
+           
             try{
-                const response = await postRequest(add_products_url, {id: product._id, products: selectedProducts})
+                const response = await postRequest(add_products_url, {id: order._id, products: selectedProducts})
 
-                console.log(response)
+                value.setBlockingLoading(false)
 
-                loadProductProducts()
+                loadOrderProducts()
 
                 hideAddProduct()
             }
             catch(err){
                 console.log(err)
+                value.setBlockingLoading(false)
+            }
+        }
+        else{
+            if(products.length > 0){
+                setError("Add products to order by clicking/tapping the add button")
             }
         }
     }
@@ -137,17 +136,17 @@ const AddProducts = ({hideAddProduct, loadProductProducts, order}) => {
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
                 <div>
-                    {/*<h4 style={BigTextStyle}>Add Products to {product.name}</h4>*/}
-                    <h5 style={mediumTextStyle}>Select Products to add - {selectedProducts.length}</h5>
+                    <h4 style={BigTextStyle}>Add Products to Order</h4>
+                    <h5 style={mediumTextStyle}>Select Products to add</h5>
                 </div>
 
                 <div style={{display: "flex"}}>
-                    
-                    <button onClick={doAddProducts} className="rectangleButtonPrimary">Continue</button>
+                    <button onClick={doAddProducts} className="rectangleButtonPrimary">Save</button>
                     <button onClick={hideAddProduct} style={{marginLeft: "16px"}} className="rectangleButtonSecondary">Close</button>
                 </div>
             </div>
             <div className="popUpAddInnerContentBottom">
+                <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
                     !isLoading ? 
@@ -168,9 +167,9 @@ const AddProducts = ({hideAddProduct, loadProductProducts, order}) => {
                                         return <ProductToAdd addToSelected={addProductToSelected} product={product} onChange={onChange} selectedProducts={selectedProducts} />
                                     })
                                 }
-                            </tbody>
+                                </tbody>
 
-                            : <EmptyResult  message={"No Products found to add. You may want to add products"} onEmptyButtonClicked={loadProductProducts} emptyButtonText={"Try Again"} />
+                                : <EmptyResult  message={"No Products found to add. Add products to inventory"} onEmptyButtonClicked={getProductsToAdd} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

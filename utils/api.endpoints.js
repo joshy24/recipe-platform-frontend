@@ -19,15 +19,19 @@ export const GET_ENTITIES_COUNT = API_VERSION+"/entities_count"
 
 export const CREATE_ORDER = API_VERSION+"/login"
 
-export const GET_ALL_ORDERS = API_VERSION+"/login"
+export const GET_ALL_ORDERS = API_VERSION+"/orders"
 
-export const SEARCH_ORDERS_URL = BASE_URL+API_VERSION+"/orders/search"
+export const SEARCH_ORDERS_URL = API_VERSION+"/orders/search"
 
-export const GET_ORDER = "/api/v1/order"
+export const GET_ORDER = API_VERSION+"/order"
 
-export const ADD_ORDER = "/api/v1/orders/add"
+export const ADD_ORDER = API_VERSION+"/orders/add"
 
-export const ALL_PRODUCTS = "/api/v1/order/products"
+export const ADD_PRODUCTS_TO_ORDER = API_VERSION+"/order/add_products"
+
+export const ALL_PRODUCTS_URL = BASE_URL+API_VERSION+"/order/products"
+
+export const DELETE_ORDER_PRODUCT = BASE_URL+API_VERSION+"/order/delete_product"
 
 //Products
 

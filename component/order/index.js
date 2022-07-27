@@ -1,43 +1,69 @@
 
-import { useState } from "react";
-import styles from "../../styles/Orders.module.css"
+import { useEffect, useState, useContext } from "react";
+import styles from "../../styles/Products.module.css"
+
+import EmptyResult from "../general/emptyResult"
+
+import AppContext from "../../pages/AppContext";
+
+import AddProducts from "./addproducts"
+
+import DeleteDialog from "../general/deletedialog"
 
 import Image from "next/image"
+
+import { toUpperCase, getAmount } from "../../utils/helper"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
+import { postRequest, getRequest, deleteRequest } from "../../utils/api.requests"
 
-const order = {
-    name: "Fufu",
-    fulfillment_date: "December 17, 2022 03:24:00",
-    created: "December 10, 2022 03:24:00",
-    status: "pending",
-    labour_cost: 3000,
-    profit: 500,
-    total_cost: 8000
-}
 
-const OrderIndex = () => {
 
-    const [selected, setSelected] = useState(1)
+import { BASE_URL, GET_ORDER, ALL_PRODUCTS_URL, ALL_RECIPES_URL, DELETE_ORDER_PRODUCT, DELETE_ORDER_RECIPE } from "../../utils/api.endpoints"
 
-    const DetailsTab = "Details"
-    const IngredientsTab = "Ingredients"
+const get_order_url = BASE_URL + GET_ORDER
 
-    const [showAddIngredients, setShowAddIngredients] = useState(false)
+const DetailsTab = "Details"
+const ProductsTab = "Products"
+
+
+const OrderIndex = ({id}) => {
+    const value = useContext(AppContext);
+
+    const [showAddRecipe, setShowAddRecipe] = useState(false)
+    const [showAddProduct, setShowAddProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
+
+    const [order, setOrder] = useState({})
+    const [products, setProducts] = useState({})
+    const [recipes, setRecipes] = useState({})
+    const [productPaginate, setProductPaginate] = useState({offset: 0, limit: 30})
+    const [recipePaginate, setRecipePaginate] = useState({offset: 0, limit: 30})
+
+    const [entityInFocus, setEntityInFocus] = useState({})
+
+    const [isDelete, setIsDelete] = useState({visible: false, title:"", message:"", type:""})
+    
+
+    useEffect(() => {
+        loadAllAsync()
+    }, [])
+
+    const loadAllAsync = async () => {
+        await loadOrder()
+
+        await loadOrderProducts()
+
+        await loadOrderRecipes();
+    }
 
     const switchWhatIs = (e) => {
         e.preventDefault();
         setWhatIsOpen(!whatIsOpen)
-    }
-
-    const switchSelected = (e,num) => {
-        e.preventDefault();
-        setSelected(num)
     }
 
     const showAddIngredientsModal = () => {
@@ -48,28 +74,61 @@ const OrderIndex = () => {
         setShowAddIngredients(false)
     }
 
+
     const switchSelectedTab = (e, tab) => {
         e.preventDefault()
         setSelectedTab(tab)
     }
 
 
-
     /*
     New functions
     */
 
-    const loadOrder = () => {
+    const loadOrder = async() => {
+        value.setLoading(true)
+        try{
+            const result = await getRequest(get_order_url+"?id="+id)
+            
+            setOrder(result.response)
 
+            value.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            value.setLoading(false)
+        }
     }
 
-    const loadOrderProducts = () => {
+    const loadOrderRecipes = async() => {
+        value.setLoading(true)
+        try{
+            const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&offset=${recipePaginate.offset}&limit=${recipePaginate.limit}`)
 
+            setRecipes(result.response)
+
+            value.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            value.setLoading(false)
+        }
     }
 
-    /*const loadProductMaterials = () => {
+    const loadOrderProducts = async() => {
+        value.setLoading(true)
+        try{
+            const result = await getRequest(ALL_PRODUCTS_URL+`?id=${id}&offset=${productPaginate.offset}&limit=${productPaginate.limit}`)
 
-    }*/
+            setProducts(result.response)
+
+            value.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            value.setLoading(false)
+        }
+    }   
 
     const showSkeletonLoaders = () => {
 
@@ -91,16 +150,20 @@ const OrderIndex = () => {
 
     }
 
-    const showAddProduct = () => {
+    const openAddRecipe = () => {
+        setShowAddRecipe(true)
+    }
 
+    const hideAddRecipe = () => {
+        setShowAddRecipe(false)
+    }
+
+    const openAddProduct = () => {
+        setShowAddProduct(true)
     }
 
     const hideAddProduct = () => {
-
-    }
-
-    const addProduct = async () => {
-
+        setShowAddProduct(false)
     }
 
     const showDeleteOrder = () => {
@@ -112,33 +175,47 @@ const OrderIndex = () => {
     }
 
     const deleteOrder = async () => {
-
+        
     }
 
-    const showEditOrderProduct = () => {
-
+    const showDeleteOrderProduct = (e, aProduct) => {
+        
+        setEntityInFocus(aProduct)
+        
+        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(aProduct.name)} from ${order.name}`, type: "Order"})
     }
 
-    const hideEditOrderProduct = () => {
-
+    const hideDeleteOrderProduct = () => {
+        setIsDelete({visible: false, title: "", message:``, type: ""})
     }
 
-    const editOrderProduct = async () => {
+    const deleteOrderProduct = async () => {
 
-    }
+        hideDeleteOrderProduct()
+        
+        value.setBlockingLoading(true)
+        
+        try{
+            await deleteRequest(DELETE_ORDER_PRODUCT, {id:id, product_id: entityInFocus._id})
 
-    const showConfirmFulfilled = () => {
+            value.setBlockingLoading(false)
 
-    }
+            setEntityInFocus({})
 
-    const hideConfirmFulfilled = () => {
+            loadOrderProducts()
+        }
+        catch(err){
+            console.log(err)
 
+            value.setBlockingLoading(false)
+        }
+        
     }
 
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
-                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">Dele Momodu</span></h2>
+                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">Dele Momodou{order && order.name}</span></h2>
 
                 <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
                     What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
@@ -155,14 +232,14 @@ const OrderIndex = () => {
             <div className="pageHolderContentTopCenter">
                 <div>
                     <h4>Products</h4>
-                    <h5>10</h5>
+                    <h5>{(recipes && recipes.totalDocs) || 0}</h5>
                 </div>
             </div>
 
             <div className="pageHolderContentTopRight">
                 <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                <button onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
-                <button className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
+                <button className="squareButtonPrimary"><FontAwesomeIcon icon={faTrash} /></button>
             </div>
         </div>
 
@@ -171,7 +248,7 @@ const OrderIndex = () => {
                 <div onClick={e => switchSelectedTab(e, DetailsTab)} className={`${selectedTab == DetailsTab ? "selected" : ""} tabbedListTabsItem`}>
                     <h5>Details</h5>
                 </div>
-                <div onClick={e => switchSelectedTab(e, IngredientsTab)} className={`${selectedTab == IngredientsTab ? "selected" : ""} tabbedListTabsItem`}>
+                <div onClick={e => switchSelectedTab(e, ProductsTab)} className={`${selectedTab == ProductsTab ? "selected" : ""} tabbedListTabsItem`}>
                     <h5>Products</h5>
                 </div>
             </div>
@@ -179,84 +256,74 @@ const OrderIndex = () => {
             <div className="tabbedListTableHolder"> 
                 {
                     selectedTab == DetailsTab ? 
-                    <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                        <tr style={{marginBottom: "24px"}}>
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
                             <th style={{width: "80%"}}>Dele Momodu</th>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Date</td>
                             <td>17-12-2022</td>
                         </tr>
-                        <tr>
+                        
+                        <tr className="notHeader">
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
                                 Pending
                                 <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="rectangleButtonPrimary">Fulfill</button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Fulfillment date</td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Total selling price</td>
                             <td>#30,000</td>
                         </tr>
-                    </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                                    <tr style={{marginBottom: "24px"}}>
-                                        <th style={{width: "25%"}}>Name</th>
-                                        <th style={{width: "25%"}}>Quantity</th>
-                                        <th style={{width: "25%"}}>Total Cost</th>
-                                        <th style={{width: "25%"}}></th>
-                                    </tr>
-                                    <tr>
-                                        <td>Shawarma</td>
-                                        <td>1</td>
-                                        
-                                        <td>#800</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kebab</td>
-                                        <td>1</td>
-                                        <td>#150</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Giz Dodo</td>
-                                        <td>1</td>
-                                        
-                                        <td>#400</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Milk Bar</td>
-                                        <td>1</td>
-                                        
-                                        <td>#600</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                </table>
+                    </table>
+    
+                    : <>
+                        {
+                            (products && products.docs && products.docs.length > 0) ? <table className="tabbedListTable" style={{width: "100%"}}>
+                            <tr className="header" style={{marginBottom: "24px"}}>
+                                <th style={{width: "20%"}}>Name</th>
+                                <th style={{width: "20%"}}>Quantity</th>
+                                <th style={{width: "20%"}}>Unit</th>
+                                <th style={{width: "20%"}}>Price</th>
+                                <th style={{width: "20%"}}></th>
+                            </tr>
+                            {
+                                products && products.docs && products.docs.length > 0 && products.docs.map(aProduct => {
+                                    return <tr key={aProduct._id} className="notHeader">
+                                                <td>{toUpperCase(aProduct.name)}</td>
+                                                <td>{aProduct.quantity}</td>
+                                                <td>{aProduct.purchase_size}</td>
+                                                <td>{getAmount(aProduct.totalCost)}</td>
+                                                <td className="tabbedListContentHorizontalTableContent">
+                                                    <button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                    <button onClick={e => showDeleteOrderProduct(e, aProduct)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                </td>
+                                            </tr>
+                                })
+                            }
+                        </table> :  <div style={{marginTop: "40px"}}> <EmptyResult  message={"No products found for this order"} onEmptyButtonClicked={loadOrderProducts} emptyButtonText={"Try Again"} /> </div>
+                        }
+
+
+
+                    </>
                 }
             </div>
 
         </div>
 
         {
-            showAddIngredients && <AddIngredients hideAddIngredientsModal={hideAddIngredientsModal} />
+            showAddProduct && <AddProducts loadOrderProducts={loadOrderProducts} order={order} hideAddProduct={hideAddProduct} />
+        }
+
+        {
+            isDelete.visible && <DeleteDialog onPerformDeleteClicked={deleteOrderProduct} onCancelDeleteClicked={hideDeleteOrderProduct} type={isDelete.type} message={isDelete.message} title={isDelete.title} />
         }
 
     </div>

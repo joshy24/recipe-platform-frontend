@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
@@ -126,7 +126,7 @@ const OrdersIndex = () => {
     }
 
     const loadOrders = async() => {
-        value.setIsLoading(true)
+        value.setLoading(true)
 
         try{
             const result = await getRequest(get_orders_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
@@ -138,7 +138,7 @@ const OrdersIndex = () => {
             value.setIsLoading(false)
         }
         catch(err){
-            value.setIsLoading(false)
+            value.setLoading(false)
         }
     }
 
@@ -222,7 +222,7 @@ const OrdersIndex = () => {
                             </tr>
                             
                             {
-                                !isLoading ? <>
+                                isLoading ? <>
                                     {
                                         searchResult && searchResult.length > 0 ? searchResult.map(order => {
                                             return <tr className="notHeader">
