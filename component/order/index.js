@@ -1,27 +1,28 @@
 
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "../../styles/Orders.module.css"
 
 import Image from "next/image"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import AppContext from "../../pages/AppContext";
+
 import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL } from "../../utils/api.endpoints"
 
-const order = {
-    name: "Fufu",
-    fulfillment_date: "December 17, 2022 03:24:00",
-    created: "December 10, 2022 03:24:00",
-    status: "pending",
-    labour_cost: 3000,
-    profit: 500,
-    total_cost: 8000
-}
+import { getRequest, postRequest } from "../../utils/api.requests"
 
-const OrderIndex = () => {
+import EmptyResult from "../general/emptyResult"
+
+import { getAmount, toUpperCase, getDate } from "../../utils/helper"
+
+const OrderIndex = ({id}) => {
 
     const [selected, setSelected] = useState(1)
+
+    const value = useContext(AppContext);
 
     const DetailsTab = "Details"
     const IngredientsTab = "Ingredients"
@@ -29,6 +30,9 @@ const OrderIndex = () => {
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
+    const [order, setOrder] = useState({})
+    const [products, setProducts] = useState([])
+    const [pagination, setPagination] = useState({offset: 0, limit: 30})
 
     const switchWhatIs = (e) => {
         e.preventDefault();
@@ -53,30 +57,47 @@ const OrderIndex = () => {
         setSelectedTab(tab)
     }
 
+    useEffect(() => {
+        loadOrder()
+        loadOrderProducts()
+    }, [])
 
 
     /*
     New functions
     */
 
-    const loadOrder = () => {
+    const loadOrder = async() => {
+        value.setLoading(true)
 
+        try{
+            const result = await getRequest(GET_ORDER_URL+"?id="+id)
+
+            value.setLoading(false)
+
+            console.log(result)
+
+            setOrder(result.response)
+        }
+        catch(err){
+            value.setLoading(false)
+        }
     }
 
-    const loadOrderProducts = () => {
+    const loadOrderProducts = async() => {
+        value.setLoading(true)
+        try{
+            const result = await getRequest(ORDER_PRODUCTS_URL+"?id="+id+`&offset=${pagination.offset}&limit=${pagination.limit}`)
 
-    }
+            setProducts(result.response)
 
-    /*const loadProductMaterials = () => {
+            console.log(result)
 
-    }*/
-
-    const showSkeletonLoaders = () => {
-
-    }
-
-    const hideSkeletonLoaders = () => {
-
+            value.setLoading(false)
+        }
+        catch(err){
+            value.setLoading(false)
+        }
     }
 
     const showEditOrder = () => {
@@ -138,7 +159,7 @@ const OrderIndex = () => {
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
-                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">Dele Momodu</span></h2>
+                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">{order && order.name && toUpperCase(order.name)}</span></h2>
 
                 <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
                     What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
@@ -155,7 +176,7 @@ const OrderIndex = () => {
             <div className="pageHolderContentTopCenter">
                 <div>
                     <h4>Products</h4>
-                    <h5>10</h5>
+                    <h5>{ (products && products.docs) ? products.docs.length : 0}</h5>
                 </div>
             </div>
 
@@ -182,26 +203,26 @@ const OrderIndex = () => {
                     <table className={styles.tabbedListTable} style={{width: "100%"}}>
                         <tr style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
-                            <th style={{width: "80%"}}>Dele Momodu</th>
+                            <th style={{width: "80%"}}>{order && order.name && toUpperCase(order.name)}</th>
                         </tr>
                         <tr>
                             <td>Date</td>
-                            <td>17-12-2022</td>
+                            <td>{order && order.created && getDate(order.created)}</td>
                         </tr>
                         <tr>
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                Pending
+                                {order.status}
                                 <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="rectangleButtonPrimary">Fulfill</button>
                             </td>
                         </tr>
                         <tr>
                             <td>Fulfillment date</td>
-                            <td></td>
+                            <td>{order && order.fulfillment_date && getDate(order.fulfillment_date)}</td>
                         </tr>
                         <tr>
                             <td>Total selling price</td>
-                            <td>#30,000</td>
+                            <td>{getAmount(order.totalCost)}</td>
                         </tr>
                     </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
                                     <tr style={{marginBottom: "24px"}}>
@@ -210,45 +231,20 @@ const OrderIndex = () => {
                                         <th style={{width: "25%"}}>Total Cost</th>
                                         <th style={{width: "25%"}}></th>
                                     </tr>
-                                    <tr>
-                                        <td>Shawarma</td>
-                                        <td>1</td>
-                                        
-                                        <td>#800</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kebab</td>
-                                        <td>1</td>
-                                        <td>#150</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Giz Dodo</td>
-                                        <td>1</td>
-                                        
-                                        <td>#400</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Milk Bar</td>
-                                        <td>1</td>
-                                        
-                                        <td>#600</td>
-                                        <td className="tabbedListContentHorizontalTableContent">
-                                            <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                            <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                        </td>
-                                    </tr>
+                                    {
+                                        products && products.length > 0 && products.map(product => {
+                                            return <tr>
+                                                    <td>{toUpperCase(product.name)}</td>
+                                                    <td>{product.quantity}</td>
+                                                    
+                                                    <td>#800</td>
+                                                    <td className="tabbedListContentHorizontalTableContent">
+                                                        <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                    </td>
+                                                </tr>
+                                        })
+                                    }
                                 </table>
                 }
             </div>

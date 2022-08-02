@@ -11,16 +11,16 @@ const SearchInput = ({searchClicked, onSearchChanged, closeSearchClicked}) => {
             if (event.key === 'Enter') {
               event.preventDefault();
       
-              searchClicked();
+              searchClicked(event);
             }
         };
       
-        document.addEventListener('keydown', keyDownHandler);
+        //document.addEventListener('keydown', keyDownHandler);
     })
 
     return <div className="ptSearchInput">
         <input type="text" name="searchTerm" onChange={onSearchChanged} placeholder="Enter a search term" /> 
-        <button onClick={searchClicked} style={{margin: "0px"}}><FontAwesomeIcon icon={faSearch} /></button>
+        <button onClick={e => searchClicked(e)} style={{margin: "0px"}}><FontAwesomeIcon icon={faSearch} /></button>
         <button onClick={closeSearchClicked}><FontAwesomeIcon  icon={faXmark} /></button>
     </div>
 }

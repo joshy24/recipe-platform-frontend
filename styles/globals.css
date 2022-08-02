@@ -215,6 +215,18 @@ button{
     align-items: center;
 }
 
+.rectangleButtonGrey{
+    height: 42px;
+    max-height: 42px;
+    color: #000000;
+    background: #CCCCCC;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 button:hover{
     cursor: pointer;
 }
@@ -658,6 +670,10 @@ New UI's
     min-height: 70px;
 }
 
+.tabbedListTable .notHeader:hover{
+    cursor: pointer;
+}
+
 .tabbedListTable th{
     text-align: left;
     padding-left: 60px;
@@ -866,6 +882,27 @@ select field styling
 
 .close_button_add_modal{
     position: absolute;
+}
+
+
+.ptInput{
+    font-family: 'DM Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(189, 91, 252, 0.85);
+    border-radius: 4px;
+    border: 0.5px solid rgba(189, 91, 252, 0.85);
+    box-shadow: 0px 1.6px 4px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 42px;
+    max-height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 16px;
 }
 
 

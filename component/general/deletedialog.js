@@ -18,8 +18,8 @@ const DeleteDialog = ({title, message, type, onPerformDeleteClicked, onCancelDel
             </h4>
 
             <div className={`popButtonHolder ${styles.deleteButtonHolder}`}>
-                <button className="colorBlack" onClick={onPerformDeleteClicked}>Delete</button>
-                <button className="greyButton colorBlack" onClick={onCancelDeleteClicked}>Cancel</button>
+                <button className="rectangleButtonPrimary" onClick={onPerformDeleteClicked}>Delete</button>
+                <button className="rectangleButtonGrey" onClick={onCancelDeleteClicked}>Cancel</button>
             </div>
         </div>
     </div>

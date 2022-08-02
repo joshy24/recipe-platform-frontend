@@ -59,7 +59,7 @@ const AddIngredient = ({closeAddIngredient, addInventory}) => {
                     <div className="inputFieldHolder">
                         <h4>Price</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="number" name="price" value={getAmount(ingredient.price)} />
+                        <input className="ptSearchInput" onChange={onChange} type="number" name="price" value={ingredient.price} />
                     </div>
                 </div>
 

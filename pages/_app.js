@@ -2,11 +2,13 @@ import '../styles/globals.css'
 import LoadingComponent from "../component/general/loading"
 import BlockingLoadingComponent from "../component/general/blockingloading"
 import AppContext from "./AppContext";
+import Message from "../component/general/message"
 import { useState } from "react"
 
 const MyApp = ({ Component, pageProps }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isBlockingLoading, setBlockingLoading] = useState(false)
+    const [message, setMessage] = useState({visible: false, message: "", title: "", type: ""})
 
     return <div>
         <AppContext.Provider
@@ -16,7 +18,8 @@ const MyApp = ({ Component, pageProps }) => {
                  isBlockingLoading: isBlockingLoading
               },
               setLoading: setIsLoading,
-              setBlockingLoading: setBlockingLoading
+              setBlockingLoading: setBlockingLoading,
+              setMessage: setMessage
           }}
         >
           <Component {...pageProps} />
@@ -28,6 +31,10 @@ const MyApp = ({ Component, pageProps }) => {
 
       {
           isBlockingLoading && <BlockingLoadingComponent visible={isBlockingLoading} />
+      }
+
+      {
+          message.visible && <Message setMessage={setMessage} message={message} />
       }
 
     </div>

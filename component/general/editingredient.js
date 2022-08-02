@@ -77,7 +77,7 @@ const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEd
                     <div className="inputFieldHolder">
                         <h4>Low Threshold</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="number" name="lowLevel" value={ingredient.lowLevel && (ingredient.lowLevel > ingredient.quantity_in_stock ? ingredient.quantity_in_stock : ingredient.lowLevel )} />
+                        <input className="ptSearchInput" onChange={onChange} type="number" name="lowLevel" value={ingredient.lowLevel} />
                     </div>
                 </div>
 

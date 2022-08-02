@@ -3,6 +3,17 @@ import AuthHelperMethods from "./AuthHelperMethods"
 const Auth = new AuthHelperMethods();
 
 
+export const downloadFile = (data, file_name) => {
+    const url = window.URL.createObjectURL(new Blob([data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', file_name)
+    document.body.appendChild(link)
+    link.click()
+    window.URL.revokeObjectURL(url);
+    link.remove()
+}
+
 export const getDate = (d) => {
 
     let date = new Date(d);

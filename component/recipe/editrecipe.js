@@ -3,11 +3,10 @@ import { useState } from "react"
 
 import { toUpperCase } from "../../utils/helper"
 
+const EditRecipe = ({hideEditRecipe, editRecipe, aRecipe}) => {
 
-const AddRecipe = ({closeAddRecipe, addRecipe}) => {
-
-    const [recipe, setRecipe] = useState({name: "", description: ""})
-    const [ayield, setYield] = useState({ amount: 0, unit: ""})
+    const [recipe, setRecipe] = useState({name: aRecipe.name, description: aRecipe.description})
+    const [ayield, setYield] = useState({ amount: aRecipe.yield ? aRecipe.yield.amount : 0, unit: aRecipe.yield ? aRecipe.yield.unit : ""})
 
     const onChange = (e) => {
         const value = e.target.value
@@ -51,15 +50,12 @@ const AddRecipe = ({closeAddRecipe, addRecipe}) => {
                 <input className="ptInput" onChange={onYieldChange} type="text" name="unit" value={ayield.unit} placeholder="Enter recipe unit" />
             </div>
 
-        
-            <h5>You can add ingredients after saving the recipe.</h5>
-
             <div className="popButtonHolder">
-                <button onClick={e => addRecipe(e, {...recipe, yield: ayield})} className="colorWhite rectangleButtonPrimary">Save</button>
-                <button onClick={closeAddRecipe} className="colorBlack rectangleButtonSecondary">Close</button>
+                <button onClick={e => editRecipe(e, {...recipe, yield: ayield})} className="colorWhite rectangleButtonPrimary">Save</button>
+                <button onClick={hideEditRecipe} className="colorBlack rectangleButtonSecondary">Close</button>
             </div>
         </div>
     </div>
 }
 
-export default AddRecipe;
+export default EditRecipe;

@@ -1,6 +1,4 @@
 
-import styles from "../../styles/Ingredients.module.css"
-
 import AddIngredient from "../general/addingredient"
 
 import EditIngredient from "../general/editingredient"
@@ -11,15 +9,17 @@ import AppContext from "../../pages/AppContext";
 
 import { useEffect, useState, useContext } from "react"
 
-import Image from "next/image"
+import EmptyResult from "../general/emptyResult"
 
 import SearchInput from "../general/searchInput"
 
+import Papa from "papaparse"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faTrash, faSearch, faFileExport, faEdit, faAdd, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faSearch, faFileExport, faAdd, faPen } from '@fortawesome/free-solid-svg-icons'
 
-import { toUpperCase, getAmount } from "../../utils/helper"
+import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -84,11 +84,11 @@ const IngredientsIndex = () => {
         setIsSearchOpen(false)
     }
 
-    const search = async (type, status) => {
+    const search = async () => {
         value.setLoading(true)
 
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (type ? type : filters.type)+"&searchTerm="+searchTerm+"&status="+(status ? status : filters.status)
+            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+filters.type+"&searchTerm="+searchTerm+"&status="+filters.status
             
             var result = await getRequest(url)
 
@@ -150,7 +150,12 @@ const IngredientsIndex = () => {
     }
 
     const performExport = async () => {
+        if(inventory && inventory.length > 0){
+            const csv = Papa.unparse(inventory)
 
+            //download content
+            downloadFile(csv, "export.csv")
+        }
     }
 
     const showDeleteInventoryItem = (e, inventory) => {
@@ -158,7 +163,7 @@ const IngredientsIndex = () => {
 
         setInventoryInFocus(inventory)
 
-        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(inventory.name)}`})
+        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(inventory.name)} from inventory`})
     }
 
     const hideDeleteInventoryItem = () => {
@@ -189,7 +194,7 @@ const IngredientsIndex = () => {
     const addInventory = async (e, inventoryToAdd) => {
         e.preventDefault();
         
-        value.setLoading(true)
+        value.setBlockingLoading(true)
 
         try{
             var result = inventoryToAdd.type == "Ingredient" ? 
@@ -200,24 +205,37 @@ const IngredientsIndex = () => {
 
             search();
 
-            value.setLoading(false)
+            value.setBlockingLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            value.setBlockingLoading(false)
             setMessage("An error occurred processing the request.")
             setErrorMessageVisible(true)
         }
     }
 
-    function onFieldChanged(event){
+    async function onFieldChanged(event){
         event.preventDefault()
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const aVal = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
 
-        setFilters({...filters, [name]:value})
+        setFilters({...filters, [name]:aVal})
 
-        search(value)
+        value.setLoading(true)
+
+        try{
+            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
+            
+            var result = await getRequest(url)
+
+            setInventory(result.response.docs)
+
+            value.setLoading(false)
+        }
+        catch(err){
+            value.setLoading(false)
+        }
     }
 
     return <> 
@@ -246,7 +264,7 @@ const IngredientsIndex = () => {
 
 
 
-                            <button className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
+                            <button onClick={performExport} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
                         </div>
                     }
                     
@@ -261,14 +279,15 @@ const IngredientsIndex = () => {
                         !value.state.isLoading ? 
                             <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Name</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Quantity</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Size</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Price</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Quantity (In Stock)</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Price (In Stock)</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Status</th>
-                                    <th style={{width: "16%", paddingLeft: "20px"}}></th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Name</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Quantity</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Size</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Price</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Quantity (In Stock)</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Price (In Stock)</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Status</th>
+                                    <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Low Level</th>
+                                    <th style={{width: "20%", paddingLeft: "20px", fontSize: "14px"}}></th>
                                 </tr>
                                 {
                                     inventory.map(invent => {
@@ -279,7 +298,8 @@ const IngredientsIndex = () => {
                                             <td style={{paddingLeft: "30px"}}>{getAmount(invent.price)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.quantity_in_stock}</td>
                                             <td style={{paddingLeft: "30px"}}>{getAmount(invent.price * invent.quantity_in_stock)}</td>
-                                            <td style={{paddingLeft: "30px"}}>NORMAL</td>
+                                            <td style={{paddingLeft: "30px"}}>{invent.lowLevel ? (invent.quantity_in_stock >= invent.lowLevel ? "NORMAL" : "LOW") : "NORMAL"}</td>
+                                            <td style={{paddingLeft: "30px"}}>{invent.lowLevel || "Not Set"}</td>
                                             <td style={{paddingLeft: "30px"}} className="tabbedListContentHorizontalTableContent">
                                                 <button onClick={e => showEditInventory(e, invent)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                                 <button onClick={e => showDeleteInventoryItem(e, invent)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
@@ -291,6 +311,11 @@ const IngredientsIndex = () => {
                         : <Skeleton count={8} height={40} />
                     }
                 </table>
+
+                {
+                    (!value.state.isLoading && !value.state.isBlockingLoading && (inventory.length == 0 || !inventory)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
+                }
+
             </div>
         </div>
 

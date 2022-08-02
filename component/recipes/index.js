@@ -14,7 +14,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import SearchInput from "../general/searchInput"
 
-import {getDate} from "../../utils/helper"
+import {getAmount, getDate} from "../../utils/helper"
 
 import { useRouter } from "next/router"
 
@@ -41,7 +41,6 @@ const RecipesIndex = () => {
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
-    const [searchResult, setSearchResult] = useState([])
 
     useEffect(() => {
         loadRecipes()
@@ -78,18 +77,20 @@ const RecipesIndex = () => {
     }
 
     const closeSearchRecipes = () => {
+        loadRecipes()
         setIsSearchOpen(false)
     }
 
-    const searchRecipes = async () => {
+    const searchRecipes = async (e) => {
+        e.preventDefault()
         if(searchTerm && searchTerm.length > 0){
             try{
                 value.setLoading(true)
                 const result = await getRequest(SEARCH_RECIPES_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
                 value.setLoading(false)
-                console.log(result)
+                console.log(result.response)
 
-                setSearchResult(result.response)
+                setRecipes(result.response)
             }
             catch(err){
                 console.log(err)
@@ -109,11 +110,11 @@ const RecipesIndex = () => {
         try{
             const result = await postRequest(create_recipe_url, data)
 
-            console.log(result)
-
             closeAddRecipe()
 
-            loadRecipes();
+            console.log(result)
+
+            router.push(`/recipe/${result.response._id}`)
         }
         catch(err){
             console.log(err)
@@ -206,19 +207,14 @@ const RecipesIndex = () => {
                                     <th style={{width: "31%"}}>Name</th>
                                     <th style={{width: "23%"}}>Created</th>
                                     <th style={{width: "23%"}}>Total cost</th>
-                                    <th style={{width: "23%"}}></th>
                                 </tr>
 
                                 {
                                     recipes.docs && recipes.docs.length > 0 && recipes.docs.map(recipe => {
-                                        return <tr className="notHeader">
+                                        return <tr onClick={e => navigateToRecipe(e, recipe._id)} className="notHeader">
                                                     <td >{recipe.name}</td>
                                                     <td >{getDate(recipe.created)}</td>
-                                                    <td >₦{0}</td>
-                                                    <td className="tabbedListContentHorizontalTableContent">
-                                                        <button onClick={e => navigateToRecipe(e, recipe._id)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                    </td>
+                                                    <td >{getAmount(recipe.totalCost)}</td>
                                                 </tr>
                                     })
                                 }

@@ -49,7 +49,6 @@ const ProductsIndex = () => {
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
-    const [searchResult, setSearchResult] = useState([])
 
     useEffect(() => {
         loadProducts()
@@ -81,7 +80,7 @@ const ProductsIndex = () => {
     const closeSearchProducts = () => {
         setIsSearchOpen(false)
 
-        setSearchResult([])
+        loadProducts()
     }
 
     const searchProducts = async () => {
@@ -93,7 +92,7 @@ const ProductsIndex = () => {
                 const result = await getRequest(SEARCH_PRODUCTS_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
                 value.setLoading(false)
 
-                setSearchResult(result.response)
+                setProducts(result.response)
             }
             catch(err){
                 value.setLoading(false)
@@ -213,17 +212,6 @@ const ProductsIndex = () => {
                             {
                                 !value.state.Loading ? <>
                                     {
-                                        searchResult && searchResult.length > 0 ? searchResult.map(product => {
-                                            return <tr className="notHeader">
-                                                <td >{product.name}</td>
-                                                <td >{getDate(product.created)}</td>
-                                                <td >₦0</td>
-                                                <td className="tabbedListContentHorizontalTableContent">
-                                                    <button onClick={e => navigateToProduct(e, product._id)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                </td>
-                                            </tr>
-                                        }) :
                                         products && products.docs && products.docs.length > 0 && products.docs.map(product => {
                                             return <tr className="notHeader">
                                                 <td >{product.name}</td>
