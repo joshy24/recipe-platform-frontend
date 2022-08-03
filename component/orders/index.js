@@ -1,5 +1,5 @@
 
-import React, {useEffect, useState, useContext} from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
@@ -8,7 +8,7 @@ import { faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare, 
 import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
 import { useRouter } from "next/router"
-import { getDate } from "../../utils/helper"
+
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -16,15 +16,16 @@ import SearchInput from "../general/searchInput"
 
 import EmptyResult from "../general/emptyResult"
 
+
+
+
 import AppContext from "../../pages/AppContext";
+
+import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
 import { getRequest, postRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_ALL_ORDERS, ADD_ORDER, SEARCH_ORDERS_URL} from "../../utils/api.endpoints"
-
-const get_orders_url = BASE_URL + GET_ALL_ORDERS
-
-const add_order_url = BASE_URL + ADD_ORDER
+import { ALL_ORDERS_URL, CREATE_ORDER_URL, SEARCH_ORDERS_URL} from "../../utils/api.endpoints"
 
 const OrdersIndex = () => {
 
@@ -45,13 +46,20 @@ const OrdersIndex = () => {
         loadOrders()
     }, [])
 
+    
+
     const [orders, setOrders] = useState([])
 
     const router = useRouter()
+
     const navigateToOrder = (e, id) => {
         e.preventDefault()
-        router.push("/order"+id)
+        router.push("/order/"+id)
     }
+
+    useEffect(() => {
+        loadOrders();
+    },[])
 
     const switchWhatIs = (e) => {
         e.preventDefault();
@@ -65,8 +73,6 @@ const OrdersIndex = () => {
     const closeAddOrder = () => {
         setShowAdd(false)
     }
-
-
 
     /*
     New functions
@@ -102,26 +108,22 @@ const OrdersIndex = () => {
         }
     }
 
-    const addOrder = async (e, data) => {
-        e.preventDefault()
-        setIsLoading(true)
+    const addOrder = async (e, order) => {
+        value.setBlockingLoading(true)
 
         try{
-            const result = await postRequest(add_order_url, data)
+            await postRequest(CREATE_ORDER_URL, order)
 
-            router.push("/order/"+result.response._id)
-
+            value.setBlockingLoading(false)
+            
             closeAddOrder()
 
             loadOrders()
-            
         }
         catch(err){
-            console.log(err)
-            setIsLoading(false)
+            value.setBlockingLoading(false)
 
-            //setMessage("An error occurred performing the search.")
-            //setErrorMessageVisible(true)
+            value.setMessage({visible: true, message: "An error occurred saving those details", title: "Saving Error", type: "ERROR"})
         }
     }
 
@@ -129,13 +131,11 @@ const OrdersIndex = () => {
         value.setLoading(true)
 
         try{
-            const result = await getRequest(get_orders_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
-
-            console.log(result)
+            const result = await getRequest(ALL_ORDERS_URL+"?limit="+pagination.limit+"&offset="+pagination.offset)
 
             setOrders(result.response)
 
-            value.setIsLoading(false)
+            value.setLoading(false)
         }
         catch(err){
             value.setLoading(false)
@@ -194,7 +194,7 @@ const OrdersIndex = () => {
                 <div className="pageHolderContentTopCenter">
                     <div>
                         <h4>Total</h4>
-                        <h5>{orders ? orders.totalDocs : 0}</h5>
+                        <h5>{(orders && orders.docs) ? orders.docs.length : 0}</h5>
                     </div>
                 </div>
 
@@ -211,60 +211,37 @@ const OrdersIndex = () => {
 
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
-                    <table className="tabbedListTable" style={{width: "100%"}}> 
-                        <tbody>
-                            <tr className="header" style={{marginBottom: "24px"}}>
-                                <th style={{width: "28%"}}>Name</th>
-                                <th style={{width: "18%"}}>Created</th>
-                                <th style={{width: "18%"}}>Status</th>
-                                <th style={{width: "18%"}}>Total cost</th>
-                                <th style={{width: "18%"}}></th>
-                            </tr>
-                            
-                            {
-                                isLoading ? <>
-                                    {
-                                        searchResult && searchResult.length > 0 ? searchResult.map(order => {
-                                            return <tr className="notHeader">
-                                                <td >{order.name}</td>
-                                                <td >{getDate(order.created)}</td>
-                                                <td>{order.status}</td>
-                                                <td >₦0</td>
-                                                <td className="tabbedListContentHorizontalTableContent">
-                                                    <button onClick={e => navigateToOrder(e, order._id)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                </td>
-                                            </tr>
-                                        }) :
-                                        orders && orders.docs && orders.docs.length > 0 && orders.docs.map(order => {
-                                            return <tr className="notHeader">
-                                                <td >{order.name}</td>
-                                                <td >{getDate(order.created)}</td>
-                                                <td>{order.status}</td>
-                                                <td >₦0</td>
-                                                <td className="tabbedListContentHorizontalTableContent">
-                                                    <button onClick={e => navigateToOrder(e, order._id)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                </td>
-                                            </tr>
-                                        }) 
-                                    }
-                                </>
-                                : <tr className="notHeader">
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td className="tabbedListContentHorizontalTableContent">
-                                        <Skeleton height={60} count={6} />
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        <tr className="header" style={{marginBottom: "24px"}}>
+                            <th style={{width: "34%"}}>Name</th>
+                            <th style={{width: "22%"}}>Created</th>
+                            <th style={{width: "22%"}}>Status</th>
+                            <th style={{width: "22%"}}>Total cost</th>
+                        </tr>
+                        {
+                            orders && orders.docs && orders.docs.length && orders.docs.map(order => {
+                                return <tr onClick={e => navigateToOrder(e, order._id)} className="notHeader">
+                                        <td >{order.name}</td>
+                                        <td >{getDate(order.created)}</td>
+                                        <td >{order.status}</td>
+                                        <td >{getAmount(order.totalCost)}</td>
+                                    </tr>
+                            })
+                        } 
+
+                        {
+                            value.state.loading && <tr className="notHeader">
+                            <td ><Skeleton height={60} count={6} /></td>
+                            <td ><Skeleton height={60} count={6} /></td>
+                            <td ><Skeleton height={60} count={6} /></td>
+                            <td ><Skeleton height={60} count={6} /></td>
+                        </tr> 
+                        }
+
                     </table>
 
-                    {             
-                        (orders && orders.docs && orders.docs.length==0) && !isLoading && <EmptyResult message="No orders found" onEmptyButtonClicked={loadOrders} emptyButtonText="Reload" />    
+                    {
+                        orders && orders.docs && orders.docs.length == 0 && !value.state.loading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrder} emptyButtonText={"Try Again"} />
                     }
                 </div>
             </div>

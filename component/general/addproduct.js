@@ -43,31 +43,31 @@ const AddProduct = ({closeAdd, addProduct}) => {
             <div className="inputFieldHolder">
                 <h4>Name</h4>
 
-                <input className="ptSearchInput" onChange={onChange} type="text" name="name" value={product.name} placeholder="Enter Product name" />
+                <input className="ptInput" onChange={onChange} type="text" name="name" value={product.name} placeholder="Enter Product name" />
             </div>
 
             <div className="inputFieldHolder">
                 <h4>Labour Cost</h4>
                 
-                <input className="ptSearchInput" onChange={onChange} type="number" name="labour_cost" value={product.labour_cost} />
+                <input className="ptInput" onChange={onChange} type="number" name="labour_cost" value={product.labour_cost} />
             </div>
 
             <div className="inputFieldHolder">
                 <h4>Overhead Cost</h4>
                 
-                <input className="ptSearchInput" onChange={onChange} type="number" name="overhead_cost" value={product.overhead_cost} />
+                <input className="ptInput" onChange={onChange} type="number" name="overhead_cost" value={product.overhead_cost} />
             </div>
 
             <div className="inputFieldHolder">
                 <h4>Actual Selling Price</h4>
                 
-                <input className="ptSearchInput" onChange={onChange} type="number" name="actual_selling_price" value={product.actual_selling_price} />
+                <input className="ptInput" onChange={onChange} type="number" name="actual_selling_price" value={product.actual_selling_price} />
             </div>
 
             <div className="inputFieldHolder">
                 <h4>Profit Margin</h4>
                 
-                <input className="ptSearchInput" onChange={onChange} type="number" name="profit_margin" value={product.profit_margin} /> %
+                <input className="ptInput" onChange={onChange} type="number" name="profit_margin" value={product.profit_margin} /> %
             </div>
 
             <h5>You can add recipes and materials after saving the product.</h5>

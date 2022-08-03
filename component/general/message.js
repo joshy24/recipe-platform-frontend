@@ -1,6 +1,10 @@
 
 import styles from "../../styles/Home.module.css"
 
+const buttonStyle = {
+    marginTop: "12px"
+}
+
 const Message = ({message, setMessage}) => {
 
     const getBackgroundColor = () => {
@@ -45,7 +49,7 @@ const Message = ({message, setMessage}) => {
                 {message.message}
             </h5>
 
-            <button onClick={hideMessage} className={styles.greyButton}>
+            <button style={buttonStyle} onClick={hideMessage} className="rectangleButtonSecondary">
                 Ok
             </button>
 

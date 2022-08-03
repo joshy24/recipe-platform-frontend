@@ -1,6 +1,5 @@
 
 import { useEffect, useState, useContext } from "react";
-import styles from "../../styles/Products.module.css"
 
 import EmptyResult from "../general/emptyResult"
 
@@ -332,17 +331,21 @@ const ProductIndex = ({id}) => {
                                 
                                 <th style={{width: "20%"}}></th>
                             </tr>
-                            <tr className="notHeader">
-                                <td>Shawarma</td>
-                                <td>1</td>
-                                <td>#800</td>
-                                <td>Kg</td>
-                                
-                                <td className="tabbedListContentHorizontalTableContent">
-                                    <button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                </td>
-                            </tr>
+                            {
+                                recipes && recipes.docs && recipes.docs.length > 0 && recipes.docs.map(aRecipe => {
+                                    return <tr className="notHeader">
+                                                <td>{toUpperCase(aRecipe.name)}</td>
+                                                <td>{ aRecipe.yield ? aRecipe.yield.amount : 0 }</td>
+                                                <td>{ getAmount(aRecipe.cost) }</td>
+                                                <td>{ aRecipe.yield ? aRecipe.yield.unit : "" }</td>
+                                                
+                                                <td className="tabbedListContentHorizontalTableContent">
+                                                    <button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                </td>
+                                            </tr>
+                                })
+                            }
                             
                         </table> : <div style={{marginTop: "40px"}}> <EmptyResult  message={"No Recipes found for this product"} onEmptyButtonClicked={loadProductRecipes} emptyButtonText={"Try Again"} /> </div>
                         }

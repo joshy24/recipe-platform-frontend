@@ -22,20 +22,20 @@ const AddOrder = ({closeAdd, addOrder}) => {
             <div className="inputFieldHolder">
                 <h4>Name</h4>
 
-                <input onChange={onChange} type="text" name="name" value={order.name} placeholder="Enter Order name" />
+                <input className="ptInput" onChange={onChange} type="text" name="name" value={order.name} placeholder="Enter order name" />
             </div>
 
             <div className="inputFieldHolder">
                 <h4>Fulfillment Date</h4>
                 
-                <DatePicker minDate={new Date()} onChange={date => setOrder({...order, fulfillment_date:date})} selected={order.fulfillment_date} />
+                <DatePicker className="ptInput" minDate={new Date()} onChange={date => setOrder({...order, fulfillment_date:date})} selected={order.fulfillment_date} />
             </div>
 
-            <h5>You can add products after saving the order.</h5>
+            <h5>You can add products after saving order.</h5>
 
             <div className="popButtonHolder">
-                <button onClick={e => addOrder(e, order)} className="colorWhite secondaryButton">Save</button>
-                <button onClick={closeAdd} className="colorBlack greyButton">Close</button>
+                <button onClick={e => addOrder(e, order)} className="rectangleButtonPrimary">Save</button>
+                <button onClick={closeAdd} className="rectangleButtonSecondary">Close</button>
             </div>
         </div>
     </div>

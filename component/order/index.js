@@ -1,45 +1,54 @@
 
-import { useEffect, useState, useContext } from "react";
-import styles from "../../styles/Products.module.css"
+import { useState, useContext, useEffect } from "react";
+import styles from "../../styles/Orders.module.css"
 
-import EmptyResult from "../general/emptyResult"
-
-import AppContext from "../../pages/AppContext";
-
-import AddProducts from "./addproducts"
-
-import DeleteDialog from "../general/deletedialog"
+import { useRouter } from "next/router"
 
 import Image from "next/image"
 
-import { toUpperCase, getAmount } from "../../utils/helper"
+import EditOrder from "./editorder"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import AppContext from "../../pages/AppContext";
+
 import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
-import { postRequest, getRequest, deleteRequest } from "../../utils/api.requests"
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL } from "../../utils/api.endpoints"
 
+import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
+import DeleteDialog from "../general/deletedialog"
+import EmptyResult from "../general/emptyResult"
+
+import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
 
 import { BASE_URL, GET_ORDER, ALL_PRODUCTS_URL, ALL_RECIPES_URL, DELETE_ORDER_PRODUCT, DELETE_ORDER_RECIPE } from "../../utils/api.endpoints"
+import { Router } from "next/router";
 
-const get_order_url = BASE_URL + GET_ORDER
-
+    
 const DetailsTab = "Details"
 const ProductsTab = "Products"
 
 
 const OrderIndex = ({id}) => {
+
+    const router = useRouter();
+
     const value = useContext(AppContext);
 
-    const [showAddRecipe, setShowAddRecipe] = useState(false)
     const [showAddProduct, setShowAddProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
-    const [whatIsOpen, setWhatIsOpen] = useState(false)
 
+    const [showDeleteOrder, setShowDeleteOrder] = useState(false)
+    const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [order, setOrder] = useState({})
-    const [products, setProducts] = useState({})
+
+    const [showEditOrder, setShowEditOrder] = useState(false)
+    const [products, setProducts] = useState([])
+    const [pagination, setPagination] = useState({offset: 0, limit: 30})
+
+    
     const [recipes, setRecipes] = useState({})
     const [productPaginate, setProductPaginate] = useState({offset: 0, limit: 30})
     const [recipePaginate, setRecipePaginate] = useState({offset: 0, limit: 30})
@@ -58,7 +67,6 @@ const OrderIndex = ({id}) => {
 
         await loadOrderProducts()
 
-        await loadOrderRecipes();
     }
 
     const switchWhatIs = (e) => {
@@ -66,13 +74,13 @@ const OrderIndex = ({id}) => {
         setWhatIsOpen(!whatIsOpen)
     }
 
-    const showAddIngredientsModal = () => {
+    /*const showAddRecipesModal = () => {
         setShowAddIngredients(true)
     }
 
     const hideAddIngredientsModal = () => {
         setShowAddIngredients(false)
-    }
+    }*/
 
 
     const switchSelectedTab = (e, tab) => {
@@ -80,6 +88,10 @@ const OrderIndex = ({id}) => {
         setSelectedTab(tab)
     }
 
+    useEffect(() => {
+        loadOrder()
+        loadOrderProducts()
+    }, [])
 
     /*
     New functions
@@ -87,30 +99,17 @@ const OrderIndex = ({id}) => {
 
     const loadOrder = async() => {
         value.setLoading(true)
+
         try{
-            const result = await getRequest(get_order_url+"?id="+id)
-            
+            const result = await getRequest(GET_ORDER_URL+"?id="+id)
+
+            value.setLoading(false)
+
+            console.log(result)
+
             setOrder(result.response)
-
-            value.setLoading(false)
         }
         catch(err){
-            console.log(err)
-            value.setLoading(false)
-        }
-    }
-
-    const loadOrderRecipes = async() => {
-        value.setLoading(true)
-        try{
-            const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&offset=${recipePaginate.offset}&limit=${recipePaginate.limit}`)
-
-            setRecipes(result.response)
-
-            value.setLoading(false)
-        }
-        catch(err){
-            console.log(err)
             value.setLoading(false)
         }
     }
@@ -118,45 +117,30 @@ const OrderIndex = ({id}) => {
     const loadOrderProducts = async() => {
         value.setLoading(true)
         try{
-            const result = await getRequest(ALL_PRODUCTS_URL+`?id=${id}&offset=${productPaginate.offset}&limit=${productPaginate.limit}`)
+            const result = await getRequest(ORDER_PRODUCTS_URL+"?id="+id+`&offset=${pagination.offset}&limit=${pagination.limit}`)
 
             setProducts(result.response)
+
+            console.log(result)
 
             value.setLoading(false)
         }
         catch(err){
-            console.log(err)
             value.setLoading(false)
         }
-    }   
-
-    const showSkeletonLoaders = () => {
-
     }
 
-    const hideSkeletonLoaders = () => {
-
-    }
-
-    const showEditOrder = () => {
-
+    const openEditOrder = () => {
+        setShowEditOrder(true)
     }
 
     const hideEditOrder = () => {
-
+        setShowEditOrder(false)
     }
 
     const editOrder = async () => {
 
-    }
-
-    const openAddRecipe = () => {
-        setShowAddRecipe(true)
-    }
-
-    const hideAddRecipe = () => {
-        setShowAddRecipe(false)
-    }
+    } 
 
     const openAddProduct = () => {
         setShowAddProduct(true)
@@ -166,43 +150,28 @@ const OrderIndex = ({id}) => {
         setShowAddProduct(false)
     }
 
-    const showDeleteOrder = () => {
-
+    const openDeleteOrder = () => {
+        setShowDeleteOrder(true)
     }
 
     const hideDeleteOrder = () => {
-
+        setShowDeleteOrder(false)
     }
 
     const deleteOrder = async () => {
         
-    }
-
-    const showDeleteOrderProduct = (e, aProduct) => {
-        
-        setEntityInFocus(aProduct)
-        
-        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(aProduct.name)} from ${order.name}`, type: "Order"})
-    }
-
-    const hideDeleteOrderProduct = () => {
-        setIsDelete({visible: false, title: "", message:``, type: ""})
-    }
-
-    const deleteOrderProduct = async () => {
-
-        hideDeleteOrderProduct()
-        
         value.setBlockingLoading(true)
         
         try{
-            await deleteRequest(DELETE_ORDER_PRODUCT, {id:id, product_id: entityInFocus._id})
+        await deleteRequest(DELETE_ORDER_PRODUCT, {id:id/*, product_id: entityInFocus._id*/})
 
             value.setBlockingLoading(false)
 
-            setEntityInFocus({})
+            router.push("/orders")
 
-            loadOrderProducts()
+            //setEntityInFocus({})
+
+            //loadOrderProducts()
         }
         catch(err){
             console.log(err)
@@ -215,7 +184,7 @@ const OrderIndex = ({id}) => {
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
-                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">Dele Momodou{order && order.name}</span></h2>
+                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">{order && order.name && toUpperCase(order.name)}</span></h2>
 
                 <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
                     What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
@@ -232,14 +201,14 @@ const OrderIndex = ({id}) => {
             <div className="pageHolderContentTopCenter">
                 <div>
                     <h4>Products</h4>
-                    <h5>{(recipes && recipes.totalDocs) || 0}</h5>
+                    <h5>{ (products && products.docs) ? products.docs.length : 0}</h5>
                 </div>
             </div>
 
             <div className="pageHolderContentTopRight">
-                <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                <button onClick={openEditOrder} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                 <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
-                <button className="squareButtonPrimary"><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={openDeleteOrder} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
             </div>
         </div>
 
@@ -259,71 +228,66 @@ const OrderIndex = ({id}) => {
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
-                            <th style={{width: "80%"}}>Dele Momodu</th>
+                            <th style={{width: "80%"}}>{order && order.name && toUpperCase(order.name)}</th>
                         </tr>
                         <tr className="notHeader">
                             <td>Date</td>
-                            <td>17-12-2022</td>
+                            <td>{order && order.created && getDate(order.created)}</td>
                         </tr>
                         
                         <tr className="notHeader">
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                Pending
-                                <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="rectangleButtonPrimary">Fulfill</button>
+                                {order.status}
+                                <button style={{marginLeft: "16px"}}
+                                className="rectangleButtonPrimary">Fulfill</button>
                             </td>
                         </tr>
                         <tr className="notHeader">
                             <td>Fulfillment date</td>
-                            <td></td>
+                            <td>{order && order.fulfillment_date && getDate(order.fulfillment_date)}</td>
                         </tr>
                         <tr className="notHeader">
                             <td>Total selling price</td>
-                            <td>#30,000</td>
+                            <td>{getAmount(order.totalCost)}</td>
                         </tr>
-                    </table>
-    
-                    : <>
-                        {
-                            (products && products.docs && products.docs.length > 0) ? <table className="tabbedListTable" style={{width: "100%"}}>
-                            <tr className="header" style={{marginBottom: "24px"}}>
-                                <th style={{width: "20%"}}>Name</th>
-                                <th style={{width: "20%"}}>Quantity</th>
-                                <th style={{width: "20%"}}>Unit</th>
-                                <th style={{width: "20%"}}>Price</th>
-                                <th style={{width: "20%"}}></th>
-                            </tr>
-                            {
-                                products && products.docs && products.docs.length > 0 && products.docs.map(aProduct => {
-                                    return <tr key={aProduct._id} className="notHeader">
-                                                <td>{toUpperCase(aProduct.name)}</td>
-                                                <td>{aProduct.quantity}</td>
-                                                <td>{aProduct.purchase_size}</td>
-                                                <td>{getAmount(aProduct.totalCost)}</td>
-                                                <td className="tabbedListContentHorizontalTableContent">
-                                                    <button style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                                    <button onClick={e => showDeleteOrderProduct(e, aProduct)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                </td>
-                                            </tr>
-                                })
-                            }
-                        </table> :  <div style={{marginTop: "40px"}}> <EmptyResult  message={"No products found for this order"} onEmptyButtonClicked={loadOrderProducts} emptyButtonText={"Try Again"} /> </div>
-                        }
-
-
-
-                    </>
+                    </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
+                                    <tr style={{marginBottom: "24px"}}>
+                                        <th style={{width: "25%"}}>Name</th>
+                                        <th style={{width: "25%"}}>Quantity</th>
+                                        <th style={{width: "25%"}}>Total Cost</th>
+                                        <th style={{width: "25%"}}></th>
+                                    </tr>
+                                    {
+                                        products && products.length > 0 && products.map(product => {
+                                            return <tr>
+                                                    <td>{toUpperCase(product.name)}</td>
+                                                    <td>{product.quantity}</td>
+                                                    
+                                                    <td>#800</td>
+                                                    <td className="tabbedListContentHorizontalTableContent">
+                                                        <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                    </td>
+                                                </tr>
+                                        })
+                                    }
+                                </table>
                 }
             </div>
 
         </div>
 
         {
+            showEditOrder && <EditOrder hideEditOrder={hideEditOrder} editOrder={editOrder} aOrder={order} />
+        }
+
+        {
             showAddProduct && <AddProducts loadOrderProducts={loadOrderProducts} order={order} hideAddProduct={hideAddProduct} />
         }
 
         {
-            isDelete.visible && <DeleteDialog onPerformDeleteClicked={deleteOrderProduct} onCancelDeleteClicked={hideDeleteOrderProduct} type={isDelete.type} message={isDelete.message} title={isDelete.title} />
+            showDeleteOrder && <DeleteDialog onPerformDeleteClicked={deleteOrder} onCancelDeleteClicked={hideDeleteOrder} type={"Order"} />
         }
 
     </div>
