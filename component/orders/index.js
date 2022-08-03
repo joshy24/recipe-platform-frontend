@@ -109,7 +109,7 @@ const OrdersIndex = () => {
         try{
             const result = await postRequest(add_order_url, data)
 
-            router.push("/order"+result.response._id)
+            router.push("/order/"+result.response._id)
 
             closeAddOrder()
 

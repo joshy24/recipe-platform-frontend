@@ -35,7 +35,6 @@ const ProductsIndex = () => {
     const value = useContext(AppContext);
 
     const router = useRouter()
-
     const navigateToProduct = (e, id) => {
         e.preventDefault()
         router.push("/product/"+id)
