@@ -69,7 +69,7 @@ const SignUp = () => {
             <input value={userData.confirm_password} type="password" name="confirm_password" placeholder="Enter confirm password" onChange={handleChangeInput} />
         </div>
 
-        <button onClick={doSignUpAndNavigate} className="rectangleButtonPrimary">Continue</button>
+        <button onClick={doSignUpAndNavigate} className="rectangleButtonPrimary authContinueButton">Continue</button>
 
         <h5 className={styles.authLinkText}>Already have an account? <span className="link"><Link href="/auth/signin">SignIn</Link></span></h5>
 

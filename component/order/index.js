@@ -12,9 +12,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import AppContext from "../../pages/AppContext";
 
-import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
+import AddProducts from "./addproducts"
 
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL } from "../../utils/api.endpoints"
+import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 import DeleteDialog from "../general/deletedialog"
@@ -23,10 +23,9 @@ import EmptyResult from "../general/emptyResult"
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
 
-import { BASE_URL, GET_ORDER, ALL_PRODUCTS_URL, ALL_RECIPES_URL, DELETE_ORDER_PRODUCT, DELETE_ORDER_RECIPE } from "../../utils/api.endpoints"
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, ALL_PRODUCTS_URL, ALL_RECIPES_URL, DELETE_ORDER_PRODUCT, EDIT_ORDER_URL, DELETE_ORDER_URL } from "../../utils/api.endpoints"
 import { Router } from "next/router";
 
-    
 const DetailsTab = "Details"
 const ProductsTab = "Products"
 
@@ -138,8 +137,25 @@ const OrderIndex = ({id}) => {
         setShowEditOrder(false)
     }
 
-    const editOrder = async () => {
+    const editOrder = async (editedOrder) => {
+        value.setBlockingLoading(true)
+        try{
+            const result = await putRequest(EDIT_ORDER_URL, {...order, ...editedOrder})
 
+            console.log(result)
+
+            hideEditOrder()
+
+            loadOrder()
+
+            value.setBlockingLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            value.setMessage({visible: true, message: "Could not edit order successfully", title: "Message", type: "ERROR"})
+
+            value.setBlockingLoading(false)
+        }
     } 
 
     const openAddProduct = () => {
@@ -163,7 +179,7 @@ const OrderIndex = ({id}) => {
         value.setBlockingLoading(true)
         
         try{
-        await deleteRequest(DELETE_ORDER_PRODUCT, {id:id/*, product_id: entityInFocus._id*/})
+            await deleteRequest(DELETE_ORDER_URL, {id:id/*, product_id: entityInFocus._id*/})
 
             value.setBlockingLoading(false)
 
