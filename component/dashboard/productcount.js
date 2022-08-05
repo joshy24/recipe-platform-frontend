@@ -8,7 +8,7 @@ const ProductCount = ({count = 0}) => {
 
     const navigateToProduct = () => {
 
-        router.push("/product")
+        router.push("/products")
     }
 
     const [total, setTotal] = useState(81);

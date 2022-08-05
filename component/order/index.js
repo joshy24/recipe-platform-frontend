@@ -4,11 +4,13 @@ import styles from "../../styles/Orders.module.css"
 
 import Image from "next/image"
 
+import { useRouter } from "next/router"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import AppContext from "../../pages/AppContext";
 
-import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp, faBagShopping, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
 import { GET_ORDER_URL, ORDER_PRODUCTS_URL } from "../../utils/api.endpoints"
 
@@ -19,6 +21,8 @@ import EmptyResult from "../general/emptyResult"
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
 const OrderIndex = ({id}) => {
+
+    const router = useRouter();
 
     const [selected, setSelected] = useState(1)
 
@@ -75,8 +79,6 @@ const OrderIndex = ({id}) => {
 
             value.setLoading(false)
 
-            console.log(result)
-
             setOrder(result.response)
         }
         catch(err){
@@ -98,6 +100,10 @@ const OrderIndex = ({id}) => {
         catch(err){
             value.setLoading(false)
         }
+    }
+
+    const goToShoppingList = () => {
+        router.push("/shoppinglist/"+order._id)
     }
 
     const showEditOrder = () => {
@@ -184,6 +190,7 @@ const OrderIndex = ({id}) => {
                 <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                 <button onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
                 <button className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={goToShoppingList} className="squareButtonPrimary"><FontAwesomeIcon icon={faShoppingBag} /></button>
             </div>
         </div>
 

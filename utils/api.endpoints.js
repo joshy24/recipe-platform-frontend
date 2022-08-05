@@ -118,3 +118,5 @@ export const ADD_PRODUCTS_TO_ORDER_URL = BASE_URL+API_VERSION+"/order/add_produc
 export const EDIT_ORDER_PRODUCT_URL = BASE_URL+API_VERSION+"/order/edit_product"
 
 export const DELETE_ORDER_PRODUCT_URL = BASE_URL+API_VERSION+"/order/delete_product"
+
+export const ORDER_SHOPPING_LIST = BASE_URL+API_VERSION+"/order/shopping-list"

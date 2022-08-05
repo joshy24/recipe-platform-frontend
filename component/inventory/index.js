@@ -48,8 +48,6 @@ const IngredientsIndex = () => {
 
     const [pagination] = useState({limit: 30, offset: 0})
 
-    const [isLoading, setIsLoading] = useState(true)
-
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
     const [searchResult, setSearchResult] = useState([])
@@ -261,9 +259,6 @@ const IngredientsIndex = () => {
                             </select>
                             <button onClick={showSearch} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faSearch} /></button>
                             <button onClick={openShowAdd} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faAdd} /></button>
-
-
-
                             <button onClick={performExport} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
                         </div>
                     }

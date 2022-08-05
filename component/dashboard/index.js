@@ -45,7 +45,8 @@ function DashboardIndex() {
             </div>
 
             <div className={styles.launchProfitTableHolder}>
-                <div className={styles.launchProfitTableDetail}>To see how changes prices of ingrdients and materials affects your products, orders and recipes.
+                <div className={styles.launchProfitTableDetail}>
+                    To see how changes prices of ingrdients and materials affects your products, orders and recipes.
                 </div>
                 <div>
                     <button className="colorWhite primaryButton">
