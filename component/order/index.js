@@ -2,23 +2,29 @@
 import { useState, useContext, useEffect } from "react";
 import styles from "../../styles/Orders.module.css"
 
+import { useRouter } from "next/router"
+
 import Image from "next/image"
 
-import { useRouter } from "next/router"
+import EditOrder from "./editorder"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import AppContext from "../../pages/AppContext";
 
-import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp, faBagShopping, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL } from "../../utils/api.endpoints"
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL } from "../../utils/api.endpoints"
+import AddProducts from "./addproducts"
 
-import { getRequest, postRequest } from "../../utils/api.requests"
-
+import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
+import DeleteDialog from "../general/deletedialog"
 import EmptyResult from "../general/emptyResult"
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
+
+const DetailsTab = "Details"
+const ProductsTab = "Products"
 
 const OrderIndex = ({id}) => {
 
@@ -28,33 +34,51 @@ const OrderIndex = ({id}) => {
 
     const value = useContext(AppContext);
 
-    const DetailsTab = "Details"
-    const IngredientsTab = "Ingredients"
-
-    const [showAddIngredients, setShowAddIngredients] = useState(false)
+    const [showAddProduct, setShowAddProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
+
+    const [showDeleteOrder, setShowDeleteOrder] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [order, setOrder] = useState({})
+
+    const [showEditOrder, setShowEditOrder] = useState(false)
     const [products, setProducts] = useState([])
     const [pagination, setPagination] = useState({offset: 0, limit: 30})
+
+    
+    const [recipes, setRecipes] = useState({})
+    const [productPaginate, setProductPaginate] = useState({offset: 0, limit: 30})
+    const [recipePaginate, setRecipePaginate] = useState({offset: 0, limit: 30})
+
+    const [entityInFocus, setEntityInFocus] = useState({})
+
+    const [isDelete, setIsDelete] = useState({visible: false, title:"", message:"", type:""})
+    
+
+    useEffect(() => {
+        loadAllAsync()
+    }, [])
+
+    const loadAllAsync = async () => {
+        await loadOrder()
+
+        await loadOrderProducts()
+
+    }
 
     const switchWhatIs = (e) => {
         e.preventDefault();
         setWhatIsOpen(!whatIsOpen)
     }
 
-    const switchSelected = (e,num) => {
-        e.preventDefault();
-        setSelected(num)
-    }
-
-    const showAddIngredientsModal = () => {
+    /*const showAddRecipesModal = () => {
         setShowAddIngredients(true)
     }
 
     const hideAddIngredientsModal = () => {
         setShowAddIngredients(false)
-    }
+    }*/
+
 
     const switchSelectedTab = (e, tab) => {
         e.preventDefault()
@@ -65,7 +89,6 @@ const OrderIndex = ({id}) => {
         loadOrder()
         loadOrderProducts()
     }, [])
-
 
     /*
     New functions
@@ -101,65 +124,77 @@ const OrderIndex = ({id}) => {
             value.setLoading(false)
         }
     }
-
+1
     const goToShoppingList = () => {
         router.push("/shoppinglist/"+order._id)
     }
 
-    const showEditOrder = () => {
-
+    const openEditOrder = () => {
+        setShowEditOrder(true)
     }
 
     const hideEditOrder = () => {
-
+        setShowEditOrder(false)
     }
 
-    const editOrder = async () => {
+    const editOrder = async (editedOrder) => {
+        value.setBlockingLoading(true)
+        try{
+            const result = await putRequest(EDIT_ORDER_URL, {...order, ...editedOrder})
 
-    }
+            console.log(result)
 
-    const showAddProduct = () => {
+            hideEditOrder()
 
+            loadOrder()
+
+            value.setBlockingLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            value.setMessage({visible: true, message: "Could not edit order successfully", title: "Message", type: "ERROR"})
+
+            value.setBlockingLoading(false)
+        }
+    } 
+
+    const openAddProduct = () => {
+        setShowAddProduct(true)
     }
 
     const hideAddProduct = () => {
-
+        setShowAddProduct(false)
     }
 
-    const addProduct = async () => {
-
-    }
-
-    const showDeleteOrder = () => {
-
+    const openDeleteOrder = () => {
+        setShowDeleteOrder(true)
     }
 
     const hideDeleteOrder = () => {
-
+        setShowDeleteOrder(false)
     }
 
     const deleteOrder = async () => {
+        
+        value.setBlockingLoading(true)
+        
+        try{
+            await deleteRequest(DELETE_ORDER_URL, {id:id/*, product_id: entityInFocus._id*/})
 
-    }
+            value.setBlockingLoading(false)
 
-    const showEditOrderProduct = () => {
+            router.push("/orders")
 
-    }
+            //setEntityInFocus({})
 
-    const hideEditOrderProduct = () => {
+            //loadOrderProducts()
+        }
+        catch(err){
+            console.log(err)
 
-    }
-
-    const editOrderProduct = async () => {
-
-    }
-
-    const showConfirmFulfilled = () => {
-
-    }
-
-    const hideConfirmFulfilled = () => {
-
+            value.setBlockingLoading(false)
+        }
+        
     }
 
     return <div className="pageHolderContent">
@@ -188,8 +223,8 @@ const OrderIndex = ({id}) => {
 
             <div className="pageHolderContentTopRight">
                 <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                <button onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
-                <button className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
+                <button onClick={openDeleteOrder} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                 <button onClick={goToShoppingList} className="squareButtonPrimary"><FontAwesomeIcon icon={faShoppingBag} /></button>
             </div>
         </div>
@@ -199,7 +234,7 @@ const OrderIndex = ({id}) => {
                 <div onClick={e => switchSelectedTab(e, DetailsTab)} className={`${selectedTab == DetailsTab ? "selected" : ""} tabbedListTabsItem`}>
                     <h5>Details</h5>
                 </div>
-                <div onClick={e => switchSelectedTab(e, IngredientsTab)} className={`${selectedTab == IngredientsTab ? "selected" : ""} tabbedListTabsItem`}>
+                <div onClick={e => switchSelectedTab(e, ProductsTab)} className={`${selectedTab == ProductsTab ? "selected" : ""} tabbedListTabsItem`}>
                     <h5>Products</h5>
                 </div>
             </div>
@@ -207,27 +242,29 @@ const OrderIndex = ({id}) => {
             <div className="tabbedListTableHolder"> 
                 {
                     selectedTab == DetailsTab ? 
-                    <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                        <tr style={{marginBottom: "24px"}}>
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <th style={{width: "20%"}}>Name</th>
                             <th style={{width: "80%"}}>{order && order.name && toUpperCase(order.name)}</th>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Date</td>
                             <td>{order && order.created && getDate(order.created)}</td>
                         </tr>
-                        <tr>
+                        
+                        <tr className="notHeader">
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
                                 {order.status}
-                                <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="rectangleButtonPrimary">Fulfill</button>
+                                <button style={{marginLeft: "16px"}}
+                                className="rectangleButtonPrimary">Fulfill</button>
                             </td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Fulfillment date</td>
                             <td>{order && order.fulfillment_date && getDate(order.fulfillment_date)}</td>
                         </tr>
-                        <tr>
+                        <tr className="notHeader">
                             <td>Total selling price</td>
                             <td>{getAmount(order.totalCost)}</td>
                         </tr>
@@ -246,7 +283,7 @@ const OrderIndex = ({id}) => {
                                                     
                                                     <td>#800</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
-                                                        <button style={{marginLeft: "16px"}} onClick={showAddIngredientsModal} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                        <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                                         <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                                     </td>
                                                 </tr>
@@ -259,7 +296,15 @@ const OrderIndex = ({id}) => {
         </div>
 
         {
-            showAddIngredients && <AddIngredients hideAddIngredientsModal={hideAddIngredientsModal} />
+            showEditOrder && <EditOrder hideEditOrder={hideEditOrder} editOrder={editOrder} aOrder={order} />
+        }
+
+        {
+            showAddProduct && <AddProducts loadOrderProducts={loadOrderProducts} order={order} hideAddProduct={hideAddProduct} />
+        }
+
+        {
+            showDeleteOrder && <DeleteDialog onPerformDeleteClicked={deleteOrder} onCancelDeleteClicked={hideDeleteOrder} type={"Order"} />
         }
 
     </div>

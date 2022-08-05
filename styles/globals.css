@@ -153,6 +153,10 @@ Padding
 Buttons
 */
 
+.authContinueButton{
+    margin-top: 16px;
+}
+
 button{
     border-radius: 8px;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);

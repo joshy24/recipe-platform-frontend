@@ -9,12 +9,15 @@ import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
 import { useRouter } from "next/router"
 
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 import SearchInput from "../general/searchInput"
 
 import EmptyResult from "../general/emptyResult"
 
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+
+
 
 import AppContext from "../../pages/AppContext";
 
@@ -30,10 +33,20 @@ const OrdersIndex = () => {
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
+
+
+    const [isLoading, setIsLoading] = useState(true)
+    const [pagination, setPagination] = useState({offset:0, limit: 30})
+
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
+    const [searchResult, setSearchResult] = useState([])
 
-    const [pagination, setPagination] = useState({offset: 0, limit: 30})
+    useEffect(() => {
+        loadOrders()
+    }, [])
+
+    
 
     const [orders, setOrders] = useState([])
 
@@ -72,6 +85,8 @@ const OrdersIndex = () => {
 
     const closeSearchOrders = () => {
         setIsSearchOpen(false)
+
+        setSearchResult([])
     }
 
     const searchOrders = async () => {
@@ -79,14 +94,16 @@ const OrdersIndex = () => {
 
         if(searchTerm && searchTerm.length > 0){
             try{
-                const result = await getRequest(SEARCH_ORDERS+"?searchTerm="+searchTerm)
-
+                setIsLoading(true)
+                const result = await getRequest(SEARCH_ORDERS_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+                setIsLoading(false)
                 console.log(result)
-                value.setIsLoading(false)
+
+                setSearchResult(result.response)
             }
             catch(err){
-                value.setIsLoading(false)
-                console.log(result)
+                console.log(err)
+                setIsLoading(false)
             }
         }
     }
@@ -94,7 +111,6 @@ const OrdersIndex = () => {
     const addOrder = async (e, order) => {
         value.setBlockingLoading(true)
 
-        e.preventDefault();
         try{
             await postRequest(CREATE_ORDER_URL, order)
 
@@ -169,7 +185,7 @@ const OrdersIndex = () => {
 
                     {
                         whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                            <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stcked in a cone-like shape and roasted on a slowly-turning vertical rotisserie or spit.</h6>
                             <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                         </div>
                     }
@@ -184,10 +200,11 @@ const OrdersIndex = () => {
 
                 <div className="pageHolderContentTopRight">
                     {
-                        isSearchOpen ? <SearchInput searchClicked={searchOrders} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchOrders} /> : <div style={{display: "flex"}}>
-                        <button onClick={showSearchOrders} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
-                        <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
-                    </div>
+                        isSearchOpen ? <SearchInput searchClicked={searchOrders} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchOrders} /> :
+                        <div style={{display: "flex"}}>
+                            <button onClick={showSearchOrders} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                            <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                        </div>
                     }
                 </div>
             </div>
@@ -229,10 +246,8 @@ const OrdersIndex = () => {
                 </div>
             </div>
         </div>
-
-
         {
-            showAdd && <AddOrder addOrder={addOrder} closeAddOrder={closeAddOrder} />
+            showAdd && <AddOrder addOrder={addOrder} closeAdd={closeAddOrder} />
         }
         </>
     )

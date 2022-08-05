@@ -12,7 +12,7 @@ const ForgotPassword = () => {
             <input type="email" name="email" placeholder="Enter email address" />
         </div>
 
-        <button className={styles.authButton}>Continue</button>
+        <button className="rectangleButtonPrimary authContinueButton">Continue</button>
 
         <h5 className={styles.authLinkText}>Remember password? <span className="link"><Link href="/auth/signin">SignIn</Link></span></h5>
 

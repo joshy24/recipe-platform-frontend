@@ -4,7 +4,7 @@ import { useState } from "react"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const AddOrder = ({closeAddOrder, addOrder}) => {
+const AddOrder = ({closeAdd, addOrder}) => {
 
     const [order, setOrder] = useState({name: "", fulfillment_date: ""})
 
@@ -35,7 +35,7 @@ const AddOrder = ({closeAddOrder, addOrder}) => {
 
             <div className="popButtonHolder">
                 <button onClick={e => addOrder(e, order)} className="rectangleButtonPrimary">Save</button>
-                <button onClick={closeAddOrder} className="rectangleButtonSecondary">Close</button>
+                <button onClick={closeAdd} className="rectangleButtonSecondary">Close</button>
             </div>
         </div>
     </div>
