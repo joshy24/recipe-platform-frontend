@@ -157,6 +157,14 @@ Buttons
     margin-top: 16px;
 }
 
+@media (max-width: 650px) {
+    .authContinueButton{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+}
+
 button{
     border-radius: 8px;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
