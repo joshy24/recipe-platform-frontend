@@ -112,8 +112,6 @@ const Signin = () => {
 
                 res;
 
-                console.log(res)
-
                 res.msg === 'not_found' ? showValidUser() : res.msg === 'wrong_password' ? showWrongPassword() : router.push("/dashboard")
 
                 value.setBlockingLoading(false)
