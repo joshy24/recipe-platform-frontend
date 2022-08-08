@@ -116,15 +116,13 @@ const OrderIndex = ({id}) => {
 
             setProducts(result.response)
 
-            console.log(result)
-
             value.setLoading(false)
         }
         catch(err){
             value.setLoading(false)
         }
     }
-1
+
     const goToShoppingList = () => {
         router.push("/shoppinglist/"+order._id)
     }
@@ -141,8 +139,6 @@ const OrderIndex = ({id}) => {
         value.setBlockingLoading(true)
         try{
             const result = await putRequest(EDIT_ORDER_URL, {...order, ...editedOrder})
-
-            console.log(result)
 
             hideEditOrder()
 
@@ -255,7 +251,7 @@ const OrderIndex = ({id}) => {
                         <tr className="notHeader">
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                {order.status}
+                                {order && order.status}
                                 <button style={{marginLeft: "16px"}}
                                 className="rectangleButtonPrimary">Fulfill</button>
                             </td>
@@ -278,10 +274,10 @@ const OrderIndex = ({id}) => {
                                     {
                                         products && products.length > 0 && products.map(product => {
                                             return <tr>
-                                                    <td>{toUpperCase(product.name)}</td>
+                                                    <td>{product && toUpperCase(product.name)}</td>
                                                     <td>{product.quantity}</td>
                                                     
-                                                    <td>#800</td>
+                                                    <td>{}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
                                                         <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                                         <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>

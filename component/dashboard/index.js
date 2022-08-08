@@ -8,17 +8,37 @@ import styles from "../../styles/Dashboard.module.css"
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_ENTITIES_COUNT} from "../../utils/api.endpoints"
+import { BASE_URL, GET_ENTITIES_COUNT, RECENT_ORDERS_URL} from "../../utils/api.endpoints"
+
+import { useRouter } from "next/router"
+
+import { getDate, toUpperCase } from "../../utils/helper"
 
 const entities_count_url = BASE_URL + GET_ENTITIES_COUNT
 
 function DashboardIndex() {
 
+    const router = useRouter()
+
     const [entitiesCount, setEntitiesCount] = useState({})
+    const [recentOrders, setRecentOrders] = useState([])
 
     useEffect(() => {
         loadEntitiesCount();
+
+        loadRecentOrders()
     }, [])
+
+    const loadRecentOrders = async() => {
+        try{
+            const result = await getRequest(RECENT_ORDERS_URL)
+
+            setRecentOrders(result.response)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
 
     const loadEntitiesCount = async () => {
         try{
@@ -31,6 +51,15 @@ function DashboardIndex() {
         }
     }
 
+    const goToOrder = (e, id) => {
+        e.preventDefault()
+        router.push("/order/"+id)
+    }
+
+    const goToProfitable = () => {
+        router.push("/profitable")
+    }
+
     return (
         <div className={styles.dashboardIndex}>
             <div>
@@ -38,7 +67,7 @@ function DashboardIndex() {
             </div>
             <div className={styles.ordersRecipesInventoryCountHolder}>
                 <OrderNumbers count={entitiesCount.ordersCount} />
-                <ProductCount count={entitiesCount.productCount} />
+                <ProductCount count={entitiesCount.productsCount} />
                 <RecipeCount count={entitiesCount.recipesCount} />
                 <InventoryCount count={entitiesCount.inventoryCount} />
                     
@@ -46,10 +75,10 @@ function DashboardIndex() {
 
             <div className={styles.launchProfitTableHolder}>
                 <div className={styles.launchProfitTableDetail}>
-                    To see how changes prices of ingrdients and materials affects your products, orders and recipes.
+                    <span style={proitableTextStyle}>To see how changes in prices of ingrdients and materials affects your products, orders and recipes.</span>
                 </div>
                 <div>
-                    <button className="colorWhite primaryButton">
+                    <button onClick={goToProfitable} className="colorWhite primaryButton">
                         Launch Profitable
                     </button>
                 </div>
@@ -65,33 +94,21 @@ function DashboardIndex() {
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="header" style={{marginBottom: "24px"}}>
-                            <th style={{width: "36%"}}>Name</th>
-                            <th style={{width: "13%"}}>Created</th>
-                            <th style={{width: "13%"}}>Status</th>
-                            <th style={{width: "13%"}}>Recipe</th>
-                            <th style={{width: "13%"}}>Total cost</th>
+                            <th style={{width: "37%"}}>Name</th>
+                            <th style={{width: "21%"}}>Status</th>
+                            <th style={{width: "21%"}}>Fulfillment Date</th>
+                            <th style={{width: "21%"}}>Created</th>
                         </tr>
-                        <tr className="notHeader">
-                            <td >Mr David's wedding</td>
-                            <td >17-12-2022</td>
-                            <td >Pending</td>
-                            <td >3</td>
-                            <td >#200,000</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td >Folake's wedding</td>
-                            <td >17-12-2022</td>
-                            <td >Pending</td>
-                            <td >3</td>
-                            <td >#200,000</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>The Food Guys</td>
-                            <td >17-12-2022</td>
-                            <td >Pending</td>
-                            <td >3</td>
-                            <td >#200,000</td>
-                        </tr>
+                        {
+                            recentOrders && recentOrders.length > 0 && recentOrders.map(recentOrder => {
+                                return  <tr onClick={e => goToOrder(e, recentOrder._id)} className="notHeader">
+                                            <td >{toUpperCase(recentOrder.name)}</td>
+                                            <td >{recentOrder.status}</td>
+                                            <td >{getDate(recentOrder.fulfillment_date)}</td>
+                                            <td >{getDate(recentOrder.created)}</td>
+                                        </tr>
+                            })
+                        }
                     </table>
                 </div>
             </div>
@@ -108,4 +125,13 @@ export default DashboardIndex;
 </div>
 */
             
+
+const proitableTextStyle = {
+    fontFamily: 'DM Sans',
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: "16px",
+    lineHeight: "20px",
+    color: "#4D4D4C"
+}
            

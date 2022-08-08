@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import AppContext from "../../pages/AppContext";
 
+import { useRouter } from "next/router"
+
 import { faTrash, faCaretDown, faCaretUp, faEye, faPen } from '@fortawesome/free-solid-svg-icons'
 
 import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
@@ -24,6 +26,8 @@ import { BASE_URL, GET_ALL_INVENTORY } from "../../utils/api.endpoints"
 const get_inventory_url = BASE_URL + GET_ALL_INVENTORY
 
 const Profitable = () => {
+
+    const router = useRouter()
 
     const [pagination] = useState({limit: 30, offset: 0})
 
@@ -47,6 +51,25 @@ const Profitable = () => {
         const aValue = event.target.value
 
         setGeneralAmount(aValue)
+    }
+
+    const navigateToProfitableApply = (e, item) => {
+        e.preventDefault()
+
+        const idObj = {}
+
+        idObj[item._id] = changeList[item._id]
+
+        console.log(idObj)
+
+        const details = {
+            type: filters.type,
+            inventoryItem: item,
+            changeObject: idObj
+        }
+        const detailsString = JSON.stringify(details)
+
+        router.push("/profitable/apply/"+detailsString)
     }
 
 
@@ -228,8 +251,8 @@ const Profitable = () => {
                                             <td style={{paddingLeft: "30px"}}>{getAmount(invent.price * invent.quantity_in_stock)}</td>
                                             <td style={{paddingLeft: "30px"}} className="tabbedListContentHorizontalTableContent">
                                                 <input value={changeList[invent._id]} onChange={e => onAmountChanged(e,invent)} style={{minWidth: "80px"}} className="ptInput" type="number" name="changeInputValue" />
-                                                <button onClick={e => showEditInventory(e, invent)} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Apply</button>
-                                                <button onClick={e => showDeleteInventoryItem(e, invent)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faEye} /></button>
+                                                <button onClick={e => applyChange(e, invent)} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Apply</button>
+                                                <button onClick={e => navigateToProfitableApply(e, invent)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faEye} /></button>
                                             </td>
                                         </tr>
                                     })
