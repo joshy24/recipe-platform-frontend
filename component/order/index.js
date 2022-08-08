@@ -14,7 +14,7 @@ import AppContext from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL } from "../../utils/api.endpoints"
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, DELETE_ORDER_PRODUCT_URL} from "../../utils/api.endpoints"
 import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
@@ -38,12 +38,14 @@ const OrderIndex = ({id}) => {
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
 
     const [showDeleteOrder, setShowDeleteOrder] = useState(false)
+    const [showDeleteOrderProduct, setShowDeleteOrderProduct] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [order, setOrder] = useState({})
 
     const [showEditOrder, setShowEditOrder] = useState(false)
     const [products, setProducts] = useState([])
     const [pagination, setPagination] = useState({offset: 0, limit: 30})
+    const [isStatus, setIsStatus] = useState(false)
 
     
     const [recipes, setRecipes] = useState({})
@@ -90,6 +92,14 @@ const OrderIndex = ({id}) => {
         loadOrderProducts()
     }, [])
 
+    const showPendingStatus = () => {
+        setIsStatus(true)
+    }
+
+    const showFulfilledStatus = () => {
+        setIsStatus(false)
+    }
+
     /*
     New functions
     */
@@ -135,10 +145,14 @@ const OrderIndex = ({id}) => {
         setShowEditOrder(false)
     }
 
-    const editOrder = async (editedOrder) => {
+    const editOrder = async (e, editedOrder) => {
         value.setBlockingLoading(true)
         try{
-            const result = await putRequest(EDIT_ORDER_URL, {...order, ...editedOrder})
+            const newEditedOrder = {...order, ...editedOrder, id:order._id }
+            console.log(newEditedOrder)
+            const result = await putRequest(EDIT_ORDER_URL,newEditedOrder)
+
+            console.log(result)
 
             hideEditOrder()
 
@@ -170,12 +184,43 @@ const OrderIndex = ({id}) => {
         setShowDeleteOrder(false)
     }
 
+    const openDeleteOrderProduct = () => {
+        setShowDeleteOrderProduct(true)
+    }
+
+    const hideDeleteOrderProduct = () => {
+        setShowDeleteOrderProduct(false)
+    }
+
     const deleteOrder = async () => {
         
         value.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_ORDER_URL, {id:id/*, product_id: entityInFocus._id*/})
+
+            value.setBlockingLoading(false)
+
+            router.push("/orders")
+
+            //setEntityInFocus({})
+
+            //loadOrderProducts()
+        }
+        catch(err){
+            console.log(err)
+
+            value.setBlockingLoading(false)
+        }
+        
+    }
+
+    const deleteOrderProduct = async () => {
+        
+        value.setBlockingLoading(true)
+        
+        try{
+            await deleteRequest(DELETE_ORDER_PRODUCT_URL, {id:id/*, product_id: entityInFocus._id*/})
 
             value.setBlockingLoading(false)
 
@@ -218,7 +263,7 @@ const OrderIndex = ({id}) => {
             </div>
 
             <div className="pageHolderContentTopRight">
-                <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                <button onClick={openEditOrder} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                 <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
                 <button onClick={openDeleteOrder} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                 <button onClick={goToShoppingList} className="squareButtonPrimary"><FontAwesomeIcon icon={faShoppingBag} /></button>
@@ -250,11 +295,20 @@ const OrderIndex = ({id}) => {
                         
                         <tr className="notHeader">
                             <td>Order status</td>
-                            <td className="tabbedListContentHorizontalTableContent"> 
+                            {
+                                isStatus ? <td className="tabbedListContentHorizontalTableContent"> 
+                                {/*order && order.status*/}Fulfilled
+                                    <button style={{marginLeft: "16px"}}
+                                className="rectangleButtonPrimary" onClick={showFulfilledStatus}>Pending</button>
+                                </td> : <td className="tabbedListContentHorizontalTableContent"> 
                                 {order && order.status}
-                                <button style={{marginLeft: "16px"}}
-                                className="rectangleButtonPrimary">Fulfill</button>
-                            </td>
+                                    <button style={{marginLeft: "16px"}}
+                                className="rectangleButtonPrimary" onClick={showPendingStatus}>Fulfill</button>
+                                </td>
+                            }
+                            {/*
+                                
+                            */}
                         </tr>
                         <tr className="notHeader">
                             <td>Fulfillment date</td>
@@ -280,7 +334,7 @@ const OrderIndex = ({id}) => {
                                                     <td>{}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
                                                         <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                        <button onClick={openDeleteOrderProduct} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                                     </td>
                                                 </tr>
                                         })
@@ -301,6 +355,10 @@ const OrderIndex = ({id}) => {
 
         {
             showDeleteOrder && <DeleteDialog onPerformDeleteClicked={deleteOrder} onCancelDeleteClicked={hideDeleteOrder} type={"Order"} />
+        }
+        
+        {
+            showDeleteOrderProduct && <DeleteDialog onPerformDeleteClicked={deleteOrderProduct} onCancelDeleteClicked={hideDeleteOrderProduct} type={"Order"} />
         }
 
     </div>

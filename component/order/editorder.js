@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { toUpperCase } from "../../utils/helper"
+import { toUpperCase, getDate } from "../../utils/helper"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -36,7 +36,9 @@ const EditOrder = ({hideEditOrder, editOrder, aOrder}) => {
                 <div className="inputFieldHolder">
                     <h4>Fulfillment date</h4>
 
-                    <input className="ptInput" onChange={onChange} type="text" name="amount" value={aOrder.fulfillment_date} placeholder="Enter order description" />
+                    <DatePicker className="ptInput" minDate={new Date()} onChange={date => setOrder({...order, fulfillment_date:date})} selected={new Date(order.fulfillment_date)} />
+
+                    {/*<input className="ptInput" onChange={onChange} type="text" name="fulfillment_date" value={getDate(aOrder.fulfillment_date)} placeholder="Enter order description" />*/}
                 </div>
 
                 {/*<div className="inputFieldHolder">
@@ -47,7 +49,7 @@ const EditOrder = ({hideEditOrder, editOrder, aOrder}) => {
 
 
                 <div className="popButtonHolder">
-                    <button onClick={e => editOrder(e, {...order, fulfillment_date: aOrder.fulfillment_date})} className="colorWhite rectangleButtonPrimary">Save</button>
+                    <button onClick={e => editOrder(e, order)} className="colorWhite rectangleButtonPrimary">Save</button>
                     <button onClick={hideEditOrder} className="colorBlack rectangleButtonSecondary">Close</button>
                 </div>
             </div>
