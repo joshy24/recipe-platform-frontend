@@ -91,8 +91,7 @@ const Signin = () => {
 
         let eRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        let pRegex = /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{8,16}$/;
-
+        //let pRegex = /^(?!.*\s)(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).{8,100}$/;
 
         try{
 
@@ -103,10 +102,10 @@ const Signin = () => {
             } else if(!eRegex.test(userData.email)) {
                 showValidEmail()
 
-            } else if(!pRegex.test(userData.password)) {
+            } /*else if(!pRegex.test(userData.password)) {
                 showValidPassword()
 
-            } else {
+            }*/ else {
                 value.setBlockingLoading(true)
 
                 const res = await Auth.login(userData.email, userData.password);

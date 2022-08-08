@@ -7,7 +7,11 @@ import Link from "next/link"
 import NavPopUp from "../general/navpopup"
 import { useState } from "react"
 
+import { useRouter } from "next/router"
+
 const Nav = ({setShowMobileMenu}) => {
+
+    const router = useRouter();
 
     const [showPopup, setShowPopup] = useState(false)
 
@@ -17,6 +21,10 @@ const Nav = ({setShowMobileMenu}) => {
 
     const showPopUpMenu = () => {
         setShowPopup(!showPopup)
+    }
+
+    const goToProfitable = () => {
+        router.push("/profitable")
     }
 
     return <>
@@ -36,7 +44,7 @@ const Nav = ({setShowMobileMenu}) => {
                     <h3><Link href="/products">Products</Link></h3>
                     <h3><Link href="/recipes">Recipes</Link></h3>
                     <h3><Link href="/inventory">Inventory</Link></h3>
-                    <button className={styles.profitableButton}>% Profitable</button>
+                    <button onClick={goToProfitable} className={styles.profitableButton}>% Profitable</button>
                 </div>
 
                 <div onClick={showPopUpMenu} className={styles.navAvatar}>

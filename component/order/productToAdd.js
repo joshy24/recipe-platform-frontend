@@ -27,9 +27,6 @@ const productToAdd = ({product, selectedProducts, addToSelected}) => {
     
     return <tr className="notHeader">
         <td style={{paddingLeft: "30px"}}>{toUpperCase(product.name)}</td>
-        <td style={{paddingLeft: "30px"}}>{product.purchase_quantity && product.purchase_quantity.amount}</td>
-        <td style={{paddingLeft: "30px"}}>{product.purchase_size}</td>
-        <td style={{paddingLeft: "30px"}}>{getAmount(product.price)}</td>
         <td style={{paddingLeft: "30px"}}>
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
         </td>

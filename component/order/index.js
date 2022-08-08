@@ -12,9 +12,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import AppContext from "../../pages/AppContext";
 
-import AddProducts from "./addproducts"
+import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-import { faPen, faAdd, faTrash, faRotateLeft, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL } from "../../utils/api.endpoints"
+import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 import DeleteDialog from "../general/deletedialog"
@@ -22,17 +23,14 @@ import EmptyResult from "../general/emptyResult"
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
-
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL, ALL_PRODUCTS_URL, ALL_RECIPES_URL, DELETE_ORDER_PRODUCT, EDIT_ORDER_URL, DELETE_ORDER_URL } from "../../utils/api.endpoints"
-import { Router } from "next/router";
-
 const DetailsTab = "Details"
 const ProductsTab = "Products"
-
 
 const OrderIndex = ({id}) => {
 
     const router = useRouter();
+
+    const [selected, setSelected] = useState(1)
 
     const value = useContext(AppContext);
 
@@ -104,8 +102,6 @@ const OrderIndex = ({id}) => {
 
             value.setLoading(false)
 
-            console.log(result)
-
             setOrder(result.response)
         }
         catch(err){
@@ -120,13 +116,15 @@ const OrderIndex = ({id}) => {
 
             setProducts(result.response)
 
-            console.log(result)
-
             value.setLoading(false)
         }
         catch(err){
             value.setLoading(false)
         }
+    }
+
+    const goToShoppingList = () => {
+        router.push("/shoppinglist/"+order._id)
     }
 
     const openEditOrder = () => {
@@ -141,8 +139,6 @@ const OrderIndex = ({id}) => {
         value.setBlockingLoading(true)
         try{
             const result = await putRequest(EDIT_ORDER_URL, {...order, ...editedOrder})
-
-            console.log(result)
 
             hideEditOrder()
 
@@ -222,9 +218,10 @@ const OrderIndex = ({id}) => {
             </div>
 
             <div className="pageHolderContentTopRight">
-                <button onClick={openEditOrder} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                <button className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                 <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
                 <button onClick={openDeleteOrder} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={goToShoppingList} className="squareButtonPrimary"><FontAwesomeIcon icon={faShoppingBag} /></button>
             </div>
         </div>
 
@@ -254,7 +251,7 @@ const OrderIndex = ({id}) => {
                         <tr className="notHeader">
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                {order.status}
+                                {order && order.status}
                                 <button style={{marginLeft: "16px"}}
                                 className="rectangleButtonPrimary">Fulfill</button>
                             </td>
@@ -277,10 +274,10 @@ const OrderIndex = ({id}) => {
                                     {
                                         products && products.length > 0 && products.map(product => {
                                             return <tr>
-                                                    <td>{toUpperCase(product.name)}</td>
+                                                    <td>{product && toUpperCase(product.name)}</td>
                                                     <td>{product.quantity}</td>
                                                     
-                                                    <td>#800</td>
+                                                    <td>{}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
                                                         <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                                         <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>

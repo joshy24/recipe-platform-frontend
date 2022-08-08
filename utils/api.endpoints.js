@@ -42,6 +42,8 @@ export const DELETE_PRODUCT_RECIPE = BASE_URL+API_VERSION+"/product/delete_recip
 
 export const PRODUCTS_TO_ADD_URL = BASE_URL+API_VERSION+"/products/products_to_add"
 
+export const PRODUCTS_PROFITABLE_URL = BASE_URL+API_VERSION+"/profit_table/product_changes"
+
 
 
 //Recipes
@@ -118,3 +120,7 @@ export const ADD_PRODUCTS_TO_ORDER_URL = BASE_URL+API_VERSION+"/order/add_produc
 export const EDIT_ORDER_PRODUCT_URL = BASE_URL+API_VERSION+"/order/edit_product"
 
 export const DELETE_ORDER_PRODUCT_URL = BASE_URL+API_VERSION+"/order/delete_product"
+
+export const ORDER_SHOPPING_LIST = BASE_URL+API_VERSION+"/order/shopping-list"
+
+export const RECENT_ORDERS_URL = BASE_URL+API_VERSION+"/recent_orders"

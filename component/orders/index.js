@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
 
-import { faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faAdd, faSearch, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
 import { useRouter } from "next/router"
@@ -55,6 +55,11 @@ const OrdersIndex = () => {
     const navigateToOrder = (e, id) => {
         e.preventDefault()
         router.push("/order/"+id)
+    }
+
+    const navigateToShoppingList = (e, id) => {
+        e.preventDefault()
+        router.push("/shoppinglist/"+id)
     }
 
     useEffect(() => {
@@ -213,10 +218,10 @@ const OrdersIndex = () => {
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="header" style={{marginBottom: "24px"}}>
-                            <th style={{width: "34%"}}>Name</th>
-                            <th style={{width: "22%"}}>Created</th>
-                            <th style={{width: "22%"}}>Status</th>
-                            <th style={{width: "22%"}}>Total cost</th>
+                            <th style={{width: "28%"}}>Name</th>
+                            <th style={{width: "18%"}}>Created</th>
+                            <th style={{width: "18%"}}>Status</th>
+                            <th style={{width: "18%"}}>Total cost</th>
                         </tr>
                         {
                             orders && orders.docs && orders.docs.length && orders.docs.map(order => {
