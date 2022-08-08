@@ -14,7 +14,7 @@ import AppContext from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL } from "../../utils/api.endpoints"
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, FULFILL_ORDER_URL } from "../../utils/api.endpoints"
 import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
@@ -193,6 +193,22 @@ const OrderIndex = ({id}) => {
         
     }
 
+    const fulfillOrder = async() => {
+        value.setBlockingLoading(true)
+        
+        try{
+            const result = await putRequest(FULFILL_ORDER_URL, {id: order._id})
+
+            console.log(result)
+
+            value.setBlockingLoading(false)
+        }
+        catch(err){
+            value.setBlockingLoading(false)
+            console.log(err)
+        }
+    }
+
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
@@ -252,8 +268,10 @@ const OrderIndex = ({id}) => {
                             <td>Order status</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
                                 {order && order.status}
-                                <button style={{marginLeft: "16px"}}
-                                className="rectangleButtonPrimary">Fulfill</button>
+                                {
+                                    order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}}
+                                    className="rectangleButtonPrimary">Fulfill</button>
+                                }
                             </td>
                         </tr>
                         <tr className="notHeader">
