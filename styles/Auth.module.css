@@ -56,9 +56,6 @@
 
 .authButton{
     margin-top: 30px;
-    background: #BD5BFC;
-    color: #FFFFFF;
-    width: 200px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -71,4 +68,35 @@
     font-size: 15px;
     margin-bottom: 0px;
     margin-top: 24px;
+}
+
+.authErrorText{
+    margin-bottom: 30px;
+    color: red;
+}
+
+.authErrorText h5{
+    width: 50%;
+}
+
+
+@media (max-width: 300px) {
+    .authHolderInnerContent{
+        max-width: 300px;
+        min-width: 250px;
+    }
+}
+
+@media (min-width: 301px) and (max-width: 650px) {
+    .authHolderInnerContent{
+        max-width: 600px;
+        min-width: 300px;
+    }
+}
+
+@media (min-width: 651px) and (max-width: 950px) {
+    .authHolderInnerContent{
+        max-width: 800px;
+        min-width: 400px;
+    }
 }

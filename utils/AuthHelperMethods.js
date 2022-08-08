@@ -17,7 +17,7 @@ export default class AuthHelperMethods{
                         return res.data;
                     })
                     .catch(err => {
-
+                        console.log(err)
                         return "error";
                     })
 
