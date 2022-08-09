@@ -12,7 +12,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { ORDER_SHOPPING_LIST } from "../../utils/api.endpoints"
+import { ORDER_SHOPPING_LIST_URL } from "../../utils/api.endpoints"
 
 const ShoppingList = ({id}) => {
 
@@ -32,13 +32,11 @@ const ShoppingList = ({id}) => {
         value.setBlockingLoading(true)
 
         try{
-            const result = await getRequest(ORDER_SHOPPING_LIST+"?id="+id)
+            const result = await getRequest(ORDER_SHOPPING_LIST_URL+"?id="+id)
 
             value.setBlockingLoading(false)
 
             setOrder(result.response)
-
-            console.log(result.response)
 
             setInventory(result.response.materials)
         }

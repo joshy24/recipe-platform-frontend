@@ -246,7 +246,7 @@ const OrdersIndex = () => {
                     </table>
 
                     {
-                        orders && orders.docs && orders.docs.length == 0 && !value.state.loading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrder} emptyButtonText={"Try Again"} />
+                        orders && orders.docs && orders.docs.length == 0 && !value.state.loading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrders} emptyButtonText={"Try Again"} />
                     }
                 </div>
             </div>

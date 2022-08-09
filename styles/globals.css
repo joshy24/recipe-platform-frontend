@@ -60,12 +60,16 @@ h1, h2, h3, h4, h5, h6{
     display: flex;
     width: 40%;
     justify-content: flex-end;
+    align-items: center;
+    margin: 0px;
 }
 
 .pageHolder .pageHolderContentTopCenter{
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 20%;
+    margin: 0px;
 }
 
 .pageHolder .pageHolderContentTopCenter div{
@@ -104,6 +108,7 @@ h1, h2, h3, h4, h5, h6{
     display: flex;
     flex-direction: column;
     width: 40%;
+    margin: 0px;
 }
 
 .pageHolder .pageHolderContentTopLeft h5,h4{
@@ -119,6 +124,69 @@ h1, h2, h3, h4, h5, h6{
 
 .pageHolderContent .pageHolderContentTop div button{
   margin-left: 16px;
+}
+
+.pageHolderContentTopMobile{
+    display: none;
+}
+
+@media screen and (max-width: 900px) {
+
+    .pageHolder .pageHolderContent .pageHolderContentTop{
+        display: none;
+    }
+
+    .pageHolderContentTopMobile{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop div button{
+        margin-left: 16px;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentMiddle{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 16px;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom h4,h5{
+        margin: 0px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .pageHolderContentTopMobile .pageHolderContentTopTop{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop div button{
+        margin-left: 0px;
+        margin-right: 16px;
+    }
+
+    .pageTitle{
+        margin-bottom: 32px;
+    }
 }
 
 /*
@@ -539,6 +607,7 @@ New UI stuff
     line-height: 15px;
     color: #4D4D4C;
     margin-top: 20px;
+    width: 100%;
 }
 
 .whatIsHolder:hover{
