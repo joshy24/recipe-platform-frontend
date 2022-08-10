@@ -187,11 +187,14 @@ const OrderIndex = ({id}) => {
         setShowDeleteOrder(false)
     }
 
-    const openDeleteOrderProduct = () => {
+    const openDeleteOrderProduct = (e, productToDelete) => {
+        e.preventDefault()
+        setEntityInFocus(productToDelete)
         setShowDeleteOrderProduct(true)
     }
 
     const hideDeleteOrderProduct = () => {
+        setEntityInFocus({})
         setShowDeleteOrderProduct(false)
     }
 
@@ -211,15 +214,12 @@ const OrderIndex = ({id}) => {
         value.setBlockingLoading(true)
         
         try{
-            await deleteRequest(DELETE_ORDER_URL, {id:id/*, product_id: entityInFocus._id*/})
+            await deleteRequest(DELETE_ORDER_URL, {id:id})
 
             value.setBlockingLoading(false)
 
             router.push("/orders")
 
-            //setEntityInFocus({})
-
-            //loadOrderProducts()
         }
         catch(err){
             console.log(err)
@@ -250,20 +250,22 @@ const OrderIndex = ({id}) => {
         value.setBlockingLoading(true)
         
         try{
-            await deleteRequest(DELETE_ORDER_PRODUCT_URL, {id:id/*, product_id: entityInFocus._id*/})
+            await deleteRequest(DELETE_ORDER_PRODUCT_URL, {product_id:entityInFocus._id, id:id})
 
             value.setBlockingLoading(false)
 
-            router.push("/orders")
+            hideDeleteOrderProduct();
 
-            //setEntityInFocus({})
-
-            //loadOrderProducts()
+            loadOrderProducts()
         }
         catch(err){
             console.log(err)
 
             value.setBlockingLoading(false)
+
+            hideDeleteOrderProduct()
+
+            value.setMessage({visible: true, message: "Could not delete product from order", title: "Error Deleting", type: "ERROR"})
         }
         
     }
@@ -425,7 +427,7 @@ const OrderIndex = ({id}) => {
                                                     <td>{getAmount(product.totalCost)}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
                                                         <button onClick={e => openEditOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                                        <button onClick={openDeleteOrderProduct} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                        <button onClick={e => openDeleteOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                                     </td>
                                                 </tr>
                                         })
@@ -449,7 +451,7 @@ const OrderIndex = ({id}) => {
         }
         
         {
-            showDeleteOrderProduct && <DeleteDialog onPerformDeleteClicked={deleteOrderProduct} onCancelDeleteClicked={hideDeleteOrderProduct} type={"Order"} />
+            showDeleteOrderProduct && <DeleteDialog onPerformDeleteClicked={deleteOrderProduct} onCancelDeleteClicked={hideDeleteOrderProduct} type={`${entityInFocus.name} from ${order.name}`} />
         }
 
         {

@@ -221,7 +221,6 @@ const OrdersIndex = () => {
                             <th style={{width: "28%"}}>Name</th>
                             <th style={{width: "18%"}}>Created</th>
                             <th style={{width: "18%"}}>Status</th>
-                            <th style={{width: "18%"}}>Total cost</th>
                         </tr>
                         {
                             orders && orders.docs && orders.docs.length && orders.docs.map(order => {
@@ -229,7 +228,6 @@ const OrdersIndex = () => {
                                         <td >{order.name}</td>
                                         <td >{getDate(order.created)}</td>
                                         <td >{order.status}</td>
-                                        <td >{getAmount(order.totalCost)}</td>
                                     </tr>
                             })
                         } 
