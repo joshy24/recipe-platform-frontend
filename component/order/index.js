@@ -14,11 +14,14 @@ import AppContext from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, DELETE_ORDER_PRODUCT_URL} from "../../utils/api.endpoints"
+
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, DELETE_ORDER_PRODUCT_URL, FULFILL_ORDER_URL} from "../../utils/api.endpoints"
+
 import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 import DeleteDialog from "../general/deletedialog"
+import MessageDialog from "../general/messagedialog"
 import EmptyResult from "../general/emptyResult"
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
@@ -45,6 +48,7 @@ const OrderIndex = ({id}) => {
     const [showEditOrder, setShowEditOrder] = useState(false)
     const [products, setProducts] = useState([])
     const [pagination, setPagination] = useState({offset: 0, limit: 30})
+    const [showFulfillOrderMessage, setShowFulfillOrderMessage] = useState(false)
     const [isStatus, setIsStatus] = useState(false)
 
     
@@ -195,6 +199,15 @@ const OrderIndex = ({id}) => {
         setShowDeleteOrderProduct(false)
     }
 
+    const openFulfillOrderMessage = () => {
+        setShowFulfillOrderMessage(true)
+    }
+
+    const hideFulfillOrderMessage = () => {
+        setShowFulfillOrderMessage(false)
+    }
+
+
     const deleteOrder = async () => {
         
         value.setBlockingLoading(true)
@@ -237,7 +250,26 @@ const OrderIndex = ({id}) => {
 
             value.setMessage({visible: true, message: "Could not delete product from order", title: "Error Deleting", type: "ERROR"})
         }
+    }
         
+    const fulfillOrder = async() => {
+        value.setBlockingLoading(true)
+        
+        try{
+            const result = await putRequest(FULFILL_ORDER_URL, {id: order._id})
+
+            console.log(result)
+
+            hideFulfillOrderMessage();
+
+            loadOrder();
+
+            value.setBlockingLoading(false)
+        }
+        catch(err){
+            value.setBlockingLoading(false)
+            console.log(err)
+        }
     }
 
     return <div className="pageHolderContent">
@@ -297,20 +329,14 @@ const OrderIndex = ({id}) => {
                         
                         <tr className="notHeader">
                             <td>Order status</td>
-                            {
-                                isStatus ? <td className="tabbedListContentHorizontalTableContent"> 
-                                {/*order && order.status*/}Fulfilled
-                                    <button style={{marginLeft: "16px"}}
-                                className="rectangleButtonPrimary" onClick={showFulfilledStatus}>Pending</button>
-                                </td> : <td className="tabbedListContentHorizontalTableContent"> 
+                            <td className="tabbedListContentHorizontalTableContent"> 
                                 {order && order.status}
-                                    <button style={{marginLeft: "16px"}}
-                                className="rectangleButtonPrimary" onClick={showPendingStatus}>Fulfill</button>
-                                </td>
-                            }
-                            {/*
-                                
-                            */}
+                                {
+                                    order && order.status == "PENDING" && <button onClick={openFulfillOrderMessage} style={{marginLeft: "16px"}}
+                                    className="rectangleButtonPrimary">Fulfill</button>
+                                }
+                            </td>
+
                         </tr>
                         <tr className="notHeader">
                             <td>Fulfillment date</td>
@@ -353,6 +379,10 @@ const OrderIndex = ({id}) => {
 
         {
             showAddProduct && <AddProducts loadOrderProducts={loadOrderProducts} order={order} hideAddProduct={hideAddProduct} />
+        }
+
+        {
+            showFulfillOrderMessage && <MessageDialog onPerformClicked={fulfillOrder} onCancelClicked={hideFulfillOrderMessage} message="Are you sure you want to fulfill this order? Fulfilling this order will deduct the quantity of items in this order from inventory." />
         }
 
         {
