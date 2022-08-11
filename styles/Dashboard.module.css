@@ -20,8 +20,7 @@
 }
 
 .launchProfitTableHolder{
-    max-width: 56%;
-    width: 56%;
+    width: 100%;
     align-items: center;
     display: flex;
     justify-content: space-between;
@@ -30,9 +29,15 @@
 }
 
 .launchProfitTableDetail{
+    width:33.3%;
     font-size: 16px;
     max-width: 60%;
     line-height: 26px;
+}
+
+.launchProfitTableButton{
+    width:33.3%;
+    text-align: center;
 }
 
 

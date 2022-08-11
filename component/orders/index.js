@@ -41,6 +41,7 @@ const OrdersIndex = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
     const [searchResult, setSearchResult] = useState([])
+    const [changeList, setChangeList] = useState([])
 
     useEffect(() => {
         loadOrders()
@@ -177,6 +178,20 @@ const OrdersIndex = () => {
         setSearchTerm(value)
     }
 
+    const selectedOrder = async (event, id) => {
+        const checked = event.target.checked;
+
+        if(checked) {
+            setChangeList(current => [...current, id])
+        } else {
+            setChangeList(current =>
+                current.filter(element => {
+                    return element !== id;
+                }),
+            );
+        }
+    }
+    //console.log(changeList)
 
     return ( <>
         <div className="pageHolderContent">
@@ -227,7 +242,7 @@ const OrdersIndex = () => {
                         {
                             orders && orders.docs && orders.docs.length && orders.docs.map(order => {
                                 return <tr className="notHeader">
-                                        <td style={{paddingLeft: "20px"}}><input type="checkbox" style={{width: "20px", height: "20px", background: "none"}}/></td>
+                                        <td style={{paddingLeft: "20px"}}><input onChange={e => selectedOrder(e, order._id)} type="checkbox" style={{width: "20px", height: "20px", background: "none"}}/></td>
                                         <td onClick={e => navigateToOrder(e, order._id)}>{order.name}</td>
                                         <td onClick={e => navigateToOrder(e, order._id)}>{getDate(order.created)}</td>
                                         <td onClick={e => navigateToOrder(e, order._id)}>{order.status}</td>
