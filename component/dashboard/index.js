@@ -77,12 +77,11 @@ function DashboardIndex() {
                 <div className={styles.launchProfitTableDetail}>
                     <span style={proitableTextStyle}>To see how changes in prices of ingrdients and materials affects your products, orders and recipes.</span>
                 </div>
-                <div className={styles.launchProfitTableButton}>
+                <div>
                     <button onClick={goToProfitable} className="colorWhite primaryButton">
                         Launch Profitable
                     </button>
                 </div>
-                <div className={styles.launchProfitTableDetail}></div>
             </div>
 
 
