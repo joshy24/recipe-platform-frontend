@@ -178,7 +178,7 @@ const OrdersIndex = () => {
         setSearchTerm(value)
     }
 
-    const selectedOrder = async (event, id) => {
+    const selectedOrder = (event, id) => {
         const checked = event.target.checked;
 
         if(checked) {
