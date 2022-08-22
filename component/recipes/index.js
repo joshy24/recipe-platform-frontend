@@ -77,7 +77,10 @@ const RecipesIndex = () => {
     }
 
     const closeSearchRecipes = () => {
-        loadRecipes()
+        if(searchTerm && searchTerm.length > 0){
+            loadRecipes()
+        }
+
         setIsSearchOpen(false)
     }
 
@@ -195,6 +198,40 @@ const RecipesIndex = () => {
                             <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
                         </div>
                     }
+                </div>
+            </div>
+
+            <div className="pageHolderContentTopMobile">
+                <div className="pageHolderContentTopTop">
+                    <h2 className="pageTitle">Recipes</h2>
+
+                    <div style={{display: "flex"}}>
+                        {
+                            isSearchOpen ? <SearchInput searchClicked={searchRecipes} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchRecipes} /> :
+                            <div style={{display: "flex"}}>
+                                <button onClick={showSearchRecipes} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                                <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div className="pageHolderContentMiddle">
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are Recipes? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
+                </div>
+                
+                <div className="pageHolderContentTopBottom">
+                    <h4>Total</h4>
+                    <h5>{recipes ? recipes.totalDocs : 0}</h5>
                 </div>
             </div>
 

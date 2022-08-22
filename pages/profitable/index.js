@@ -1,6 +1,6 @@
 import ProfitableIndex from '../../component/profitable/index'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 function Profitable() {
   return <div className="pageHolder">

@@ -1,15 +1,16 @@
+
 import { useState } from 'react'
 
 import { toUpperCase } from "../../utils/helper"
 
 
-const EditOrderProduct = ({product, onPerformEditClicked, onCancelEditClicked}) => {
+const EditProductRecipe = ({recipe, onPerformEditClicked, onCancelEditClicked}) => {
 
-    const [quantity, setQuantity] = useState(product.quantity)
+    const [quantity, setQuantity] = useState(recipe.yield.amount)
 
     const doEdit = () => {
-        if(quantity !== product.quantity){
-            onPerformEditClicked({...product, quantity: quantity})
+        if(quantity !== recipe.yield.amount){
+            onPerformEditClicked({...recipe, yield: { amount: quantity}})
         }
     }
 
@@ -21,10 +22,10 @@ const EditOrderProduct = ({product, onPerformEditClicked, onCancelEditClicked}) 
 
     return <div className="popUp">
                 <div className="popUpInnerContent">
-                    <h3 className="pageTitle">Edit {product.name.length > 0 && toUpperCase(product.name)}</h3>
+                    <h3 className="pageTitle">Edit {recipe.name.length > 0 && toUpperCase(recipe.name)}</h3>
                 
                     <div className="inputFieldHolder">
-                        <h4>Quantity</h4>
+                        <h4>Amount</h4>
 
                         <input className="ptInput" onChange={onChange} type="number" name="name" value={quantity} />
                     </div>
@@ -37,4 +38,4 @@ const EditOrderProduct = ({product, onPerformEditClicked, onCancelEditClicked}) 
             </div>
 }
 
-export default EditOrderProduct;
+export default EditProductRecipe;

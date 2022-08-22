@@ -214,6 +214,40 @@ const OrdersIndex = () => {
                 </div>
             </div>
 
+            <div className="pageHolderContentTopMobile">
+                <div className="pageHolderContentTopTop">
+                    <h2 className="pageTitle">Orders</h2>
+
+                    <div style={{display: "flex"}}>
+                        {
+                            isSearchOpen ? <SearchInput searchClicked={searchOrders} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchOrders} /> :
+                            <div style={{display: "flex"}}>
+                                <button onClick={showSearchOrders} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                                <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div className="pageHolderContentMiddle">
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stcked in a cone-like shape and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
+                </div>
+                
+                <div className="pageHolderContentTopBottom">
+                    <h4>Total</h4>
+                    <h5>{(orders && orders.docs) ? orders.docs.length : 0}</h5>
+                </div>
+            </div>
+
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}>

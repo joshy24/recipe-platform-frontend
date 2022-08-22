@@ -126,8 +126,31 @@ h1, h2, h3, h4, h5, h6{
   margin-left: 16px;
 }
 
+/*
+Used by product component
+*/
+
+.pageHolder .pageHolderContent .pageHolderContentTopOther{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pageHolderContent .pageHolderContentTopOther div button{
+    margin-left: 16px;
+}
+
+
+
 .pageHolderContentTopMobile{
     display: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .pageHolder .pageHolderContent .pageHolderContentTopOther{
+        display: none;
+    }
 }
 
 @media screen and (max-width: 900px) {
@@ -148,6 +171,12 @@ h1, h2, h3, h4, h5, h6{
         align-items: center;
     }
 
+    .pageHolderContentTopMobile .pageHolderContentTopTopOther{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
     .pageHolderContentTopMobile .pageHolderContentTopTop div button{
         margin-left: 16px;
     }
@@ -155,23 +184,43 @@ h1, h2, h3, h4, h5, h6{
     .pageHolderContentTopMobile .pageHolderContentMiddle{
         display: flex;
         justify-content: flex-start;
-        align-items: center;
         flex-direction: column;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentMiddle{
+        margin-top: 16px;
     }
 
     .pageHolderContentTopMobile .pageHolderContentTopBottom{
         display: flex;
         justify-content: flex-start;
-        align-items: center;
+        align-items: flex-start;
+        flex-direction: column;
         margin-top: 16px;
     }
 
     .pageHolderContentTopMobile .pageHolderContentTopBottom h4,h5{
         margin: 0px;
     }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem *{
+        margin-right: 16px;
+    }
 }
 
 @media screen and (max-width: 750px) {
+
+    .pageHolder{
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
     .pageHolderContentTopMobile .pageHolderContentTopTop{
         display: flex;
         justify-content: space-between;
@@ -210,10 +259,36 @@ Padding
 }
 
 
+
+/*
+Margin
+*/
+
+.tinyRightMargin{
+    margin-right: 8px;
+}
+
+.smallRightMargin{
+    margin-right: 16px;
+}
+
+.mediumRightMargin{
+    margin-right: 24px;
+}
+
+.largeRightMargin{
+    margin-right: 40px;
+}
+
+
+
+
+
 .ptAlignTextLeft{
     text-align: left;
     width: 100%;
 }
+
 
 
 
@@ -633,6 +708,12 @@ New UI stuff
 .whatIsContentCloseBtn{
     margin-right: -12px;
     margin-top: -12px;
+    min-width: 30px;
+    min-height: 30px;
+    width: 30px;
+    height: 30px;
+    margin-top: 1px;
+    margin-right: 1px;
 }
 
 .whatIsContentCloseBtn:hover{
@@ -670,7 +751,6 @@ New UI stuff
 
 .tabbedListTabsItem{
     background: #E0E0E0;
-    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -726,6 +806,10 @@ New UI stuff
 /*
 New UI's
 */
+
+.tabbedListTableHolder{
+    overflow-x: auto;
+}
 
 .tabbedListTable{
     border-spacing: 1px 10px;
@@ -785,6 +869,7 @@ New UI's
     height: 70px;
     max-height: 70px;
     min-height: 70px;
+    min-width: 100px;
 }
 
 
@@ -842,6 +927,26 @@ New UI's
 }
 
 
+@media screen and (max-width: 700px) {
+    .tabbedListTable{
+        padding: 20px 18px 20px 18px;
+    }
+
+    .tabbedListTable th{
+        padding-left: 20px;
+        font-size: 13px;
+    }
+
+    .tabbedListTable td{
+        padding-left: 20px;
+        font-size: 13px;
+    }
+ 
+    .tabbedListTabsItem h5{
+        font-size: 14px;
+    }
+}
+
 
 /*
 select field styling
@@ -880,6 +985,13 @@ select field styling
 
   .pageContentTopSelectField:hover{
       cursor: pointer;
+  }
+
+  @media screen and (max-width: 900px) {
+    .pageContentTopSelectField {
+        margin-left: 0px;
+        margin-right: 16px;
+    }
   }
 
 

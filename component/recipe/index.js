@@ -7,6 +7,8 @@ import AddIngredients from "./addingredients"
 
 import EditRecipe from "./editrecipe"
 
+import EditRecipeIngredient from "./editrecipeingredient"
+
 import DeleteDialog from "../general/deletedialog"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,7 +26,7 @@ import EmptyResult from "../general/emptyResult"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_RECIPE, ALL_RECIPE_INGREDIENTS_URL, EDIT_RECIPE_URL, DELETE_RECIPE_URL } from "../../utils/api.endpoints"
+import { BASE_URL, GET_RECIPE, ALL_RECIPE_INGREDIENTS_URL, EDIT_RECIPE_URL, DELETE_RECIPE_URL, EDIT_RECIPE_INGREDIENT_URL, DELETE_RECIPE_INGREDIENT_URL } from "../../utils/api.endpoints"
 
 const get_recipe_url = BASE_URL + GET_RECIPE
 
@@ -49,6 +51,13 @@ const RecipeIndex = ({id}) => {
     const [ingredients, setIngredients] = useState([])
 
     const [pagination, setPagination] = useState({offset: 0, limit: 30})
+
+    const [showEditRecipeIngredient, setShowEditRecipeIngredient] = useState(false)
+
+    const [showDeleteRecipeIngredient, setShowDeleteRecipeIngredient] = useState(false)
+
+    const [entityInFocus, setEntityInFocus] = useState({})
+    
 
     useEffect(() => {
         loadRecipe()
@@ -135,16 +144,41 @@ const RecipeIndex = ({id}) => {
         }
     }
 
-    const showEditIngredient = () => {
+    const editIngredient = async (newEditedRecipe) => {
+        value.setBlockingLoading(true)
         
+        console.log(newEditedRecipe)
+
+        try{
+            await putRequest(EDIT_RECIPE_INGREDIENT_URL, {id:id, ingredient_id: newEditedRecipe._id, quantity: newEditedRecipe.quantity})
+
+            value.setBlockingLoading(false)
+
+            
+            hideEditRecipeIngredient()
+
+            loadRecipeIngredients()
+        }
+        catch(err){
+            console.log(err)
+
+            value.setBlockingLoading(false)
+
+            hideEditRecipeIngredient()
+
+            value.setMessage({visible: true, message: "Could not edit recipe ingredient successfully", title: "Message", type: "ERROR"})
+        }
     }
 
-    const editIngredient = async () => {
-        
+    const openEditRecipeIngredient = (e, ingredientToEdit) => {
+        e.preventDefault()
+        setEntityInFocus(ingredientToEdit)
+        setShowEditRecipeIngredient(true)
     }
 
-    const hideEditIngredient = () => {
-
+    const hideEditRecipeIngredient = () => {
+        setEntityInFocus({})
+        setShowEditRecipeIngredient(false)
     }
 
     const openDeleteRecipe = () => {
@@ -171,16 +205,38 @@ const RecipeIndex = ({id}) => {
         }
     }
 
-    const showDeleteIngredient = () => {
-        
+    const showDeleteIngredient = (e, ingredientToDelete) => {
+        e.preventDefault()
+        setEntityInFocus(ingredientToDelete)
+        setShowDeleteRecipeIngredient(true)
     }
 
     const hideDeleteIngredient = () => {
-        
+        setEntityInFocus({})
+        setShowDeleteRecipeIngredient(false)
     }
 
     const deleteIngredient = async () => {
+        value.setBlockingLoading(true)
         
+        try{
+            await deleteRequest(DELETE_RECIPE_INGREDIENT_URL, {ingredient_id:entityInFocus._id, id:id})
+
+            value.setBlockingLoading(false)
+
+            hideDeleteIngredient();
+
+            loadRecipeIngredients()
+        }
+        catch(err){
+            console.log(err)
+
+            value.setBlockingLoading(false)
+
+            hideDeleteIngredient()
+
+            value.setMessage({visible: true, message: "Could not delete ingredient from recipe", title: "Error Deleting", type: "ERROR"})
+        }
     }
 
     const getRecipeCost = () => {
@@ -204,10 +260,6 @@ const RecipeIndex = ({id}) => {
                 <h5>
                     Description - <span>{recipe && recipe.description}</span>
                 </h5>
-
-                <h5>
-                    Category - <span></span>
-                </h5>
             </div>
 
             <div className="pageHolderContentTopCenter">
@@ -221,6 +273,31 @@ const RecipeIndex = ({id}) => {
                 <button onClick={openEditRecipe} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                 <button onClick={openAddIngredients} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
                 <button onClick={openDeleteRecipe} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+            </div>
+        </div>
+
+        <div className="pageHolderContentTopMobile">
+            <div style={mobileTopSpacer} className="pageHolderContentTopTop">
+                <h2 className="pageTitle">Recipe - <span className="pageTitleContentHeader">{recipe && recipe.name}</span></h2>
+            </div>
+
+            <div className="pageHolderContentMiddle">
+                <h5 style={mobileMiddleSpacer}> 
+                    Description - <span>{recipe && recipe.description}</span>
+                </h5>
+                <div style={{display: "flex"}}>
+                    <button style={mobileMiddleRightSpacer} onClick={openEditRecipe} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                    <button style={mobileMiddleRightSpacer} onClick={openAddIngredients} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
+                    <button style={mobileMiddleRightSpacer} onClick={openDeleteRecipe} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                </div>
+            </div>
+            
+            <div className="pageHolderContentTopBottom">
+                <div className="pageHolderContentTopBottomItem">
+                    <h4>Total Cost</h4>
+                    <span>-</span>
+                    <h5>{getRecipeCost()}</h5>
+                </div>
             </div>
         </div>
 
@@ -254,10 +331,6 @@ const RecipeIndex = ({id}) => {
                             </td>
                         </tr>
                         <tr className="notHeader">
-                            <td>Category</td>
-                            <td></td>
-                        </tr>
-                        <tr className="notHeader">
                             <td>Total Cost</td>
                             <td>{getRecipeCost()}</td>
                         </tr>
@@ -282,8 +355,8 @@ const RecipeIndex = ({id}) => {
                                                     <td>{ingredient.purchase_size}</td>
                                                     <td>{getAmount(ingredient.totalCost)}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
-                                                        <button style={{marginLeft: "16px"}} onClick={openEditRecipe} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                                        <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                        <button style={{marginLeft: "16px"}} onClick={e => openEditRecipeIngredient(e, ingredient)} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                        <button style={{marginLeft: "16px"}} onClick={e => showDeleteIngredient(e, ingredient)} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                                     </td>
                                                 </tr>
                                             })
@@ -314,7 +387,29 @@ const RecipeIndex = ({id}) => {
             showDeleteRecipe && <DeleteDialog type={"Recipe"} onPerformDeleteClicked={deleteRecipe} onCancelDeleteClicked={hideDeleteRecipe} />
         }
 
+        {
+            showEditRecipeIngredient && <EditRecipeIngredient ingredient={entityInFocus} onPerformEditClicked={editIngredient} onCancelEditClicked={hideEditRecipeIngredient} />
+        }
+
+        {
+            showDeleteRecipeIngredient && <DeleteDialog onPerformDeleteClicked={deleteIngredient} onCancelDeleteClicked={hideDeleteIngredient} type={`${entityInFocus.name} from ${recipe.name}`} />
+        }
+
     </div>
 }
 
 export default RecipeIndex;
+
+const mobileMiddleSpacer = {
+    marginBottom: "16px",
+    marginTop: "0px"
+}
+
+const mobileMiddleRightSpacer = {
+    marginRight: "16px"
+}
+
+const mobileTopSpacer = {
+    marginBottom: "0px",
+    marginTop: "0px"
+}

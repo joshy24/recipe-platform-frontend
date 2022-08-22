@@ -199,7 +199,7 @@ const ProductsIndex = () => {
 
             <div className="pageHolderContentTopMobile">
                 <div className="pageHolderContentTopTop">
-                <h2 className="pageTitle">Products</h2>
+                    <h2 className="pageTitle">Products</h2>
 
                     <div style={{display: "flex"}}>
                     {
@@ -226,8 +226,11 @@ const ProductsIndex = () => {
                 </div>
                 
                 <div className="pageHolderContentTopBottom">
-                    <h4>Total</h4>
-                    <h5>{products ? products.totalDocs : 0}</h5>
+                    <div className="pageHolderContentTopBottomItem">
+                        <h4>Total</h4>
+                        <span>-</span>
+                        <h5>{products ? products.totalDocs : 0}</h5>
+                    </div>
                 </div>
             </div>
 

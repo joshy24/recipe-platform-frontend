@@ -28,6 +28,8 @@ export const GET_PRODUCT = API_VERSION+"/product"
 
 export const ADD_PRODUCT = API_VERSION+"/products/add"
 
+export const EDIT_PRODUCT_URL = BASE_URL+API_VERSION+"/product/edit"
+
 export const ADD_MATERIALS_TO_PRODUCT = API_VERSION+"/product/add_materials"
 
 export const ADD_RECIPES_TO_PRODUCT = API_VERSION+"/product/add_recipes"
@@ -40,9 +42,15 @@ export const DELETE_PRODUCT_MATERIAL = BASE_URL+API_VERSION+"/product/delete_mat
 
 export const DELETE_PRODUCT_RECIPE = BASE_URL+API_VERSION+"/product/delete_recipe"
 
+export const DELETE_PRODUCT_URL = BASE_URL+API_VERSION+"/product/delete"
+
 export const PRODUCTS_TO_ADD_URL = BASE_URL+API_VERSION+"/products/products_to_add"
 
 export const PRODUCTS_PROFITABLE_URL = BASE_URL+API_VERSION+"/profit_table/product_changes"
+
+export const EDIT_PRODUCT_RECIPE_URL = BASE_URL+API_VERSION+"/product/edit_recipe"
+
+export const EDIT_PRODUCT_MATERIAL_URL = BASE_URL+API_VERSION+"/product/edit_material"
 
 
 
@@ -63,6 +71,10 @@ export const ADD_INGREDIENTS_TO_RECIPE_URL = BASE_URL+API_VERSION+"/recipe/add_i
 export const EDIT_RECIPE_URL = BASE_URL+API_VERSION+"/recipe/edit"
 
 export const DELETE_RECIPE_URL = BASE_URL+API_VERSION+"/recipe/delete"
+
+export const EDIT_RECIPE_INGREDIENT_URL = BASE_URL+API_VERSION+"/recipe/edit_ingredient"
+
+export const DELETE_RECIPE_INGREDIENT_URL = BASE_URL+API_VERSION+"/recipe/delete_ingredient"
 
 
 

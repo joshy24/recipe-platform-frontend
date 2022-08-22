@@ -90,7 +90,7 @@ const IngredientsIndex = () => {
             
             var result = await getRequest(url)
 
-            setInventory(result.response.docs)
+            setInventory(result.response)
 
             value.setLoading(false)
         }
@@ -113,9 +113,9 @@ const IngredientsIndex = () => {
 
     }
 
-    const showEditInventory = (e, inventory) => {
+    const showEditInventory = (e, anInventory) => {
         e.preventDefault()
-        setInventoryInFocus(inventory)
+        setInventoryInFocus(anInventory)
         setShowEdit(true)
     }
 
@@ -148,7 +148,7 @@ const IngredientsIndex = () => {
     }
 
     const performExport = async () => {
-        if(inventory && inventory.length > 0){
+        if(inventory && inventory.docs.length > 0){
             const csv = Papa.unparse(inventory)
 
             //download content
@@ -156,12 +156,12 @@ const IngredientsIndex = () => {
         }
     }
 
-    const showDeleteInventoryItem = (e, inventory) => {
+    const showDeleteInventoryItem = (e, anInventory) => {
         e.preventDefault()
 
-        setInventoryInFocus(inventory)
+        setInventoryInFocus(anInventory)
 
-        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(inventory.name)} from inventory`})
+        setIsDelete({visible: true, title: "Confirm Action", message:`Confirm that you want to delete ${toUpperCase(anInventory.name)} from inventory`})
     }
 
     const hideDeleteInventoryItem = () => {
@@ -227,7 +227,7 @@ const IngredientsIndex = () => {
             
             var result = await getRequest(url)
 
-            setInventory(result.response.docs)
+            setInventory(result.response)
 
             value.setLoading(false)
         }
@@ -262,6 +262,45 @@ const IngredientsIndex = () => {
                             <button onClick={performExport} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
                         </div>
                     }
+                </div>
+            </div>
+
+            <div className="pageHolderContentTopMobile">
+                <div className="pageHolderContentTopTop">
+                    <div>
+                        <h2 className="pageTitle">Inventory</h2>
+                        <h5>Ingredients and Materials</h5>
+                    </div>
+
+                    <div style={{display: "flex", flexWrap: "wrap", marginTop: "16px"}}>
+                        {
+                            isSearchOpen ? <SearchInput searchClicked={search} onSearchChanged={onSearchChanged} closeSearchClicked={hideSearch} /> :
+                            <div style={{display: "flex", flexWrap: "wrap"}}>
+                                <select style={mobileTopSpacer} onChange={onFieldChanged} name="type" className="pageContentTopSelectField">
+                                    <option value="materials">Materials</option>
+                                    <option value="ingredients">Ingredients</option>
+                                </select>
+                                <select style={mobileTopSpacer} onChange={onFieldChanged} name="status" className="pageContentTopSelectField">
+                                    <option>All</option>
+                                    <option>Low</option>
+                                    <option>Normal</option>
+                                </select>
+                                
+                                <div style={{display: "flex"}}>
+                                    <button style={mobileTopSpacer} onClick={showSearch} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faSearch} /></button>
+                                    <button style={mobileTopSpacer} onClick={openShowAdd} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faAdd} /></button>
+                                    <button style={mobileTopSpacer} onClick={performExport} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div className="pageHolderContentMiddle">
+                    
+                </div>
+                
+                <div className="pageHolderContentTopBottom">
                     
                 </div>
             </div>
@@ -285,7 +324,7 @@ const IngredientsIndex = () => {
                                     <th style={{width: "20%", paddingLeft: "20px", fontSize: "14px"}}></th>
                                 </tr>
                                 {
-                                    inventory.map(invent => {
+                                    inventory && inventory.docs && inventory.docs.map(invent => {
                                         return <tr className="notHeader">
                                             <td style={{paddingLeft: "30px"}}>{toUpperCase(invent.name)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_quantity && invent.purchase_quantity.amount}</td>
@@ -308,7 +347,7 @@ const IngredientsIndex = () => {
                 </table>
 
                 {
-                    (!value.state.isLoading && !value.state.isBlockingLoading && (inventory.length == 0 || !inventory)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
+                    (!value.state.isLoading && !value.state.isBlockingLoading && (!inventory || !inventory.docs || inventory.docs.length == 0)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
                 }
 
             </div>
@@ -329,3 +368,14 @@ const IngredientsIndex = () => {
 }
 
 export default IngredientsIndex;
+
+const mobileMiddleSpacer = {
+    marginBottom: "16px",
+    marginTop: "0px"
+}
+
+
+const mobileTopSpacer = {
+    marginBottom: "0px",
+    marginTop: "12px"
+}

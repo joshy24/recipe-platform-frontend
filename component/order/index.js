@@ -359,14 +359,19 @@ const OrderIndex = ({id}) => {
                 {
                     whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
                         <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
-                        <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        <div className="whatIsContentCloseBtn">
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} src="/images/closeorange.png" width={44} height={44} minWidth={40} />
+                        </div>
                     </div>
                 }
             </div>
             
             <div className="pageHolderContentTopBottom">
-                <h4>Products</h4>
-                <h5>{ products ? products.length : 0 }</h5>
+                <div className="pageHolderContentTopBottomItem">
+                    <h4>Products</h4>
+                    <span>-</span>
+                    <h5>{ products ? products.length : 0 }</h5>
+                </div>
             </div>
         </div>
 

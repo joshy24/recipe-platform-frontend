@@ -352,3 +352,87 @@ Add Ingredients Component
 
 
 
+
+
+
+
+.pageHolderContentTopMobile{
+    display: none;
+}
+
+@media screen and (max-width: 1200px) {
+
+    .pageHolderContentTopForProduct{
+        display: none;
+    }
+
+    .pageHolderContentTopMobile{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTopOther{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop div button{
+        margin-left: 16px;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentMiddle{
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentMiddle{
+        margin-top: 16px;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-top: 16px;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .text{
+        margin: 0px;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem{
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem *{
+        margin-right: 16px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop{
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pageHolderContentTopMobile .pageHolderContentTopTop div button{
+        margin-left: 0px;
+        margin-right: 16px;
+    }
+
+}

@@ -1,7 +1,7 @@
 
 import RecipeIndex from '../../component/recipe/index'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 export async function getServerSideProps(context) {
   const {

@@ -1,6 +1,6 @@
 import DashboardIndex from '../../component/dashboard/index'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 function Dashboard() {
 

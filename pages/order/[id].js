@@ -1,7 +1,7 @@
 
 import OrderIndex from '../../component/order/index'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 export async function getServerSideProps(context) {
   const {
