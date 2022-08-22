@@ -1,7 +1,7 @@
 
 import ProfitableApplyComponent from '../../../component/profitable/apply'
 
-import withAuth from "../../utils/withAuthRefactored"
+import withAuth from "../../../utils/withAuthRefactored"
 
 export async function getServerSideProps(context) {
     const {
