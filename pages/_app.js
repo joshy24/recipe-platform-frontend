@@ -10,7 +10,7 @@ const MyApp = ({ Component, pageProps }) => {
     const [isBlockingLoading, setBlockingLoading] = useState(false)
     const [message, setMessage] = useState({visible: false, message: "", title: "", type: ""})
 
-    return <div>
+    return (
         <AppContext.Provider
           value={{
               state: {
@@ -23,21 +23,19 @@ const MyApp = ({ Component, pageProps }) => {
           }}
         >
           <Component {...pageProps} />
+        {
+            isLoading && <LoadingComponent visible={isLoading} />
+        }
+
+        {
+            isBlockingLoading && <BlockingLoadingComponent visible={isBlockingLoading} />
+        }
+
+        {
+            message.visible && <Message setMessage={setMessage} message={message} />
+        }
       </AppContext.Provider>
-      
-      {
-          isLoading && <LoadingComponent visible={isLoading} />
-      }
-
-      {
-          isBlockingLoading && <BlockingLoadingComponent visible={isBlockingLoading} />
-      }
-
-      {
-          message.visible && <Message setMessage={setMessage} message={message} />
-      }
-
-    </div>
+    )
 }
 
 export default MyApp
