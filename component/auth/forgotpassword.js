@@ -3,7 +3,7 @@ import Link from "next/link"
 
 import styles from "../../styles/Auth.module.css"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext }from "../../pages/AppContext";
 
 import { useState, useContext } from "react";
 
@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
     const initialState = { email: ''}
 
-    const value = useContext(AppContext);
+    const value = AppContext();
 
     const [userData, setUserData] = useState(initialState)
 

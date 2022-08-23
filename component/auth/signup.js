@@ -5,10 +5,7 @@ import styles from "../../styles/Auth.module.css"
 
 import { useRouter } from "next/router"
 
-import AppContext from "../../pages/AppContext";
-
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import { AppContext }from "../../pages/AppContext";
 
 import { useState, useContext } from "react";
 
@@ -22,7 +19,7 @@ const SignUp = () => {
 
     const [userData, setUserData] = useState(initialState)
 
-    const value = useContext(AppContext);
+    const value = AppContext();
 
     const [isInput, setIsInput] = useState(false)
     const [isName, setIsName] = useState(false)

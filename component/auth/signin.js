@@ -5,18 +5,11 @@ import styles from "../../styles/Auth.module.css"
 
 import { useRouter } from "next/router"
 
-import Message from "../general/message"
-
-import AppContext from "../../pages/AppContext";
+import { AppContext }from "../../pages/AppContext";
 
 import AuthHelperMethods from '../../utils/AuthHelperMethods';
 
-import { useState, useContext } from "react";
-
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
-
-import { postRequest } from "../../utils/api.requests";
+import { useState } from "react";
 
 const Auth = new AuthHelperMethods();
 
@@ -24,7 +17,7 @@ const Signin = () => {
 
     const initialState = { email: '', password: ''}
 
-    const value = useContext(AppContext);
+    const value = AppContext();
 
     const [userData, setUserData] = useState(initialState)
 

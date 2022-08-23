@@ -1,14 +1,9 @@
 
-import Link from "next/link"
-
 import { useState, useContext } from "react";
 
 import { useRouter } from "next/router"
 
-import AppContext from "../../pages/AppContext";
-
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import { AppContext }from "../../pages/AppContext";
 
 import styles from "../../styles/Auth.module.css"
 
@@ -16,7 +11,7 @@ const ResetPassword = () => {
 
     const initialState = { password: "", confirm_password: "" }
 
-    const value = useContext(AppContext);
+    const value = AppContext();
 
     const [userData, setUserData] = useState(initialState)
 
