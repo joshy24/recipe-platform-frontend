@@ -18,7 +18,7 @@ import {getAmount, getDate} from "../../utils/helper"
 
 import { useRouter } from "next/router"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
@@ -29,7 +29,7 @@ const create_recipe_url = BASE_URL + CREATE_RECIPE
 const get_recipes_url = BASE_URL + GET_ALL_RECIPES
 
 const RecipesIndex = () => {
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const router = useRouter()
 

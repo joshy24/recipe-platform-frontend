@@ -20,7 +20,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import EmptyResult from "../general/emptyResult"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
@@ -32,7 +32,7 @@ const add_product_url = BASE_URL + ADD_PRODUCT
 
 const ProductsIndex = () => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const router = useRouter()
     const navigateToProduct = (e, id) => {

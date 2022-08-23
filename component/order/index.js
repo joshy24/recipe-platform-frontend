@@ -12,7 +12,7 @@ import EditOrderProduct from "./editorderproduct"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
@@ -34,7 +34,7 @@ const OrderIndex = ({id}) => {
 
     const [selected, setSelected] = useState(1)
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [showAddProduct, setShowAddProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)

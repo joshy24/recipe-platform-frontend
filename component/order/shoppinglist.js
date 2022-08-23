@@ -1,5 +1,5 @@
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { useEffect, useState, useContext } from "react"
 
@@ -16,7 +16,7 @@ import { ORDER_SHOPPING_LIST_URL } from "../../utils/api.endpoints"
 
 const ShoppingList = ({id}) => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [order,setOrder] = useState({})
 

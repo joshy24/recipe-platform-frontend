@@ -5,7 +5,7 @@ import EditIngredient from "../general/editingredient"
 
 import DeleteDialog from "../general/deletedialog"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { useEffect, useState, useContext } from "react"
 
@@ -34,7 +34,7 @@ const get_inventory_url = BASE_URL + GET_ALL_INVENTORY
 
 const IngredientsIndex = () => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [showAdd, setShowAdd] = useState(false)
 

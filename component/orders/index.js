@@ -19,7 +19,7 @@ import EmptyResult from "../general/emptyResult"
 
 
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
@@ -29,7 +29,7 @@ import { ALL_ORDERS_URL, CREATE_ORDER_URL, SEARCH_ORDERS_URL} from "../../utils/
 
 const OrdersIndex = () => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)

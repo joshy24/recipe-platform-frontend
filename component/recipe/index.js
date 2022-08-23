@@ -20,7 +20,7 @@ import { toUpperCase, getAmount } from "../../utils/helper"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import EmptyResult from "../general/emptyResult"
 
@@ -37,7 +37,7 @@ const RecipeIndex = ({id}) => {
 
     const router = useRouter();
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)

@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 
 import EmptyResult from "../general/emptyResult"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import AddMaterials from "./addmaterials"
 import AddRecipes from "./addrecipes"
@@ -39,7 +39,7 @@ const MaterialsTab = "Materials"
 
 
 const ProductIndex = ({id}) => {
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const router = useRouter()
 
