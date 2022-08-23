@@ -9,11 +9,11 @@ const Auth = new AuthHelperMethods();
 const SettingsIndex = () => {
     const router = useRouter() 
 
-    const Auth = new AuthHelperMethods();
+    const user = Auth.getAdmin()
 
     const [isEdit, setIsEdit] = useState(false)
 
-    const [percentage, setPercentage] = useState(20)
+    const [percentage, setPercentage] = useState(user.profit_margin)
     
     const switchIsEdit = () => {
         setIsEdit(!isEdit)
@@ -31,15 +31,15 @@ const SettingsIndex = () => {
         router.push("/auth/signin")
     }
 
-    return <div className={styles.settingsIndex}>
-        <div className={styles.settingsIndexTop}>
+    return <div className="pageHolderContent">
+        <div className="pageHolderContentTop">
             <h2 className="pageTitle">
                 Settings
             </h2>
         </div>
 
         <div className={styles.settingsDetails}>
-            <h4>
+            <h4 style={{marginTop: "0px"}}>
                 Profit margin of Recipes - 
             </h4>
 

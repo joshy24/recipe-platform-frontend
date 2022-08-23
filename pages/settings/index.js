@@ -6,7 +6,7 @@ import withAuth from "../../utils/withAuthRefactored"
 
 function Settings() {
 
-  return <div className={`pageHolder ${styles.settingsPageHolder}`}>
+  return <div className={`pageHolder`}>
       <SettingsIndex />
   </div>
 }
