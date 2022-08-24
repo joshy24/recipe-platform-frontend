@@ -90,7 +90,7 @@ const AccountIndex = () => {
             <div className="inputFieldHolder">
                 
                 {
-                    isEdit ? <button onClick={switchIsEdit} className={`${styles.saveButton} primaryButton`}>Save</button> : null
+                    isEdit ? <button onClick={switchIsEdit} className={`${styles.saveButton} rectanglepPrimaryButton`}>Save</button> : null
                 }
             </div>
         </div>     
