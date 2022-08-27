@@ -51,8 +51,8 @@ const AccountIndex = () => {
             <h2 className="pageTitle">Account</h2>
 
             { 
-                isEdit ? <button onClick={switchIsEdit} className={`${styles.cancelButton} secondaryButton`}>Cancel</button>
-                :<button onClick={switchIsEdit} className={`${styles.editButton} secondaryButton`}>Edit</button>
+                isEdit ? <button onClick={switchIsEdit} className={`${styles.cancelButton} rectangleButtonGrey`}>Cancel</button>
+                :<button onClick={switchIsEdit} className={`${styles.editButton} rectangleButtonPrimary`}>Edit</button>
             }
         </div>
 
@@ -66,7 +66,7 @@ const AccountIndex = () => {
             <div className="inputFieldHolder">
                 <h4>Password</h4>
                 {
-                    isEdit ? <button onClick={openChangePassword} value={profile.password} className={`${styles.changePasswordButton} secondaryButton`}>Change Password</button> : <h5>********</h5>
+                    isEdit ? <button onClick={openChangePassword} value={profile.password} className={`${styles.changePasswordButton} rectangleButtonGrey`}>Change Password</button> : <h5>********</h5>
                 }
             </div>
             <div className="inputFieldHolder">
@@ -90,7 +90,7 @@ const AccountIndex = () => {
             <div className="inputFieldHolder">
                 
                 {
-                    isEdit ? <button onClick={switchIsEdit} className={`${styles.saveButton} rectanglepPrimaryButton`}>Save</button> : null
+                    isEdit ? <button onClick={switchIsEdit} className={`${styles.saveButton} rectangleButtonPrimary`}>Save</button> : null
                 }
             </div>
         </div>     

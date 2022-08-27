@@ -46,27 +46,27 @@ const SettingsIndex = () => {
             <div className={styles.settingsInputFieldHolder}>
                 { 
                     isEdit
-                    ? <input onChange={onChange} value={percentage} type="number" name="percentage" placeholder="Enter margin percentage" />
+                    ? <input className="ptInput" onChange={onChange} value={percentage} type="number" name="percentage" placeholder="Enter margin percentage" />
                     : <h4>{percentage}</h4>
                 } <h4>%</h4>
             </div>
 
             {
-                !isEdit && <button onClick={switchIsEdit} className={`colorWhite secondaryButton`}>Edit</button>
+                !isEdit && <button onClick={switchIsEdit} className={`colorWhite rectangleButtonPrimary`}>Edit</button>
             }
         </div>
         
         <div className={styles.settingsButtonsHolder}> 
             {
                 isEdit && <div>
-                    <button onClick={switchIsEdit} className={`primaryButton`}>Save</button>
-                    <button onClick={switchIsEdit} className={`greyButton`}>Cancel</button>
+                    <button onClick={switchIsEdit} className={`rectangleButtonPrimary`}>Save</button>
+                    <button onClick={switchIsEdit} className={`rectangleButtonGrey`}>Cancel</button>
                 </div>
             }
         </div>
         
         <div className={styles.settingsButtonsHolder}>
-            <button onClick={doLogout} className={`${styles.signOutButton} greyButton`}>Sign Out</button>
+            <button onClick={doLogout} className={`${styles.signOutButton} rectangleButtonGrey`}>Sign Out</button>
         </div>
 
     </div>

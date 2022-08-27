@@ -44,7 +44,7 @@ export const DELETE_PRODUCT_MATERIAL = BASE_URL+API_VERSION+"/product/delete_mat
 
 export const DELETE_PRODUCT_RECIPE = BASE_URL+API_VERSION+"/product/delete_recipe"
 
-export const DELETE_PRODUCT_URL = BASE_URL+API_VERSION+"/product/delete"
+export const DELETE_PRODUCT_URL = BASE_URL+API_VERSION+"/products/delete"
 
 export const PRODUCTS_TO_ADD_URL = BASE_URL+API_VERSION+"/products/products_to_add"
 

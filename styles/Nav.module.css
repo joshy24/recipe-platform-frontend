@@ -183,6 +183,10 @@ Nav PopUp Component
         display: none;
     }
 
+    .navAvatar{
+        display: none;
+    }
+
     .mobileNavMenuBtn{
         background: url("/images/menu.png");
         background-repeat: no-repeat;
@@ -193,10 +197,6 @@ Nav PopUp Component
         border: none;
         margin-right: 16px;
         display: inline;
-    }
-
-    .navAvatar{
-        display: none;
     }
 
     .navPopUp{
@@ -222,7 +222,7 @@ Nav PopUp Component
         display: inline;
     }
 
-    .navAvatar{
+    .navHolderTopRight .navAvatar{
         display: none;
     }
 

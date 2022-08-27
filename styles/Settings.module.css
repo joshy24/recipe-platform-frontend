@@ -55,6 +55,10 @@
     margin-top: 30px;
 }
 
+.settingsButtonsHolder div{
+    display: flex;
+}
+
 .settingsButtonsHolder div > * {
     margin-right: 24px;
 }

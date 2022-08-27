@@ -28,7 +28,6 @@ const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
     return <tr className="notHeader">
         <td style={{paddingLeft: "30px"}}>{toUpperCase(recipe.name)}</td>
         <td style={{paddingLeft: "30px"}}>{recipe.yield && recipe.yield.amount} {recipe.yield && recipe.yield.unit}</td>
-        <td style={{paddingLeft: "30px"}}>{getAmount(recipe.cost)}</td>
         <td style={{paddingLeft: "30px"}}>
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter yield" value={recipe.yield ? (quantity > recipe.yield.amount ? recipe.yield.amount : quantity) : quantity} onChange={e => onChange(e)} />
         </td>

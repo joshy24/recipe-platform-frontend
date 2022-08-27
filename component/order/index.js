@@ -400,7 +400,7 @@ const OrderIndex = ({id}) => {
                         
                         <tr className="notHeader">
                             <td>Order status</td>
-                            <td>
+                            <td className="tabbedListContentHorizontalTableContent">
                                 {order && order.status}
                                 {
                                     order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>

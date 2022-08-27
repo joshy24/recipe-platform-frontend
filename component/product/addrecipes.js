@@ -151,11 +151,10 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                             {
                                 recipes && recipes.length > 0 ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Name</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Yield</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Cost</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Yield To Add</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}></th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Name</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Yield</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Yield To Add</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
                                     recipes.map(recipe => {

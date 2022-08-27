@@ -474,7 +474,7 @@ const ProductIndex = ({id}) => {
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="notHeader">
                             <td style={{width: "24%"}}>Cost Price</td>
-                            <td style={{width: "76%"}}>{product && recipes.docs && materials.docs && getAmount(getTotalCost())}</td>
+                            <td style={{width: "76%"}}>{product && getAmount(getTotalCost())}</td>
                         </tr>
                         <tr className="notHeader">
                             <td>Labour Cost</td>
@@ -486,7 +486,7 @@ const ProductIndex = ({id}) => {
                         </tr>
                         <tr className="notHeader">
                             <td>Total Cost Price</td>
-                            <td>{product && recipes.docs && materials.docs && getAmount(getTotalCostPrice())}</td>
+                            <td>{product && getAmount(getTotalCostPrice())}</td>
                         </tr>
                         <tr className="notHeader" style={{marginBottom: "24px"}}>
                             <td>Profit Margin</td>
@@ -494,7 +494,7 @@ const ProductIndex = ({id}) => {
                         </tr>
                         <tr className="notHeader">
                             <td>Proposed Selling Price</td>
-                            <td>{product && recipes.docs && materials.docs && getAmount(getProposedSellingCost())}</td>
+                            <td>{product && getAmount(getProposedSellingCost())}</td>
                         </tr>
                         <tr className="notHeader">
                             <td>Actual Selling Price</td>
