@@ -125,7 +125,7 @@ const Signin = () => {
 
     return <div className={styles.authHolderInnerContent}>
         <div>
-            <h2 className={styles.authTitle}>SignIn</h2>
+            <h2 className={styles.authTitle}>Sign In</h2>
             <div className={styles.authErrorText}>
                 {
                     isInput && <h5>An input field cannot be empty.</h5>

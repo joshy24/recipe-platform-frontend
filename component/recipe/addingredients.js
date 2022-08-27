@@ -23,7 +23,7 @@ const mediumTextStyle = {
     marginTop: "12px"
 }
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -34,7 +34,7 @@ import { BASE_URL, INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../
 
 const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => {
 
-    const value = useContext(AppContext);
+    const value = AppContext();
     
     const [ingredients, setIngredients] = useState([])
 

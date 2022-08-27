@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+import LogoText from "../component/general/logotext"
+
 import Link from "next/link"
 
 export default function Home() {
@@ -14,10 +16,20 @@ export default function Home() {
                 </Head>
 
                 <div className="indexMain">
-                    <h4>Profit Table</h4>
-                    <h3>Organize your ingredients, recipes and costings.</h3>
+                    <div className="leftContent">
+                        <div className="topContent">
+                            <LogoText width={95} height={123} fontSize={50} />
+                            <h5>Organize your ingredients, recipes, orders and costings.</h5>
 
-                    <button><Link href="/auth/signin">Get Started</Link></button>
+                            <button><Link href="/auth/signin">Get Started</Link></button>
+                        </div>
+                        <div className="bottomContent">
+                            <h6>Copyright (C) 2022</h6>
+                        </div>
+                    </div>
+                    <div className="rightContent">
+
+                    </div>
                 </div>
         </div>
     )

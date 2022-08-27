@@ -13,7 +13,9 @@ import DeleteDialog from "../general/deletedialog"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faAdd, faTrash, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
+
+import Image from "next/image"
 
 import { toUpperCase, getAmount } from "../../utils/helper"
 
@@ -44,6 +46,8 @@ const RecipeIndex = ({id}) => {
 
     const [recipe, setRecipe] = useState({})
 
+    const [whatIsOpen, setWhatIsOpen] = useState(false)
+
     const [showEditRecipe, setShowEditRecipe] = useState(false)
 
     const [showDeleteRecipe, setShowDeleteRecipe] = useState(false)
@@ -71,6 +75,10 @@ const RecipeIndex = ({id}) => {
         setSelectedTab(tab)
     }
 
+    const switchWhatIs = (e) => {
+        e.preventDefault();
+        setWhatIsOpen(!whatIsOpen)
+    }
     
 
     /*
@@ -260,6 +268,17 @@ const RecipeIndex = ({id}) => {
                 <h5>
                     Description - <span>{recipe && recipe.description}</span>
                 </h5>
+
+                <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                    What is a Recipe? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                </h5>
+
+                {
+                    whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                        <h6 className="whatIsContent tinyPadding">A recipe consists of ingredients (and quantity requried for each ingredient) to create individual recipes. e.g Red velvet recipe</h6>
+                        <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                    </div>
+                }
             </div>
 
             <div className="pageHolderContentTopCenter">
@@ -290,6 +309,17 @@ const RecipeIndex = ({id}) => {
                     <button style={mobileMiddleRightSpacer} onClick={openAddIngredients} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
                     <button style={mobileMiddleRightSpacer} onClick={openDeleteRecipe} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                 </div>
+
+                <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                    What are Recipes? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                </h5>
+
+                {
+                    whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                        <h6 className="whatIsContent tinyPadding">is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                        <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                    </div>
+                }
             </div>
             
             <div className="pageHolderContentTopBottom">

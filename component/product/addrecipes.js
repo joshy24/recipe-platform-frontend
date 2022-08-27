@@ -30,8 +30,11 @@ import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { RECIPES_TO_ADD, ADD_RECIPES_TO_PRODUCT } from "../../utils/api.endpoints"
 
+import { AppContext } from "../../pages/AppContext";
+
 const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
-    
+    const value = AppContext();
+
     const [recipes, setRecipes] = useState([])
 
     const [selectedRecipes, setSelectedRecipes] = useState([])
@@ -102,12 +105,13 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
 
     const doAddRecipes = async()=>{
         if(selectedRecipes.length > 0){
+            value.setBlockingLoading(true)
             setError("")
            
             try{
                 const response = await postRequest(ADD_RECIPES_TO_PRODUCT, {id: product._id, recipes: selectedRecipes})
 
-                console.log(response)
+                value.setBlockingLoading(false)
 
                 loadProductRecipes()
 
@@ -115,6 +119,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
             }
             catch(err){
                 console.log(err)
+                value.setBlockingLoading(false)
             }
         }
         else{

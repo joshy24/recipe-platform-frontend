@@ -173,7 +173,7 @@ const ProductsIndex = () => {
 
                     {
                         whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                            <h6 className="whatIsContent tinyPadding">products are objects, or systems, or services made available for consumer use to satisfy the desire or need of a customer.</h6>
+                            <h6 className="whatIsContent tinyPadding">A product is a sellable item made from a combination of recipes and materials e.g 6 inches buttercream cake.</h6>
                             <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                         </div>
                     }

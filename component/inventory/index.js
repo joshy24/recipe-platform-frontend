@@ -15,9 +15,11 @@ import SearchInput from "../general/searchInput"
 
 import Papa from "papaparse"
 
+import Image from "next/image"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { faTrash, faSearch, faFileExport, faAdd, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faSearch, faFileExport, faAdd, faPen, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
 import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
 
@@ -44,6 +46,8 @@ const IngredientsIndex = () => {
 
     const [filters, setFilters] = useState({type: "materials", status: "All", searchTerm: ""})
 
+    const [whatIsOpen, setWhatIsOpen] = useState(false)
+
     const [inventory, setInventory] = useState([])
 
     const [pagination] = useState({limit: 30, offset: 0})
@@ -57,6 +61,11 @@ const IngredientsIndex = () => {
     useEffect(() => {
         search();
     }, [])
+
+    const switchWhatIs = (e) => {
+        e.preventDefault();
+        setWhatIsOpen(!whatIsOpen)
+    }
 
     const openShowAdd = () => {
         setShowAdd(true)
@@ -130,9 +139,9 @@ const IngredientsIndex = () => {
         value.setBlockingLoading(true)
 
         try{
-            var result = filters.type == "ingredients" ? 
-             await putRequest(EDIT_INGREDIENT_URL, {ingredient: {...inventorytoEdit, _id: inventoryInFocus._id}})
-             : await putRequest(EDIT_MATERIAL_URL, {material: {...inventorytoEdit, _id: inventoryInFocus._id}});
+            ilters.type == "ingredients" ? 
+            await putRequest(EDIT_INGREDIENT_URL, {ingredient: {...inventorytoEdit, _id: inventoryInFocus._id}})
+            : await putRequest(EDIT_MATERIAL_URL, {material: {...inventorytoEdit, _id: inventoryInFocus._id}});
 
             hideEditInventory()
 
@@ -242,6 +251,17 @@ const IngredientsIndex = () => {
                 <div className="pageHolderContentTopLeft">
                     <h2 className="pageTitle">Inventory</h2>
                     <h5>Ingredients and Materials</h5>
+
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are {filters.type}? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">{filters.type == "ingredients" ? "Ingredients are edible items that are used directly in the production of your recipes e.g flour, sugar, salt." : "Materials are items that are not directly used in recipe production but are required in the preparation/assembly of the final product e.g packaging box."}</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
                 </div>
                 
                 <div className="pageHolderContentTopRight">
@@ -297,7 +317,16 @@ const IngredientsIndex = () => {
                 </div>
 
                 <div className="pageHolderContentMiddle">
-                    
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are {filters.type}? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">{filters.type == "ingredients" ? "Ingredients are edible items that are used directly in the production of your recipes e.g flour, sugar, salt." : "Materials are items that are not directly used in recipe production but are required in the preparation/assembly of the final product e.g packaging box."}</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
                 </div>
                 
                 <div className="pageHolderContentTopBottom">

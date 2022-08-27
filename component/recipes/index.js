@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import Image from "next/image"
 
-import { faAdd, faTrash, faSearch, faCaretDown, faCaretUp, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { faAdd, faSearch, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import styles from "../../styles/Orders.module.css"
 import AddRecipe from '../general/addrecipe'
 
@@ -177,7 +177,7 @@ const RecipesIndex = () => {
 
                     {
                         whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                            <h6 className="whatIsContent tinyPadding">is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <h6 className="whatIsContent tinyPadding">A recipe consists of ingredients (and quantity requried for each ingredient) to create individual recipes. e.g Red velvet recipe</h6>
                             <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                         </div>
                     }
@@ -223,7 +223,7 @@ const RecipesIndex = () => {
 
                     {
                         whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                            <h6 className="whatIsContent tinyPadding">is a popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <h6 className="whatIsContent tinyPadding">A recipe consists of ingredients (and quantity requried for each ingredient) to create individual recipes. e.g Red velvet recipe</h6>
                             <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                         </div>
                     }

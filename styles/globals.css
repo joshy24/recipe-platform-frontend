@@ -45,7 +45,7 @@ h1, h2, h3, h4, h5, h6{
 .pageHolder{
     padding-left: 100px;
     padding-right: 100px;
-    padding-top: 100px;
+    padding-top: 110px;
     background: #FFFFFF;
 }
 
@@ -626,15 +626,14 @@ box
 
 
 .indexMain{
-    width: 60%;
+    width: 100%;
     height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin-left: auto;
     margin-right: auto;
-    min-width: 250px;
+
+    
 }
 
 .indexMain h4{
@@ -645,20 +644,52 @@ box
     text-align: center;
 }
 
-.indexMain h3{
-  font-size: 50px;
+.indexMain h5{
+  font-size: 30px;
   font-weight: 400;
   margin-bottom: 16px;
-  color: #FFFFFF;
+  color: #000000;
   text-align: center;
+  margin-top: 50px;
 }
 
 .indexMain button{
     background: #BD5BFC;
     color: #FFFFFF;
     margin-top: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.indexMain .leftContent{
+    width: 30%;
+    height: 100%;
+    background: #FFFFFF;
+    padding: 30px 24px 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.indexMain .leftContent .bottomContent{
+    display: flex;
+    justify-content: center;
+}
+
+.indexMain .leftContent .bottomContent h6{
+    font-size: 14px;
+}
+
+
+
+.indexMain .rightContent{
+    background: url("/images/indexbg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 70%;
+}
 
 
 

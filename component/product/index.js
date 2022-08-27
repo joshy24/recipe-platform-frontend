@@ -345,12 +345,18 @@ const ProductIndex = ({id}) => {
     }
 
     const getRecipesCost = () => {
+        if(!recipes || !recipes.docs)
+            return 0
+
         return recipes.docs.reduce((acc,recipe) => {
             return acc + recipe.cost
         }, 0)
     }
 
     const getMaterialsCost = () => {
+        if(!materials || !materials.docs)
+            return 0
+
         return materials.docs.reduce((acc,material) => {
             return acc + material.totalCost
         }, 0)
@@ -428,7 +434,7 @@ const ProductIndex = ({id}) => {
 
                 {
                     whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                        <h6 className="whatIsContent tinyPadding">product is an object, or system, or service made available for consumer use to satisfy the desire or need of a customer.</h6>
+                        <h6 className="whatIsContent tinyPadding">A product is a sellable item made from a combination of recipes and materials e.g 6 inches buttercream cake.</h6>
                         <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                     </div>
                 }
