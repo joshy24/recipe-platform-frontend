@@ -9,6 +9,7 @@ import { getAmount, toUpperCase } from "../../utils/helper"
 
 const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
     const [quantity, setQuantity] = useState(1)
+    const [unit, setUnit] = useState(recipe.yield ? recipe.yield.unit : "")
     const [isAdded, setIsAdded] = useState(false)
 
     const onChange = (e) => {
@@ -19,6 +20,7 @@ const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
 
     const doAddToSelected = () => {
         recipe.quantity = quantity;
+        recipe.unit = unit
 
         setIsAdded(!isAdded)
 
@@ -30,6 +32,9 @@ const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
         <td style={{paddingLeft: "30px"}}>{recipe.yield && recipe.yield.amount} {recipe.yield && recipe.yield.unit}</td>
         <td style={{paddingLeft: "30px"}}>
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter yield" value={recipe.yield ? (quantity > recipe.yield.amount ? recipe.yield.amount : quantity) : quantity} onChange={e => onChange(e)} />
+        </td>
+        <td style={{paddingLeft: "30px"}}>
+            <input style={{width: "100px"}} type="text" name="unit" placeholder="Enter Unit" value={unit} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>

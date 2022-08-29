@@ -113,6 +113,8 @@ const ProductIndex = ({id}) => {
         try{
             const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&offset=${recipePaginate.offset}&limit=${recipePaginate.limit}`)
 
+            console.log(result.response)
+
             setRecipes(result.response)
 
             value.setLoading(false)
@@ -507,7 +509,7 @@ const ProductIndex = ({id}) => {
                             recipes && recipes.docs && recipes.docs.length > 0 ? <table className="tabbedListTable" style={{width: "100%"}}>
                             <tr className="header" style={{marginBottom: "24px"}}>
                                 <th style={{width: "20%"}}>Name</th>
-                                <th style={{width: "20%"}}>Amount</th>
+                                <th style={{width: "20%"}}>Quantity</th>
                                 <th style={{width: "20%"}}>Cost</th>
                                 <th style={{width: "20%"}}>Unit</th>
                                 <th style={{width: "20%"}}></th>

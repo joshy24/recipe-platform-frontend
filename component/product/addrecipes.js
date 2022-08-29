@@ -72,8 +72,6 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                 return {...recipe, quantity: 0}
             })
 
-            console.log(new_result)
-
             setRecipes(new_result)
 
             setIsLoading(false)
@@ -93,7 +91,10 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         if(foundIndex == -1){
             sm.push({
                 recipe: recipe._id,
-                quantity: recipe.quantity
+                quantity: {
+                    amount: recipe.quantity,
+                    unit: recipe.unit
+                }
             })
         }
         else{
@@ -154,6 +155,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                                     <th style={{width: "25%", paddingLeft: "20px"}}>Name</th>
                                     <th style={{width: "25%", paddingLeft: "20px"}}>Yield</th>
                                     <th style={{width: "25%", paddingLeft: "20px"}}>Yield To Add</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Unit</th>
                                     <th style={{width: "25%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
