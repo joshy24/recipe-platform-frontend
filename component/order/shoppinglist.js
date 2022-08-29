@@ -1,5 +1,5 @@
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { useEffect, useState, useContext } from "react"
 
@@ -12,11 +12,11 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { ORDER_SHOPPING_LIST } from "../../utils/api.endpoints"
+import { ORDER_SHOPPING_LIST_URL } from "../../utils/api.endpoints"
 
 const ShoppingList = ({id}) => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [order,setOrder] = useState({})
 
@@ -32,13 +32,11 @@ const ShoppingList = ({id}) => {
         value.setBlockingLoading(true)
 
         try{
-            const result = await getRequest(ORDER_SHOPPING_LIST+"?id="+id)
+            const result = await getRequest(ORDER_SHOPPING_LIST_URL+"?id="+id)
 
             value.setBlockingLoading(false)
 
             setOrder(result.response)
-
-            console.log(result.response)
 
             setInventory(result.response.materials)
         }
@@ -101,6 +99,41 @@ const ShoppingList = ({id}) => {
                         <option>Low</option>
                         <option>Normal</option>
                     </select>
+                </div>
+            </div>
+        </div>
+
+        <div className="pageHolderContentTopMobile">
+            <div className="pageHolderContentTopTopOther">
+                <h2 className="pageTitle">Shopping List</h2>
+                <h4><strong>Order</strong> - <span className="pageTitleContentHeader">{order && order.name && toUpperCase(order.name)}</span></h4>
+                <h5><strong>Status</strong> - {order && order.status}</h5>
+            </div>
+
+            <div className="pageHolderContentMiddle">
+                <div style={{display: "flex"}}>
+                    <select onChange={onFieldChanged} name="type" className="pageContentTopSelectField">
+                        <option value="materials">Materials</option>
+                        <option value="ingredients">Ingredients</option>
+                    </select>
+                    <select onChange={onFieldChanged} name="status" className="pageContentTopSelectField">
+                        <option>All</option>
+                        <option>Low</option>
+                        <option>Normal</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div className="pageHolderContentTopBottom">
+                <div className="pageHolderContentTopBottomItem">
+                    <h4>Materials</h4>
+                    <span>-</span>
+                    <h4>{order && order.materials && order.materials.length}</h4>
+                </div>
+                <div className="pageHolderContentTopBottomItem">
+                    <h4>Ingredients</h4>
+                    <span>-</span>
+                    <h4>{order && order.ingredients && order.ingredients.length}</h4>
                 </div>
             </div>
         </div>

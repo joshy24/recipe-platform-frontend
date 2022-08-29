@@ -6,7 +6,7 @@ import SearchInput from "../general/searchInput"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { useRouter } from "next/router"
 
@@ -31,7 +31,7 @@ const Profitable = () => {
 
     const [pagination] = useState({limit: 30, offset: 0})
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)

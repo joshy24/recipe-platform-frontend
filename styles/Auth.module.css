@@ -71,12 +71,12 @@
 }
 
 .authErrorText{
-    margin-bottom: 30px;
     color: red;
+    margin-top: 8px;
 }
 
 .authErrorText h5{
-    width: 50%;
+    width: 100%;
 }
 
 

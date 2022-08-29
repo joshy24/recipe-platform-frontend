@@ -5,10 +5,7 @@ import styles from "../../styles/Auth.module.css"
 
 import { useRouter } from "next/router"
 
-import AppContext from "../../pages/AppContext";
-
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import { AppContext }from "../../pages/AppContext";
 
 import { useState, useContext } from "react";
 
@@ -22,7 +19,7 @@ const SignUp = () => {
 
     const [userData, setUserData] = useState(initialState)
 
-    const value = useContext(AppContext);
+    const value = AppContext();
 
     const [isInput, setIsInput] = useState(false)
     const [isName, setIsName] = useState(false)
@@ -149,26 +146,6 @@ const SignUp = () => {
     return <div className={styles.authHolderInnerContent}>
         <div>
             <h2 className={styles.authTitle}>SignUp</h2>
-            <div className={styles.authErrorText}>
-                {
-                    isInput && <h5>An input field cannot be empty.</h5>
-                }
-                {
-                    isName && <h5>A user's name can only contain letters.</h5>
-                }
-                {
-                    isEmail && <h5>Invalid email address.</h5>
-                }
-                {
-                    isNumber && <h5>Invalid phone number.</h5>
-                }
-                {
-                    isPassword && <h5 style={{width:"40%"}}>Password length must be at least up to 8 to 16 characters that includes lower and uppercase letters, numbers and special characters.</h5>
-                }
-                {
-                    confirmPassword && <h5>Password does not match.</h5>
-                }
-            </div>
         </div>
 
         <div className={styles.authInputFieldHolder}>
@@ -203,9 +180,28 @@ const SignUp = () => {
 
         <button onClick={doSignUpAndNavigate} className="rectangleButtonPrimary authContinueButton">Continue</button>
 
-        <h5 className={styles.authLinkText}>Already have an account? <span className="link"><Link href="/auth/signin">SignIn</Link></span></h5>
+        <div className={styles.authErrorText}>
+            {
+                isInput && <h5>An input field cannot be empty.</h5>
+            }
+            {
+                isName && <h5>A user's name can only contain letters.</h5>
+            }
+            {
+                isEmail && <h5>Invalid email address.</h5>
+            }
+            {
+                isNumber && <h5>Invalid phone number.</h5>
+            }
+            {
+                isPassword && <h5>Password length must be at least up to 8 to 16 characters that includes lower and uppercase letters, numbers and special characters.</h5>
+            }
+            {
+                confirmPassword && <h5>Password does not match.</h5>
+            }
+        </div>
 
-        {/*<h5 className={styles.authLinkText}>Forgot Password?</h5>*/}
+        <h5 className={styles.authLinkText}>Already have an account? <span className="link"><Link href="/auth/signin">SignIn</Link></span></h5>
     </div>
 }
 

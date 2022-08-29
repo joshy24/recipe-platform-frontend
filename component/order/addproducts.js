@@ -23,18 +23,18 @@ const mediumTextStyle = {
     marginTop: "12px"
 }
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-import { postRequest, getRequest, putRequest } from "../../utils/api.requests"
+import { getRequest, putRequest } from "../../utils/api.requests"
 
-import { BASE_URL, PRODUCTS_TO_ADD_URL, ADD_PRODUCTS_TO_ORDER_URL } from "../../utils/api.endpoints"
+import { PRODUCTS_TO_ADD_URL, ADD_PRODUCTS_TO_ORDER_URL } from "../../utils/api.endpoints"
 
 const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
-    const value = useContext(AppContext);
+    const value = AppContext();
     
     const [products, setProducts] = useState([])
 

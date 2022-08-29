@@ -1,7 +1,7 @@
 
 import AccountIndex from '../../component/account/index'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 function Account() {
 

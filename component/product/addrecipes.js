@@ -30,8 +30,11 @@ import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { RECIPES_TO_ADD, ADD_RECIPES_TO_PRODUCT } from "../../utils/api.endpoints"
 
+import { AppContext } from "../../pages/AppContext";
+
 const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
-    
+    const value = AppContext();
+
     const [recipes, setRecipes] = useState([])
 
     const [selectedRecipes, setSelectedRecipes] = useState([])
@@ -69,8 +72,6 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                 return {...recipe, quantity: 0}
             })
 
-            console.log(new_result)
-
             setRecipes(new_result)
 
             setIsLoading(false)
@@ -90,7 +91,10 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         if(foundIndex == -1){
             sm.push({
                 recipe: recipe._id,
-                quantity: recipe.quantity
+                quantity: {
+                    amount: recipe.quantity,
+                    unit: recipe.unit
+                }
             })
         }
         else{
@@ -102,12 +106,13 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
 
     const doAddRecipes = async()=>{
         if(selectedRecipes.length > 0){
+            value.setBlockingLoading(true)
             setError("")
            
             try{
                 const response = await postRequest(ADD_RECIPES_TO_PRODUCT, {id: product._id, recipes: selectedRecipes})
 
-                console.log(response)
+                value.setBlockingLoading(false)
 
                 loadProductRecipes()
 
@@ -115,6 +120,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
             }
             catch(err){
                 console.log(err)
+                value.setBlockingLoading(false)
             }
         }
         else{
@@ -146,11 +152,11 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                             {
                                 recipes && recipes.length > 0 ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Name</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Yield</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Cost</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}>Yield To Add</th>
-                                    <th style={{width: "20%", paddingLeft: "20px"}}></th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Name</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Yield</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Yield To Add</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}>Unit</th>
+                                    <th style={{width: "25%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
                                     recipes.map(recipe => {

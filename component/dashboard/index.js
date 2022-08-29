@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import InventoryCount from './InventoryCount'
-import OrderNumbers from './OrderNumbers'
-import ProductCount from './ProductCount'
-import RecipeCount from './RecipeCount'
+import InventoryCount from './inventorycount'
+import OrderNumbers from './ordernumbers'
+import ProductCount from './productcount'
+import RecipeCount from './recipecount'
 
 import styles from "../../styles/Dashboard.module.css"
 

@@ -1,7 +1,7 @@
 
 import ShoppingListIndex from '../../component/order/shoppinglist'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 export async function getServerSideProps(context) {
     const {

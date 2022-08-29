@@ -8,15 +8,21 @@ import Image from "next/image"
 
 import EditOrder from "./editorder"
 
+import EditOrderProduct from "./editorderproduct"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
+<<<<<<< HEAD
 
 import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, DELETE_ORDER_PRODUCT_URL, FULFILL_ORDER_URL} from "../../utils/api.endpoints"
 
+=======
+import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, FULFILL_ORDER_URL, DELETE_ORDER_PRODUCT_URL, EDIT_ORDER_PRODUCT_URL } from "../../utils/api.endpoints"
+>>>>>>> master
 import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
@@ -35,13 +41,14 @@ const OrderIndex = ({id}) => {
 
     const [selected, setSelected] = useState(1)
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [showAddProduct, setShowAddProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
 
     const [showDeleteOrder, setShowDeleteOrder] = useState(false)
     const [showDeleteOrderProduct, setShowDeleteOrderProduct] = useState(false)
+    const [showEditOrderProduct, setShowEditOrderProduct] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [order, setOrder] = useState({})
 
@@ -199,6 +206,7 @@ const OrderIndex = ({id}) => {
         setShowDeleteOrderProduct(false)
     }
 
+<<<<<<< HEAD
     const openFulfillOrderMessage = () => {
         setShowFulfillOrderMessage(true)
     }
@@ -208,6 +216,19 @@ const OrderIndex = ({id}) => {
     }
 
 
+=======
+    const openEditOrderProduct = (e, productToEdit) => {
+        e.preventDefault()
+        setEntityInFocus(productToEdit)
+        setShowEditOrderProduct(true)
+    }
+
+    const hideEditOrderProduct = () => {
+        setEntityInFocus({})
+        setShowEditOrderProduct(false)
+    }
+
+>>>>>>> master
     const deleteOrder = async () => {
         
         value.setBlockingLoading(true)
@@ -228,6 +249,25 @@ const OrderIndex = ({id}) => {
         
     }
 
+<<<<<<< HEAD
+=======
+    const fulfillOrder = async() => {
+        value.setBlockingLoading(true)
+        
+        try{
+            const result = await putRequest(FULFILL_ORDER_URL, {id: order._id})
+
+            console.log(result)
+
+            value.setBlockingLoading(false)
+        }
+        catch(err){
+            value.setBlockingLoading(false)
+            console.log(err)
+        }
+    }
+    
+>>>>>>> master
     const deleteOrderProduct = async () => {
         
         value.setBlockingLoading(true)
@@ -252,6 +292,7 @@ const OrderIndex = ({id}) => {
         }
     }
         
+<<<<<<< HEAD
     const fulfillOrder = async() => {
         value.setBlockingLoading(true)
         
@@ -270,6 +311,46 @@ const OrderIndex = ({id}) => {
             value.setBlockingLoading(false)
             console.log(err)
         }
+=======
+    }
+
+    const editOrderProduct = async (newEditedProduct) => {
+        
+        value.setBlockingLoading(true)
+        
+        try{
+            await putRequest(EDIT_ORDER_PRODUCT_URL, {id:id, product_id: newEditedProduct._id, quantity: newEditedProduct.quantity})
+
+            value.setBlockingLoading(false)
+
+            
+            hideEditOrderProduct()
+
+            loadOrderProducts()
+        }
+        catch(err){
+            console.log(err)
+
+            value.setBlockingLoading(false)
+
+            hideEditOrderProduct()
+
+            value.setMessage({visible: true, message: "Could not edit order product successfully", title: "Message", type: "ERROR"})
+        }
+        
+    }
+
+    const getTotalCost = () => {
+        if(products && products.length > 0){
+            const costSum = products.reduce((acc, aProduct) => {
+                return acc + aProduct.totalCost
+            }, 0)
+
+            return costSum;
+        }
+
+        return 0;
+>>>>>>> master
     }
 
     return <div className="pageHolderContent">
@@ -283,7 +364,7 @@ const OrderIndex = ({id}) => {
 
                 {
                     whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                        <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                        <h6 className="whatIsContent tinyPadding">A summation of the product(s) ordered per client as well as other order information.</h6>
                         <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                     </div>
                 }
@@ -292,7 +373,7 @@ const OrderIndex = ({id}) => {
             <div className="pageHolderContentTopCenter">
                 <div>
                     <h4>Products</h4>
-                    <h5>{ (products && products.docs) ? products.docs.length : 0}</h5>
+                    <h5>{ products ? products.length : 0}</h5>
                 </div>
             </div>
 
@@ -301,6 +382,41 @@ const OrderIndex = ({id}) => {
                 <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
                 <button onClick={openDeleteOrder} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                 <button onClick={goToShoppingList} className="squareButtonPrimary"><FontAwesomeIcon icon={faShoppingBag} /></button>
+            </div>
+        </div>
+
+        <div className="pageHolderContentTopMobile">
+            <div className="pageHolderContentTopTop">
+                <h2 className="pageTitle">Order - <span className="pageTitleContentHeader">{order && order.name && toUpperCase(order.name)}</span></h2>
+
+                <div style={{display: "flex"}}>
+                    <button onClick={openEditOrder} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                    <button onClick={openAddProduct} className="squareButtonPrimary"><FontAwesomeIcon icon={faAdd} /></button>
+                    <button onClick={openDeleteOrder} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                    <button onClick={goToShoppingList} className="squareButtonPrimary"><FontAwesomeIcon icon={faShoppingBag} /></button>
+                </div>
+            </div>
+
+            <div className="pageHolderContentMiddle">
+                <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                    What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                </h5>
+                {
+                    whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                        <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stacked in a cone-like shape, and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                        <div className="whatIsContentCloseBtn">
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} src="/images/closeorange.png" width={44} height={44} minWidth={40} />
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <div className="pageHolderContentTopBottom">
+                <div className="pageHolderContentTopBottomItem">
+                    <h4>Products</h4>
+                    <span>-</span>
+                    <h5>{ products ? products.length : 0 }</h5>
+                </div>
             </div>
         </div>
 
@@ -329,6 +445,7 @@ const OrderIndex = ({id}) => {
                         
                         <tr className="notHeader">
                             <td>Order status</td>
+<<<<<<< HEAD
                             <td className="tabbedListContentHorizontalTableContent"> 
                                 {order && order.status}
                                 {
@@ -337,14 +454,23 @@ const OrderIndex = ({id}) => {
                                 }
                             </td>
 
+=======
+                            <td className="tabbedListContentHorizontalTableContent">
+                                {order && order.status}
+                                {
+                                    order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>
+                                }
+                            </td>
+>>>>>>> master
                         </tr>
+                       
                         <tr className="notHeader">
                             <td>Fulfillment date</td>
                             <td>{order && order.fulfillment_date && getDate(order.fulfillment_date)}</td>
                         </tr>
                         <tr className="notHeader">
                             <td>Total selling price</td>
-                            <td>{getAmount(order.totalCost)}</td>
+                            <td>{getAmount(getTotalCost())}</td>
                         </tr>
                     </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
                                     <tr style={{marginBottom: "24px"}}>
@@ -359,9 +485,9 @@ const OrderIndex = ({id}) => {
                                                     <td>{product && toUpperCase(product.name)}</td>
                                                     <td>{product.quantity}</td>
                                                     
-                                                    <td>{}</td>
+                                                    <td>{getAmount(product.totalCost)}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
-                                                        <button style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                        <button onClick={e => openEditOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                                         <button onClick={e => openDeleteOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
                                                     </td>
                                                 </tr>
@@ -391,6 +517,10 @@ const OrderIndex = ({id}) => {
         
         {
             showDeleteOrderProduct && <DeleteDialog onPerformDeleteClicked={deleteOrderProduct} onCancelDeleteClicked={hideDeleteOrderProduct} type={`${entityInFocus.name} from ${order.name}`} />
+        }
+
+        {
+            showEditOrderProduct && <EditOrderProduct product={entityInFocus} onPerformEditClicked={editOrderProduct} onCancelEditClicked={hideEditOrderProduct} />
         }
 
     </div>

@@ -15,9 +15,7 @@ export default function withAuth(AuthComponent) {
       };
   
       setShowMobileMenu(val){
-          this.setState({
-            showMobileMenu: val
-          })
+        state.showMobileMenu = val
       }
 
       /* In the componentDid<ount, we would want to do a couple of important tasks in order to verify the current users authentication status
@@ -54,7 +52,6 @@ export default function withAuth(AuthComponent) {
                       Auth.loggedIn() && <Nav setShowMobileMenu={this.setShowMobileMenu} />
                   }
 
-                  /* component that is currently being wrapper(App.js) */
                   <AuthComponent
                     history={this.props.history}
                     confirm={this.state.confirm}

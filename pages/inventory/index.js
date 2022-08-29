@@ -1,7 +1,7 @@
 
 import InventoryIndex from '../../component/inventory/index'
 
-import withAuth from "../../utils/withAuth"
+import withAuth from "../../utils/withAuthRefactored"
 
 function Inventory() {
 

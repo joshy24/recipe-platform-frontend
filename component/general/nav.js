@@ -2,6 +2,8 @@ import styles from "../../styles/Nav.module.css"
 
 import Image from "next/image"
 
+import LogoText from "./logotext"
+
 import Link from "next/link"
 
 import NavPopUp from "../general/navpopup"
@@ -27,14 +29,19 @@ const Nav = ({setShowMobileMenu}) => {
         router.push("/profitable")
     }
 
+    const goToIndex = () => {
+        router.push("/")
+    }
+
     return <>
         <div className={styles.nav}>
 
             <div className={styles.navHolderTop}>
                 <span onClick={showMobileMenu} className={styles.mobileNavMenuBtn}></span>
-                <h2 className="nameLogo">
-                    <Link href="/">Profit Table</Link>
-                </h2>
+                
+                <span onClick={goToIndex}>
+                    <LogoText width={38} height={49} />
+                </span>
             </div>
 
             <div className={styles.navHolderTopRight}>

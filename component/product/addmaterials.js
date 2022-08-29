@@ -23,7 +23,7 @@ const mediumTextStyle = {
     marginTop: "12px"
 }
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -36,7 +36,7 @@ const add_materials_url = BASE_URL + ADD_MATERIALS_TO_PRODUCT
 
 const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
 
-    const value = useContext(AppContext);
+    const value = AppContext();
     
     const [materials, setMaterials] = useState([])
 

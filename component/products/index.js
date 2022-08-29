@@ -13,14 +13,14 @@ import SearchInput from "../general/searchInput"
 
 import { useRouter } from "next/router"
 
-import { getDate } from "../../utils/helper"
+import { getAmount, getDate } from "../../utils/helper"
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import EmptyResult from "../general/emptyResult"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
@@ -32,7 +32,7 @@ const add_product_url = BASE_URL + ADD_PRODUCT
 
 const ProductsIndex = () => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const router = useRouter()
     const navigateToProduct = (e, id) => {
@@ -173,7 +173,7 @@ const ProductsIndex = () => {
 
                     {
                         whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                            <h6 className="whatIsContent tinyPadding">products are objects, or systems, or services made available for consumer use to satisfy the desire or need of a customer.</h6>
+                            <h6 className="whatIsContent tinyPadding">A product is a sellable item made from a combination of recipes and materials e.g 6 inches buttercream cake.</h6>
                             <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                         </div>
                     }
@@ -197,6 +197,43 @@ const ProductsIndex = () => {
                 </div>
             </div>
 
+            <div className="pageHolderContentTopMobile">
+                <div className="pageHolderContentTopTop">
+                    <h2 className="pageTitle">Products</h2>
+
+                    <div style={{display: "flex"}}>
+                    {
+                        isSearchOpen ? <SearchInput searchClicked={searchProducts} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchProducts} /> :
+                        <div style={{display: "flex"}}>
+                            <button onClick={showSearchProducts} className={`squareButtonPrimary ${styles.productsButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                            <button onClick={showAddProduct} className={`squareButtonPrimary ${styles.productsButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                        </div>
+                    }
+                    </div>
+                </div>
+
+                <div className="pageHolderContentMiddle">
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are Products? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">products are objects, or systems, or services made available for consumer use to satisfy the desire or need of a customer.</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
+                </div>
+                
+                <div className="pageHolderContentTopBottom">
+                    <div className="pageHolderContentTopBottomItem">
+                        <h4>Total</h4>
+                        <span>-</span>
+                        <h5>{products ? products.totalDocs : 0}</h5>
+                    </div>
+                </div>
+            </div>
+
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}> 
@@ -205,21 +242,18 @@ const ProductsIndex = () => {
                                 <th style={{width: "31%"}}>Name</th>
                                 <th style={{width: "23%"}}>Created</th>
                                 <th style={{width: "23%"}}>Total cost</th>
-                                <th style={{width: "23%"}}></th>
+                                <th style={{width: "23%"}}>Actual Selling Price</th>
                             </tr>
                             
                             {
                                 !value.state.Loading ? <>
                                     {
                                         products && products.docs && products.docs.length > 0 && products.docs.map(product => {
-                                            return <tr className="notHeader">
+                                            return <tr onClick={e => navigateToProduct(e, product._id)} className="notHeader">
                                                 <td >{product.name}</td>
                                                 <td >{getDate(product.created)}</td>
-                                                <td >₦0</td>
-                                                <td className="tabbedListContentHorizontalTableContent">
-                                                    <button onClick={e => navigateToProduct(e, product._id)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faUpRightFromSquare} /></button>
-                                                    <button style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                </td>
+                                                <td >{getAmount(product.totalCost)}</td>
+                                                <td >{getAmount(product.actual_selling_price)}</td>
                                             </tr>
                                         }) 
                                     }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { toUpperCase, getDate } from "../../utils/helper"
+import { toUpperCase } from "../../utils/helper"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 

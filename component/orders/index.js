@@ -19,7 +19,7 @@ import EmptyResult from "../general/emptyResult"
 
 
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 
@@ -29,7 +29,7 @@ import { ALL_ORDERS_URL, CREATE_ORDER_URL, SEARCH_ORDERS_URL} from "../../utils/
 
 const OrdersIndex = () => {
 
-    const value = useContext(AppContext);
+    const value = AppContext()
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
@@ -205,7 +205,7 @@ const OrdersIndex = () => {
 
                     {
                         whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
-                            <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stcked in a cone-like shape and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <h6 className="whatIsContent tinyPadding">A summation of the product(s) ordered per client as well as other order information.</h6>
                             <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
                         </div>
                     }
@@ -229,24 +229,54 @@ const OrdersIndex = () => {
                 </div>
             </div>
 
+            <div className="pageHolderContentTopMobile">
+                <div className="pageHolderContentTopTop">
+                    <h2 className="pageTitle">Orders</h2>
+
+                    <div style={{display: "flex"}}>
+                        {
+                            isSearchOpen ? <SearchInput searchClicked={searchOrders} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchOrders} /> :
+                            <div style={{display: "flex"}}>
+                                <button onClick={showSearchOrders} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
+                                <button onClick={showAddOrder} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div className="pageHolderContentMiddle">
+                    <h5 onClick={e => switchWhatIs(e)} className="whatIsHolder">
+                        What are Orders? <span className="whatIsCaret"><FontAwesomeIcon icon={whatIsOpen ?faCaretDown : faCaretUp } /></span>
+                    </h5>
+
+                    {
+                        whatIsOpen && <div className="whatIsContentHolder whiteBox tinyPadding">
+                            <h6 className="whatIsContent tinyPadding">orders are popular Levantine dish consisting of meat cut into thin slices, stcked in a cone-like shape and roasted on a slowly-turning vertical rotisserie or spit.</h6>
+                            <Image style={{minWidth: "44px", minHeight: "44px"}} onClick={e => switchWhatIs(e)} className="whatIsContentCloseBtn" src="/images/closeorange.png" width={44} height={44} />
+                        </div>
+                    }
+                </div>
+                
+                <div className="pageHolderContentTopBottom">
+                    <h4>Total</h4>
+                    <h5>{(orders && orders.docs) ? orders.docs.length : 0}</h5>
+                </div>
+            </div>
+
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tr className="header" style={{marginBottom: "24px"}}>
-                            <th style={{width: "4%"}}></th>
-                            <th style={{width: "27%"}}>Name</th>
-                            <th style={{width: "17%"}}>Created</th>
-                            <th style={{width: "17%"}}>Status</th>
-                            <th style={{width: "17%"}}>Total cost</th>
+                            <th style={{width: "28%"}}>Name</th>
+                            <th style={{width: "18%"}}>Created</th>
+                            <th style={{width: "18%"}}>Status</th>
                         </tr>
                         {
                             orders && orders.docs && orders.docs.length && orders.docs.map(order => {
-                                return <tr className="notHeader">
-                                        <td style={{paddingLeft: "20px"}}><input onChange={e => selectedOrder(e, order._id)} type="checkbox" style={{width: "20px", height: "20px", background: "none"}}/></td>
-                                        <td onClick={e => navigateToOrder(e, order._id)}>{order.name}</td>
-                                        <td onClick={e => navigateToOrder(e, order._id)}>{getDate(order.created)}</td>
-                                        <td onClick={e => navigateToOrder(e, order._id)}>{order.status}</td>
-                                        <td onClick={e => navigateToOrder(e, order._id)}>{getAmount(order.totalCost)}</td>
+                                return <tr onClick={e => navigateToOrder(e, order._id)} className="notHeader">
+                                        <td >{order.name}</td>
+                                        <td >{getDate(order.created)}</td>
+                                        <td >{order.status}</td>
                                     </tr>
                             })
                         } 

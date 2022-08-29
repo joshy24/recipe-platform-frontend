@@ -110,7 +110,7 @@ export default class AuthHelperMethods{
         const headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            'Access-Control-Allow-Origin' : 'https://virtualvisitsng.com',
+            'Access-Control-Allow-Origin' : 'https://recipe-platform-frontend.vercel.app/',
             'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         };
 
@@ -123,13 +123,14 @@ export default class AuthHelperMethods{
             }
         }
         
+        
         return axios({
             url:url,
             method: method,
             data: method === "get" ? {}: data, 
             params: method ? data: {},
-            baseURL: 'http://localhost:4000',
-            //baseURL: 'https://apc-api-ng.herokuapp.com',
+            //baseURL: 'http://localhost:4000',
+            baseURL: 'https://afternoon-bastion-95495.herokuapp.com',
             timeout: 30000,
             headers: headers,
             withCredentials: false,
