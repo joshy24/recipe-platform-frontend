@@ -66,7 +66,7 @@ function DashboardIndex() {
                 <h2 className="pageTitle">Dashboard</h2>
             </div>
             <div className={styles.ordersRecipesInventoryCountHolder}>
-                <OrderNumbers count={entitiesCount.ordersCount} />
+                <OrderNumbers fulfilledOrdersCount={entitiesCount.fulfilledOrdersCount} pendingOrdersCount={entitiesCount.pendingOrdersCount} />
                 <ProductCount count={entitiesCount.productsCount} />
                 <RecipeCount count={entitiesCount.recipesCount} />
                 <InventoryCount count={entitiesCount.inventoryCount} />
