@@ -22,6 +22,26 @@ const SettingsIndex = () => {
     const onChange = (e) => {
         let value = e.target.value;
         let name = e.target.name
+        
+        let string = value
+    
+        let usingSplit = string.split('')
+
+        if(usingSplit[0]==="0") {
+
+            let x = 0;
+
+            for(let i=1; i < usingSplit.length; i++) {
+                if(usingSplit[i] !== "0") {
+                    x++;
+                    break;
+                }
+                x++;
+            }
+            usingSplit.splice(0, x)
+            value = usingSplit.join('')
+            
+        }
 
         setPercentage(value)
     }
