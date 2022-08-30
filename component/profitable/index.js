@@ -21,7 +21,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_ALL_INVENTORY } from "../../utils/api.endpoints"
+import { BASE_URL, GET_ALL_INVENTORY, APPLY_PROFITABLE_CHANGES_URL } from "../../utils/api.endpoints"
 
 const get_inventory_url = BASE_URL + GET_ALL_INVENTORY
 
@@ -31,7 +31,7 @@ const Profitable = () => {
 
     const [pagination] = useState({limit: 30, offset: 0})
 
-    const value = AppContext()
+    const appContext = AppContext()
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -60,13 +60,12 @@ const Profitable = () => {
 
         idObj[item._id] = changeList[item._id]
 
-        console.log(idObj)
-
         const details = {
             type: filters.type,
             inventoryItem: item,
             changeObject: idObj
         }
+
         const detailsString = JSON.stringify(details)
 
         router.push("/profitable/apply/"+detailsString)
@@ -92,7 +91,7 @@ const Profitable = () => {
     }
 
     const search = async () => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
             let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+filters.type+"&status="+filters.status
@@ -101,10 +100,10 @@ const Profitable = () => {
 
             setInventory(result.response.docs)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
@@ -122,7 +121,7 @@ const Profitable = () => {
 
         setFilters({...filters, [name]:aVal})
 
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
             let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
@@ -131,10 +130,10 @@ const Profitable = () => {
 
             setInventory(result.response.docs)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
@@ -149,8 +148,6 @@ const Profitable = () => {
         else
             newChangeList[id] = ''
             delete newChangeList[id]
-
-        console.log(newChangeList)
 
         setChangeList(newChangeList)
     }
@@ -168,13 +165,25 @@ const Profitable = () => {
             delete newChangeList[item._id]
         }
 
-        console.log(newChangeList)
-
         setChangeList(newChangeList)
     }
 
-    const applyChange = () => {
+    const applyChange = async (e, inventoryItem) => {
+        appContext.setBlockingLoading(true)
 
+        try{
+            let url = APPLY_PROFITABLE_CHANGES_URL
+            
+            await postRequest(url, {type: filters.type, id: inventoryItem._id, change: changeList[inventoryItem._id]})
+
+            appContext.setBlockingLoading(false)
+
+            router.push("/profitable")
+        }
+        catch(err){
+            console.log(`An error occurred applying changes to ${changeDetails.inventoryItem._id} with error ${err}`)
+            appContext.setBlockingLoading(false)
+        }
     }
 
     const goToChange = () => {
@@ -212,8 +221,6 @@ const Profitable = () => {
                                 <option>Low</option>
                                 <option>Normal</option>
                             </select>
-                            <input style={{marginLeft: "16px", minWidth: "100px"}} className="ptInput" type="number" value={generalAmount} name="searchTerm" onChange={setGeneralChangeAmount} /> 
-                            <button onClick={applyChange} className="rectangleButtonPrimary colorWhite">Apply</button>
                         </div>
                     }
                     
@@ -225,24 +232,20 @@ const Profitable = () => {
             <div className="tabbedListTableHolder">
                 <table className="tabbedListTable" style={{width: "100%"}}>
                     {
-                        !value.state.isLoading ? 
+                        !appContext.state.isLoading ? 
                             <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
-                                    <th style={{width: "4%", paddingLeft: "20px", fontSize: "14px"}}>
-                                        
-                                    </th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Name</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Quantity</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Size</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Price</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Quantity (In Stock)</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Price (In Stock)</th>
-                                    <th style={{width: "24%", paddingLeft: "20px", fontSize: "14px"}}></th>
+                                    <th style={{width: "24%", paddingLeft: "20px", fontSize: "14px"}}>New Price</th>
                                 </tr>
                                 {
                                     inventory.map(invent => {
                                         return <tr className="notHeader">
-                                            <td style={{paddingLeft: "10px"}}><input onChange={e => onCheckBoxChanged(e, invent._id)} type="checkbox" name="changeInputValue" style={{width: "20px", height: "20px", margin: "12px", background: "none"}} /></td>
                                             <td style={{paddingLeft: "30px"}}>{toUpperCase(invent.name)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_quantity && invent.purchase_quantity.amount}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_size}</td>
@@ -263,7 +266,7 @@ const Profitable = () => {
                 </table>
 
                 {
-                    (!value.state.isLoading && !value.state.isBlockingLoading && (inventory.length == 0 || !inventory)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
+                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (inventory.length == 0 || !inventory)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
                 }
 
             </div>

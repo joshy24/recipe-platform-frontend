@@ -48,11 +48,20 @@ export const DELETE_PRODUCT_URL = BASE_URL+API_VERSION+"/products/delete"
 
 export const PRODUCTS_TO_ADD_URL = BASE_URL+API_VERSION+"/products/products_to_add"
 
-export const PRODUCTS_PROFITABLE_URL = BASE_URL+API_VERSION+"/profit_table/product_changes"
-
 export const EDIT_PRODUCT_RECIPE_URL = BASE_URL+API_VERSION+"/product/edit_recipe"
 
 export const EDIT_PRODUCT_MATERIAL_URL = BASE_URL+API_VERSION+"/product/edit_material"
+
+
+
+
+//Profit Table
+
+export const PRODUCTS_PROFITABLE_URL = BASE_URL+API_VERSION+"/profit_table/product_changes"
+
+export const APPLY_PROFITABLE_CHANGES_URL = BASE_URL+API_VERSION+"/profit_table/apply_changes"
+
+
 
 
 

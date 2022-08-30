@@ -28,6 +28,8 @@ import { AppContext } from "../../pages/AppContext";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
+import SearchInput from "../general/searchInput"
+
 import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { BASE_URL, INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../../utils/api.endpoints"
@@ -43,6 +45,9 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
     const [isLoading, setIsLoading] = useState(true)
 
     const [error, setError] = useState("")
+
+    const [searchTerm, setSearchTerm] = useState(false)
+    const [searchResult, setSearchResult] = useState([])
 
     useEffect(() => {
         getIngredientsToAdd()
@@ -75,6 +80,25 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
             })
 
             setIngredients(new_result)
+
+            setIsLoading(false)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    const getIngredientsToAddSearch = async() => {
+        setIsLoading(true)
+
+        try{
+            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+searchTerm)
+
+            const new_result = result.response.map(ingredient => {
+                return {...ingredient, quantity: 0}
+            })
+
+            setSearchResult(new_result)
 
             setIsLoading(false)
         }
@@ -130,12 +154,22 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
         }
     }
 
+    const onSearchChanged = (event) => {
+        const value = event.target.value
+
+        setSearchTerm(value)
+    }
+
     return <div className="popUpAdd">
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
                 <div>
                     <h4 style={BigTextStyle}>Add Ingredients to {recipe.name}</h4>
                     <h5 style={mediumTextStyle}>Select ingredients to add</h5>
+
+                    <div style={{marginTop: "16px"}}>
+                        <SearchInput searchClicked={getIngredientsToAddSearch} onSearchChanged={onSearchChanged} />
+                    </div>
                 </div>
 
                 <div style={{display: "flex"}}>

@@ -4,14 +4,18 @@ import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import AppContext from "../../pages/AppContext";
+import { AppContext } from "../../pages/AppContext";
 
-import { PRODUCTS_PROFITABLE_URL } from "../../utils/api.endpoints"
+import { useRouter } from "next/router"
+
+import { PRODUCTS_PROFITABLE_URL, APPLY_PROFITABLE_CHANGES_URL } from "../../utils/api.endpoints"
 import { useEffect } from "react"
 
 const ProfitableApply = ({apply_details}) => {
 
-    const value = useContext(AppContext);
+    const router = useRouter()
+
+    const appContext = AppContext();
 
     const details = JSON.parse(apply_details)
 
@@ -22,32 +26,43 @@ const ProfitableApply = ({apply_details}) => {
     },[])
 
     const loadProducts = async () => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
 
         try{
             const result = await getRequest(PRODUCTS_PROFITABLE_URL+"?type="+details.type+"&changeList="+JSON.stringify(details.changeObject))
 
-            console.log(result)
-
             setProducts(result.response)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
         catch(err){
-            console.log(err)
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
     }
 
-    const applyChange = () => {
-        console.log("Change Applied")
+    const applyChange = async () => {
+        appContext.setBlockingLoading(true)
+
+        try{
+            let url = APPLY_PROFITABLE_CHANGES_URL
+            
+            await postRequest(url, {type: details.type, id: details.inventoryItem._id, change: Object.values(details.changeObject)[0]})
+
+            appContext.setBlockingLoading(false)
+
+            router.push("/profitable")
+        }
+        catch(err){
+            console.log(`An error occurred applying changes to ${changeDetails.inventoryItem._id} with error ${err}`)
+            appContext.setBlockingLoading(false)
+        }
     }
 
     return <>
         <div className="pageHolderContent">
             <div className="pageHolderContentTop">
                 <div className="pageHolderContentTopLeft" style={topLeftStyle}> 
-                    <h4 style={topLeftStyleText}>The following products will be affected if you apply a { getAmount(Object.values(details.changeObject)[0]) } {Object.values(details.changeObject)[0] < 0 ? "decrease" : "increase" } to the cost of {details.inventoryItem.name}</h4>
+                    <h4 style={topLeftStyleText}>The following products will be affected if you change the price of {details.inventoryItem.name} to { getAmount(Object.values(details.changeObject)[0]) } </h4>
                     <button onClick={applyChange} className="rectangleButtonPrimary">Apply</button>
                 </div>
             </div>
@@ -59,11 +74,11 @@ const ProfitableApply = ({apply_details}) => {
                     <tbody>
                         <tr className="header" style={{marginBottom: "24px"}}>
                             <th style={{width: "16%", paddingLeft: "20px", fontSize: "14px"}}>Name</th>
-                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Old Cost</th>
-                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Old Cost With Profit</th>
-                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>New Cost</th>
-                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>New Cost with Profit</th>
-                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Old selling Price</th>
+                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Old Total Cost</th>
+                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Old Total Cost With Profit</th>
+                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>New Total Cost</th>
+                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>New Total Cost with Profit</th>
+                            <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Actual Selling Price</th>
                             <th style={{width: "14%", paddingLeft: "20px", fontSize: "14px"}}>Profit Margin</th>
                         </tr>
                         {
