@@ -31,6 +31,10 @@
     width: 100%;
 }
 
+.settingsErrorText{
+    color: red;
+}
+
 .settingsDetails .settingsInputFieldHolder{
     display: flex;
     align-items: center;
