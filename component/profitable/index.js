@@ -178,10 +178,10 @@ const Profitable = () => {
 
             appContext.setBlockingLoading(false)
 
-            router.push("/profitable")
+            search()
         }
         catch(err){
-            console.log(`An error occurred applying changes to ${changeDetails.inventoryItem._id} with error ${err}`)
+            console.log(`An error occurred applying changes to ${inventoryItem._id} with error ${err}`)
             appContext.setBlockingLoading(false)
         }
     }
