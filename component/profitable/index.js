@@ -56,6 +56,9 @@ const Profitable = () => {
     const navigateToProfitableApply = (e, item) => {
         e.preventDefault()
 
+        if(!changeList || Object.keys(changeList).length == 0)
+            return;
+
         const idObj = {}
 
         idObj[item._id] = changeList[item._id]
