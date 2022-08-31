@@ -64,8 +64,8 @@ const ProfitableApply = ({apply_details}) => {
         <div className="pageHolderContent">
             <div className="pageHolderContentTop">
                 <div className="pageHolderContentTopLeft" style={topLeftStyle}> 
-                    <h4 style={topLeftStyleText}>The following products will be affected if you change the price of {details.inventoryItem.name} from {getAmount(details.inventoryItem.price)} to { getAmount(Object.values(details.changeObject)[0]) } </h4>
-                    <button onClick={applyChange} className="rectangleButtonPrimary">Apply</button>
+                    <h4 style={topLeftStyleText}>The following products will be affected if you change the price of {details.inventoryItem.name} from <strong>{getAmount(details.inventoryItem.price)}</strong> to <strong>{ getAmount(Object.values(details.changeObject)[0]) }</strong> </h4>
+                    <button onClick={applyChange} className="rectangleButtonPrimary">Apply Change</button>
                 </div>
             </div>
         </div>
