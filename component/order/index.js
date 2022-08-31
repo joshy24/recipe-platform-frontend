@@ -16,13 +16,8 @@ import { AppContext } from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
-<<<<<<< HEAD
-
-import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, DELETE_ORDER_PRODUCT_URL, FULFILL_ORDER_URL} from "../../utils/api.endpoints"
-
-=======
 import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, FULFILL_ORDER_URL, DELETE_ORDER_PRODUCT_URL, EDIT_ORDER_PRODUCT_URL } from "../../utils/api.endpoints"
->>>>>>> master
+
 import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
@@ -206,17 +201,6 @@ const OrderIndex = ({id}) => {
         setShowDeleteOrderProduct(false)
     }
 
-<<<<<<< HEAD
-    const openFulfillOrderMessage = () => {
-        setShowFulfillOrderMessage(true)
-    }
-
-    const hideFulfillOrderMessage = () => {
-        setShowFulfillOrderMessage(false)
-    }
-
-
-=======
     const openEditOrderProduct = (e, productToEdit) => {
         e.preventDefault()
         setEntityInFocus(productToEdit)
@@ -228,7 +212,6 @@ const OrderIndex = ({id}) => {
         setShowEditOrderProduct(false)
     }
 
->>>>>>> master
     const deleteOrder = async () => {
         
         value.setBlockingLoading(true)
@@ -249,9 +232,7 @@ const OrderIndex = ({id}) => {
         
     }
 
-<<<<<<< HEAD
-=======
-    const fulfillOrder = async() => {
+    const fulfillOrder = async () => {
         value.setBlockingLoading(true)
         
         try{
@@ -267,7 +248,6 @@ const OrderIndex = ({id}) => {
         }
     }
     
->>>>>>> master
     const deleteOrderProduct = async () => {
         
         value.setBlockingLoading(true)
@@ -290,28 +270,6 @@ const OrderIndex = ({id}) => {
 
             value.setMessage({visible: true, message: "Could not delete product from order", title: "Error Deleting", type: "ERROR"})
         }
-    }
-        
-<<<<<<< HEAD
-    const fulfillOrder = async() => {
-        value.setBlockingLoading(true)
-        
-        try{
-            const result = await putRequest(FULFILL_ORDER_URL, {id: order._id})
-
-            console.log(result)
-
-            hideFulfillOrderMessage();
-
-            loadOrder();
-
-            value.setBlockingLoading(false)
-        }
-        catch(err){
-            value.setBlockingLoading(false)
-            console.log(err)
-        }
-=======
     }
 
     const editOrderProduct = async (newEditedProduct) => {
@@ -350,7 +308,7 @@ const OrderIndex = ({id}) => {
         }
 
         return 0;
->>>>>>> master
+
     }
 
     return <div className="pageHolderContent">
@@ -445,23 +403,12 @@ const OrderIndex = ({id}) => {
                         
                         <tr className="notHeader">
                             <td>Order status</td>
-<<<<<<< HEAD
-                            <td className="tabbedListContentHorizontalTableContent"> 
-                                {order && order.status}
-                                {
-                                    order && order.status == "PENDING" && <button onClick={openFulfillOrderMessage} style={{marginLeft: "16px"}}
-                                    className="rectangleButtonPrimary">Fulfill</button>
-                                }
-                            </td>
-
-=======
                             <td className="tabbedListContentHorizontalTableContent">
                                 {order && order.status}
                                 {
                                     order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>
                                 }
                             </td>
->>>>>>> master
                         </tr>
                        
                         <tr className="notHeader">
@@ -525,5 +472,6 @@ const OrderIndex = ({id}) => {
 
     </div>
 }
+
 
 export default OrderIndex;

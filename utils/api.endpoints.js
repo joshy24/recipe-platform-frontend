@@ -8,6 +8,8 @@ export const API_VERSION = "/api/v1"
 
 export const LOGIN_URL = API_VERSION+"/login"
 
+export const EDIT_PROFILE_URL = BASE_URL+API_VERSION+"/update_account"
+
 
 
 //Dasboard

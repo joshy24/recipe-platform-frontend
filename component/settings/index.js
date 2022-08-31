@@ -1,6 +1,8 @@
 import {useState} from 'react'
 import styles from "../../styles/Settings.module.css"
 
+import { AppContext } from "../../pages/AppContext";
+
 import { useRouter } from "next/router"
 
 import AuthHelperMethods from "../../utils/AuthHelperMethods";
@@ -11,10 +13,12 @@ const SettingsIndex = () => {
 
     const user = Auth.getAdmin()
 
+    const value = AppContext()
+
     const [isEdit, setIsEdit] = useState(false)
     const [isInput, setIsInput] = useState(false)
 
-    const [percentage, setPercentage] = useState(user.profit_margin)
+    const [percentage, setPercentage] = useState((!user.profit_margin || user.profit_margin == 0) ? "" : user.profit_margin)
 
     const showValidInput = () => {
         setIsInput(true)
@@ -28,20 +32,19 @@ const SettingsIndex = () => {
         setIsEdit(!isEdit)
     }
 
-    const validInput = () => {
+    const cancelInput = () => {
         hideValidInput()
 
-        if(percentage === "") {
-            showValidInput()
-        } else {
-            setIsEdit(!isEdit)  
-        }
+        setPercentage(user.profit_margin)
+
+        setIsEdit(!isEdit)  
+        
     }
 
-    const onChange = (e) => {
+    const onChange = (e, cancelInput) => {
         let value = e.target.value;
         let name = e.target.name
-        
+        /*
         let string = value
     
         let usingSplit = string.split('')
@@ -60,9 +63,35 @@ const SettingsIndex = () => {
             usingSplit.splice(0, x)
             value = usingSplit.join('')
             
-        }
+        }*/
 
-        setPercentage(value)
+        /*cancelInput ? setPercentage(percentage) :*/ setPercentage(value)
+        
+    }
+
+    const saveInput = async () => {
+        value.setBlockingLoading(true)
+        hideValidInput()
+
+        try {
+            if(percentage === "") {
+                showValidInput()
+            } else {
+
+                //const result = await putRequest()
+
+                user.profit_margin = percentage;
+
+                Auth.setAdmin(user)
+    
+                value.setBlockingLoading(false)
+    
+                setIsEdit(!isEdit)  
+            }
+        } catch(err) {
+            console.log(err)
+            value.setBlockingLoading(false)
+        }
     }
 
     const doLogout = () => {
@@ -103,8 +132,8 @@ const SettingsIndex = () => {
         <div className={styles.settingsButtonsHolder}> 
             {
                 isEdit && <div>
-                    <button onClick={validInput} className={`rectangleButtonPrimary`}>Save</button>
-                    <button onClick={validInput} className={`rectangleButtonGrey`}>Cancel</button>
+                    <button onClick={saveInput} className={`rectangleButtonPrimary`}>Save</button>
+                    <button onClick={cancelInput} className={`rectangleButtonGrey`}>Cancel</button>
                 </div>
             }
         </div>
