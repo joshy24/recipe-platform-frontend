@@ -178,16 +178,14 @@ const Profitable = () => {
 
             appContext.setBlockingLoading(false)
 
+            setChangeList({})
+
             search()
         }
         catch(err){
             console.log(`An error occurred applying changes to ${inventoryItem._id} with error ${err}`)
             appContext.setBlockingLoading(false)
         }
-    }
-
-    const goToChange = () => {
-
     }
 
     return <>

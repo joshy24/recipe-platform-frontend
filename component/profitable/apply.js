@@ -2,6 +2,8 @@ import { useState, useContext } from "react"
 
 import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
 
+import EmptyResult from "../general/emptyResult"
+
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
 import { AppContext } from "../../pages/AppContext";
@@ -62,7 +64,7 @@ const ProfitableApply = ({apply_details}) => {
         <div className="pageHolderContent">
             <div className="pageHolderContentTop">
                 <div className="pageHolderContentTopLeft" style={topLeftStyle}> 
-                    <h4 style={topLeftStyleText}>The following products will be affected if you change the price of {details.inventoryItem.name} to { getAmount(Object.values(details.changeObject)[0]) } </h4>
+                    <h4 style={topLeftStyleText}>The following products will be affected if you change the price of {details.inventoryItem.name} from {getAmount(details.inventoryItem.price)} to { getAmount(Object.values(details.changeObject)[0]) } </h4>
                     <button onClick={applyChange} className="rectangleButtonPrimary">Apply</button>
                 </div>
             </div>
@@ -96,6 +98,9 @@ const ProfitableApply = ({apply_details}) => {
                         }
                     </tbody>
                 </table>
+                {
+                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (products.length == 0 || !products)) && <EmptyResult message="No products were found." onEmptyButtonClicked={loadProducts} emptyButtonText="Try Again" />
+                }
             </div>
         </div>
     </>
