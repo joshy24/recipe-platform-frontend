@@ -46,11 +46,13 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
 
     const [error, setError] = useState("")
 
+    const [pagination, setPagination] = useState({offset:0, limit: 30})
+
     const [searchTerm, setSearchTerm] = useState(false)
     const [searchResult, setSearchResult] = useState([])
 
     useEffect(() => {
-        getIngredientsToAdd()
+        getIngredientsToAddSearch()
     }, [])
 
     const onChange = (e, ingredient) => {
@@ -92,7 +94,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
         setIsLoading(true)
 
         try{
-            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+searchTerm)
+            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
 
             const new_result = result.response.map(ingredient => {
                 return {...ingredient, quantity: 0}

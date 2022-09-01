@@ -223,7 +223,7 @@ const RecipeIndex = ({id}) => {
         setEntityInFocus({})
         setShowDeleteRecipeIngredient(false)
     }
-
+    
     const deleteIngredient = async () => {
         value.setBlockingLoading(true)
         

@@ -13,7 +13,7 @@ const SettingsIndex = () => {
 
     const [isEdit, setIsEdit] = useState(false)
 
-    const [percentage, setPercentage] = useState(user.profit_margin)
+    const [percentage, setPercentage] = useState((!user.profit_margin || user.profit_margin == 0) ? "" : user.profit_margin)
     
     const switchIsEdit = () => {
         setIsEdit(!isEdit)
