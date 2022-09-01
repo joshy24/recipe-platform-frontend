@@ -43,7 +43,7 @@ const IngredientsIndex = () => {
     const [showEdit, setShowEdit] = useState(false)
 
     const [isDelete, setIsDelete] = useState({visible: false, title:"", message:"", type:""})
-
+    
     const [filters, setFilters] = useState({type: "materials", status: "All", searchTerm: ""})
 
     const [whatIsOpen, setWhatIsOpen] = useState(false)

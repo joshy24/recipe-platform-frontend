@@ -16,9 +16,6 @@ import SearchInput from "../general/searchInput"
 
 import EmptyResult from "../general/emptyResult"
 
-
-
-
 import { AppContext } from "../../pages/AppContext";
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
@@ -41,6 +38,7 @@ const OrdersIndex = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
     const [searchResult, setSearchResult] = useState([])
+    const [changeList, setChangeList] = useState([])
 
     useEffect(() => {
         loadOrders()
@@ -137,7 +135,7 @@ const OrdersIndex = () => {
 
         try{
             const result = await getRequest(ALL_ORDERS_URL+"?limit="+pagination.limit+"&offset="+pagination.offset)
-
+            
             setOrders(result.response)
 
             value.setLoading(false)
@@ -177,6 +175,19 @@ const OrdersIndex = () => {
         setSearchTerm(value)
     }
 
+    const selectedOrder = (event, id) => {
+        const checked = event.target.checked;
+
+        if(checked) {
+            setChangeList(current => [...current, id])
+        } else {
+            setChangeList(current =>
+                current.filter(element => {
+                    return element !== id;
+                }),
+            );
+        }
+    }
 
     return ( <>
         <div className="pageHolderContent">

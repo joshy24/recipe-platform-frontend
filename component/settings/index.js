@@ -1,6 +1,8 @@
 import {useState} from 'react'
 import styles from "../../styles/Settings.module.css"
 
+import { AppContext } from "../../pages/AppContext";
+
 import { useRouter } from "next/router"
 
 import AuthHelperMethods from "../../utils/AuthHelperMethods";
@@ -11,19 +13,63 @@ const SettingsIndex = () => {
 
     const user = Auth.getAdmin()
 
+    const value = AppContext()
+
     const [isEdit, setIsEdit] = useState(false)
+    const [isInput, setIsInput] = useState(false)
 
     const [percentage, setPercentage] = useState((!user.profit_margin || user.profit_margin == 0) ? "" : user.profit_margin)
+
+    const showValidInput = () => {
+        setIsInput(true)
+    }
+
+    const hideValidInput = () => {
+        setIsInput(false)
+    }
     
     const switchIsEdit = () => {
         setIsEdit(!isEdit)
     }
 
-    const onChange = (e) => {
-        let value = e.target.value;
-        let name = e.target.name
+    const cancelInput = () => {
+        hideValidInput()
 
+        setPercentage(user.profit_margin)
+
+        setIsEdit(!isEdit)  
+        
+    }
+
+    const onChange = (e, cancelInput) => {
+        let value = e.target.value;
+        let name = e.target.name 
         setPercentage(value)
+    }
+
+    const saveInput = async () => {
+        value.setBlockingLoading(true)
+        hideValidInput()
+
+        try {
+            if(percentage === "") {
+                showValidInput()
+            } else {
+
+                //const result = await putRequest()
+
+                user.profit_margin = percentage;
+
+                Auth.setAdmin(user)
+    
+                value.setBlockingLoading(false)
+    
+                setIsEdit(!isEdit)  
+            }
+        } catch(err) {
+            console.log(err)
+            value.setBlockingLoading(false)
+        }
     }
 
     const doLogout = () => {
@@ -46,9 +92,14 @@ const SettingsIndex = () => {
             <div className={styles.settingsInputFieldHolder}>
                 { 
                     isEdit
-                    ? <input className="ptInput" onChange={onChange} value={percentage} type="number" name="percentage" placeholder="Enter margin percentage" />
-                    : <h4>{percentage}</h4>
-                } <h4>%</h4>
+                    ? <div>
+                        <input className="ptInput" onChange={onChange} value={percentage} type="number" name="percentage" placeholder="Enter margin percentage" />
+                        {
+                            isInput && <h5 className={styles.settingsErrorText}>Input field cannot be empty.</h5>
+                        }
+                    </div>
+                    : <h4>{percentage}%</h4>
+                }
             </div>
 
             {
@@ -59,8 +110,8 @@ const SettingsIndex = () => {
         <div className={styles.settingsButtonsHolder}> 
             {
                 isEdit && <div>
-                    <button onClick={switchIsEdit} className={`rectangleButtonPrimary`}>Save</button>
-                    <button onClick={switchIsEdit} className={`rectangleButtonGrey`}>Cancel</button>
+                    <button onClick={saveInput} className={`rectangleButtonPrimary`}>Save</button>
+                    <button onClick={cancelInput} className={`rectangleButtonGrey`}>Cancel</button>
                 </div>
             }
         </div>

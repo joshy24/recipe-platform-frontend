@@ -596,7 +596,7 @@ box
    flex-direction: column;
    min-width: 200px;
    width: 500px;
-   max-width: 500;
+   max-width: 500px;
 }
 
 .popUpInnerContent .popUpInnerContentTop{

@@ -17,10 +17,12 @@ import { AppContext } from "../../pages/AppContext";
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 
 import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, FULFILL_ORDER_URL, DELETE_ORDER_PRODUCT_URL, EDIT_ORDER_PRODUCT_URL } from "../../utils/api.endpoints"
+
 import AddProducts from "./addproducts"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 import DeleteDialog from "../general/deletedialog"
+import MessageDialog from "../general/messagedialog"
 import EmptyResult from "../general/emptyResult"
 
 import { getAmount, toUpperCase, getDate } from "../../utils/helper"
@@ -48,6 +50,7 @@ const OrderIndex = ({id}) => {
     const [showEditOrder, setShowEditOrder] = useState(false)
     const [products, setProducts] = useState([])
     const [pagination, setPagination] = useState({offset: 0, limit: 30})
+    const [showFulfillOrderMessage, setShowFulfillOrderMessage] = useState(false)
     const [isStatus, setIsStatus] = useState(false)
 
     
@@ -229,7 +232,7 @@ const OrderIndex = ({id}) => {
         
     }
 
-    const fulfillOrder = async() => {
+    const fulfillOrder = async () => {
         value.setBlockingLoading(true)
         
         try{
@@ -267,7 +270,6 @@ const OrderIndex = ({id}) => {
 
             value.setMessage({visible: true, message: "Could not delete product from order", title: "Error Deleting", type: "ERROR"})
         }
-        
     }
 
     const editOrderProduct = async (newEditedProduct) => {
@@ -306,6 +308,7 @@ const OrderIndex = ({id}) => {
         }
 
         return 0;
+
     }
 
     return <div className="pageHolderContent">
@@ -452,6 +455,10 @@ const OrderIndex = ({id}) => {
         }
 
         {
+            showFulfillOrderMessage && <MessageDialog onPerformClicked={fulfillOrder} onCancelClicked={hideFulfillOrderMessage} message="Are you sure you want to fulfill this order? Fulfilling this order will deduct the quantity of items in this order from inventory." />
+        }
+
+        {
             showDeleteOrder && <DeleteDialog onPerformDeleteClicked={deleteOrder} onCancelDeleteClicked={hideDeleteOrder} type={"Order"} />
         }
         
@@ -465,5 +472,6 @@ const OrderIndex = ({id}) => {
 
     </div>
 }
+
 
 export default OrderIndex;
