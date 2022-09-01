@@ -134,12 +134,13 @@ const IngredientsIndex = () => {
     }
 
     const editInventory = async(e, inventorytoEdit) => {
+        console.log(inventorytoEdit)
         e.preventDefault();
         
         value.setBlockingLoading(true)
 
         try{
-            ilters.type == "ingredients" ? 
+            filters.type == "ingredients" ? 
             await putRequest(EDIT_INGREDIENT_URL, {ingredient: {...inventorytoEdit, _id: inventoryInFocus._id}})
             : await putRequest(EDIT_MATERIAL_URL, {material: {...inventorytoEdit, _id: inventoryInFocus._id}});
 
@@ -151,14 +152,18 @@ const IngredientsIndex = () => {
         }
         catch(err){
             value.setBlockingLoading(false)
-            setMessage("An error occurred processing the request.")
-            setErrorMessageVisible(true)
+            value.setMessage("An error occurred processing the request.")
         }
     }
 
     const performExport = async () => {
         if(inventory && inventory.docs.length > 0){
-            const csv = Papa.unparse(inventory)
+
+            const newExportArray = inventory.docs.map(item => {
+                return {...item, purchase_quantity: item.purchase_quantity.amount, purchase_unit: item.purchase_quantity.unit}
+            })
+
+            const csv = Papa.unparse(newExportArray)
 
             //download content
             downloadFile(csv, "export.csv")
@@ -216,8 +221,7 @@ const IngredientsIndex = () => {
         }
         catch(err){
             value.setBlockingLoading(false)
-            setMessage("An error occurred processing the request.")
-            setErrorMessageVisible(true)
+            value.setMessage("An error occurred processing the request.")
         }
     }
 
@@ -360,7 +364,7 @@ const IngredientsIndex = () => {
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_size}</td>
                                             <td style={{paddingLeft: "30px"}}>{getAmount(invent.price)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.quantity_in_stock}</td>
-                                            <td style={{paddingLeft: "30px"}}>{getAmount(invent.price * invent.quantity_in_stock)}</td>
+                                            <td style={{paddingLeft: "30px"}}>{getAmount(invent.costOfQuantityInStock)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.lowLevel ? (invent.quantity_in_stock >= invent.lowLevel ? "NORMAL" : "LOW") : "NORMAL"}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.lowLevel || "Not Set"}</td>
                                             <td style={{paddingLeft: "30px"}} className="tabbedListContentHorizontalTableContent">
