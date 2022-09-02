@@ -36,20 +36,17 @@ import { BASE_URL, INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../
 
 const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => {
 
-    const value = AppContext();
+    const appContext = AppContext();
     
     const [ingredients, setIngredients] = useState([])
 
     const [selectedIngredients, setSelectedIngredients] = useState([])
 
-    const [isLoading, setIsLoading] = useState(true)
-
     const [error, setError] = useState("")
 
     const [pagination, setPagination] = useState({offset:0, limit: 30})
 
-    const [searchTerm, setSearchTerm] = useState(false)
-    const [searchResult, setSearchResult] = useState([])
+    const [searchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
         getIngredientsToAddSearch()
@@ -72,7 +69,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
     }
 
     const getIngredientsToAdd = async() => {
-        setIsLoading(true)
+        appContext.setLoading(true)
 
         try{
             const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id)
@@ -83,15 +80,16 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
 
             setIngredients(new_result)
 
-            setIsLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
+            appContext.setLoading(false)
             console.log(err)
         }
     }
 
     const getIngredientsToAddSearch = async() => {
-        setIsLoading(true)
+        appContext.setLoading(true)
 
         try{
             const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
@@ -100,12 +98,13 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                 return {...ingredient, quantity: 0}
             })
 
-            setSearchResult(new_result)
+            setIngredients(new_result)
 
-            setIsLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
             console.log(err)
+            appContext.setLoading(false)
         }
     }
 
@@ -131,14 +130,14 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
 
     const doAddIngredients = async()=>{
         if(selectedIngredients.length > 0){
-            value.setBlockingLoading(true)
+            appContext.setBlockingLoading(true)
 
             setError("")
            
             try{
                 const response = await postRequest(ADD_INGREDIENTS_TO_RECIPE_URL, {id: recipe._id, ingredients: selectedIngredients})
 
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
 
                 loadRecipeIngredients()
 
@@ -146,7 +145,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
             }
             catch(err){
                 console.log(err)
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
             }
         }
         else{
@@ -183,7 +182,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
-                    !isLoading ? 
+                    !appContext.state.isLoading ? 
                         <>
                             {
                                 ingredients && ingredients.length > 0 ? <tbody>
@@ -193,7 +192,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Size</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Price</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Quantity To Add</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Total Cost</th>
+                                    <th style={{width: "12%", paddingLeft: "20px"}}>Quantity To Add Cost</th>
                                     <th style={{width: "16%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
@@ -203,7 +202,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                                 }
                             </tbody>
 
-                                : <EmptyResult  message={"No Ingredients found to add. Add ingredients to inventory"} onEmptyButtonClicked={getIngredientsToAdd} emptyButtonText={"Try Again"} />
+                                : <EmptyResult  message={"No Ingredients found to add. Add ingredients to inventory"} onEmptyButtonClicked={getIngredientsToAddSearch} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

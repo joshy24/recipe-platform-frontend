@@ -3,6 +3,10 @@ import AuthHelperMethods from "./AuthHelperMethods"
 const Auth = new AuthHelperMethods();
 
 
+export const getPriceOfQuantity = (originalPrice, originalQuantity, requiredQuantity) => {
+    return ( originalPrice * requiredQuantity ) / originalQuantity
+}
+
 export const downloadFile = (data, file_name) => {
     const url = window.URL.createObjectURL(new Blob([data]))
     const link = document.createElement('a')

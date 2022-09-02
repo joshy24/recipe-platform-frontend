@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
-import { getAmount, toUpperCase } from "../../utils/helper"
+import { getAmount, toUpperCase, getPriceOfQuantity } from "../../utils/helper"
 
 const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
     const [quantity, setQuantity] = useState(1)
@@ -34,7 +34,7 @@ const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
-            {getAmount(quantity * ingredient.price)}
+            {getAmount(getPriceOfQuantity(ingredient.price, ingredient.purchase_quantity.amount, quantity))}
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>
