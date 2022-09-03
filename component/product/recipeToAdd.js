@@ -1,26 +1,23 @@
 
-import {useEffect, useState} from "react"
+import {useState} from "react"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
-
-import { getAmount, toUpperCase } from "../../utils/helper"
+import { toUpperCase } from "../../utils/helper"
 
 const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
-    const [quantity, setQuantity] = useState(1)
-    const [unit, setUnit] = useState(recipe.yield ? recipe.yield.unit : "")
+    const [quantityUnit, setQuantityUnit] = useState({quantity: 1, unit: recipe.yield ? recipe.yield.unit : ""})
+
     const [isAdded, setIsAdded] = useState(false)
 
     const onChange = (e) => {
         const value = e.target.value
+        const name = e.target.name
 
-        setQuantity(value)
+        setQuantityUnit({...quantityUnit, [name]:value})
     }
-
+    
     const doAddToSelected = () => {
-        recipe.quantity = quantity;
-        recipe.unit = unit
+        recipe.quantity = quantityUnit.quantity;
+        recipe.unit = quantityUnit.unit
 
         setIsAdded(!isAdded)
 
@@ -31,10 +28,10 @@ const recipeToAdd = ({recipe, selectedRecipes, addToSelected}) => {
         <td style={{paddingLeft: "30px"}}>{toUpperCase(recipe.name)}</td>
         <td style={{paddingLeft: "30px"}}>{recipe.yield && recipe.yield.amount} {recipe.yield && recipe.yield.unit}</td>
         <td style={{paddingLeft: "30px"}}>
-            <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter yield" value={recipe.yield ? (quantity > recipe.yield.amount ? recipe.yield.amount : quantity) : quantity} onChange={e => onChange(e)} />
+            <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter yield" value={recipe.yield ? (quantityUnit.quantity > recipe.yield.amount ? recipe.yield.amount : quantityUnit.quantity) : quantityUnit.quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}}>
-            <input style={{width: "100px"}} type="text" name="unit" placeholder="Enter Unit" value={unit} onChange={e => onChange(e)} />
+            <input style={{width: "100px"}} type="text" name="unit" placeholder="Enter Unit" value={quantityUnit.unit} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>

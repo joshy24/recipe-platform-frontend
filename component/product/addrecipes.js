@@ -28,23 +28,28 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
+import SearchInput from "../general/searchInput"
+
 import { RECIPES_TO_ADD, ADD_RECIPES_TO_PRODUCT } from "../../utils/api.endpoints"
 
 import { AppContext } from "../../pages/AppContext";
 
+
 const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
-    const value = AppContext();
+    const appContext = AppContext();
 
     const [recipes, setRecipes] = useState([])
 
     const [selectedRecipes, setSelectedRecipes] = useState([])
 
-    const [isLoading, setIsLoading] = useState(true)
-
     const [error, setError] = useState("")
 
+    const [pagination, setPagination] = useState({offset:0, limit: 30})
+
+    const [searchTerm, setSearchTerm] = useState("")
+
     useEffect(() => {
-        getRecipesToAdd()
+        getRecipesToAddSearch()
     }, [])
 
     const onChange = (e, recipe) => {
@@ -63,21 +68,45 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         }
     }
 
-    const getRecipesToAdd = async() => {
-        setIsLoading(true)
+    const emptySearchAndGetRecipes = async() => {
+        setSearchTerm("")
+
+        appContext.setLoading(true)
+
         try{
-            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id)
+            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
 
             const new_result = result.response.map(recipe => {
                 return {...recipe, quantity: 0}
             })
 
             setRecipes(new_result)
-
-            setIsLoading(false)
+            
+            appContext.setLoading(false)
         }
         catch(err){
             console.log(err)
+            appContext.setLoading(false)
+        }
+    }
+
+    const getRecipesToAddSearch = async() => {
+        appContext.setLoading(true)
+
+        try{
+            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            
+            const new_result = result.response.map(recipe => {
+                return {...recipe, quantity: 0}
+            })
+
+            setRecipes(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
         }
     }
 
@@ -106,13 +135,13 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
 
     const doAddRecipes = async()=>{
         if(selectedRecipes.length > 0){
-            value.setBlockingLoading(true)
+            appContext.setBlockingLoading(true)
             setError("")
            
             try{
                 const response = await postRequest(ADD_RECIPES_TO_PRODUCT, {id: product._id, recipes: selectedRecipes})
 
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
 
                 loadProductRecipes()
 
@@ -120,7 +149,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
             }
             catch(err){
                 console.log(err)
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
             }
         }
         else{
@@ -130,12 +159,22 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         }
     }
 
+    const onSearchChanged = (event) => {
+        const value = event.target.value
+
+        setSearchTerm(value)
+    }
+
     return <div className="popUpAdd">
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
                 <div>
                     <h4 style={BigTextStyle}>Add Recipes to {product.name}</h4>
                     <h5 style={mediumTextStyle}>Select Recipes to add</h5>
+
+                    <div style={{marginTop: "16px"}}>
+                        <SearchInput search_value={searchTerm} searchClicked={getRecipesToAddSearch} onSearchChanged={onSearchChanged} closeSearchClicked={emptySearchAndGetRecipes} />
+                    </div>
                 </div>
 
                 <div style={{display: "flex"}}>
@@ -147,7 +186,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
-                    !isLoading ? 
+                    !appContext.state.isLoading ? 
                         <>
                             {
                                 recipes && recipes.length > 0 ? <tbody>
@@ -165,7 +204,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                                 }
                             </tbody>
 
-                                : <EmptyResult  message={"No Recipes found to add. Add recipes on the recipes pages"} onEmptyButtonClicked={getRecipesToAdd} emptyButtonText={"Try Again"} />
+                                : <EmptyResult  message={"No Recipes found to add. Add recipes on the recipes pages"} onEmptyButtonClicked={getRecipesToAddSearch} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

@@ -1,9 +1,5 @@
 
-import {useEffect, useState} from "react"
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import {useState} from "react"
 
 import { getAmount, toUpperCase, getPriceOfQuantity } from "../../utils/helper"
 

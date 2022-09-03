@@ -32,7 +32,7 @@ import SearchInput from "../general/searchInput"
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
-import { BASE_URL, INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../../utils/api.endpoints"
+import { INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../../utils/api.endpoints"
 
 const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => {
 
@@ -85,6 +85,28 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
         catch(err){
             appContext.setLoading(false)
             console.log(err)
+        }
+    }
+
+    const emptySearchAndGetIngredients = async() => {
+        setSearchTerm("")
+
+        appContext.setLoading(true)
+
+        try{
+            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+
+            const new_result = result.response.map(ingredient => {
+                return {...ingredient, quantity: 0}
+            })
+
+            setIngredients(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
         }
     }
 
@@ -169,7 +191,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                     <h5 style={mediumTextStyle}>Select ingredients to add</h5>
 
                     <div style={{marginTop: "16px"}}>
-                        <SearchInput searchClicked={getIngredientsToAddSearch} onSearchChanged={onSearchChanged} />
+                        <SearchInput search_value={searchTerm} searchClicked={getIngredientsToAddSearch} onSearchChanged={onSearchChanged} closeSearchClicked={emptySearchAndGetIngredients} />
                     </div>
                 </div>
 

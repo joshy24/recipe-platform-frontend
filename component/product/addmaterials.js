@@ -28,6 +28,8 @@ import { AppContext } from "../../pages/AppContext";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
+import SearchInput from "../general/searchInput"
+
 import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { BASE_URL, MATERIALS_TO_ADD, ADD_MATERIALS_TO_PRODUCT } from "../../utils/api.endpoints"
@@ -36,18 +38,20 @@ const add_materials_url = BASE_URL + ADD_MATERIALS_TO_PRODUCT
 
 const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
 
-    const value = AppContext();
+    const appContext = AppContext();
     
     const [materials, setMaterials] = useState([])
 
     const [selectedMaterials, setSelectedMaterials] = useState([])
 
-    const [isLoading, setIsLoading] = useState(true)
-
     const [error, setError] = useState("")
 
+    const [pagination, setPagination] = useState({offset:0, limit: 30})
+
+    const [searchTerm, setSearchTerm] = useState("")
+
     useEffect(() => {
-        getMaterialsToAdd()
+        getMaterialsToAddSearch()
     }, [])
 
     const onChange = (e, material) => {
@@ -67,7 +71,8 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
     }
 
     const getMaterialsToAdd = async() => {
-        setIsLoading(true)
+        appContext.setLoading(true)
+
         try{
             const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id)
 
@@ -77,10 +82,53 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
 
             setMaterials(new_result)
 
-            setIsLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
             console.log(err)
+            appContext.setLoading(false)
+        }
+    }
+
+    const emptySearchAndGetMaterials = async() => {
+        setSearchTerm("")
+
+        appContext.setLoading(true)
+
+        try{
+            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+
+            const new_result = result.response.map(material => {
+                return {...material, quantity: 0}
+            })
+
+            setMaterials(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+        }
+    }
+
+    const getMaterialsToAddSearch = async() => {
+        appContext.setLoading(true)
+
+        try{
+            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+
+            const new_result = result.response.map(material => {
+                return {...material, quantity: 0}
+            })
+
+            setMaterials(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
         }
     }
 
@@ -106,14 +154,14 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
 
     const doAddMaterials = async()=>{
         if(selectedMaterials.length > 0){
-            value.setBlockingLoading(true)
+            appContext.setBlockingLoading(true)
 
             setError("")
            
             try{
                 const response = await postRequest(add_materials_url, {id: product._id, materials: selectedMaterials})
 
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
 
                 loadProductMaterials()
 
@@ -121,7 +169,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
             }
             catch(err){
                 console.log(err)
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
             }
         }
         else{
@@ -131,12 +179,22 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
         }
     }
 
+    const onSearchChanged = (event) => {
+        const value = event.target.value
+
+        setSearchTerm(value)
+    }
+
     return <div className="popUpAdd">
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
                 <div>
                     <h4 style={BigTextStyle}>Add Materials to {product.name}</h4>
                     <h5 style={mediumTextStyle}>Select Materials to add</h5>
+
+                    <div style={{marginTop: "16px"}}>
+                        <SearchInput search_value={searchTerm} searchClicked={getMaterialsToAddSearch} onSearchChanged={onSearchChanged} closeSearchClicked={emptySearchAndGetMaterials} />
+                    </div>
                 </div>
 
                 <div style={{display: "flex"}}>
@@ -148,7 +206,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
-                    !isLoading ? 
+                    !appContext.state.isLoading ? 
                         <>
                             {
                                 materials && materials.length > 0 ? <tbody>
@@ -168,7 +226,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
                                 }
                             </tbody>
 
-                                : <EmptyResult  message={"No Materials found to add. Add materials to inventory"} onEmptyButtonClicked={getMaterialsToAdd} emptyButtonText={"Try Again"} />
+                                : <EmptyResult  message={"No Materials found to add. Add materials to inventory"} onEmptyButtonClicked={getMaterialsToAddSearch} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

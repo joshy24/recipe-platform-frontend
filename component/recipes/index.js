@@ -91,7 +91,6 @@ const RecipesIndex = () => {
                 value.setLoading(true)
                 const result = await getRequest(SEARCH_RECIPES_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
                 value.setLoading(false)
-                console.log(result.response)
 
                 setRecipes(result.response)
             }
@@ -192,7 +191,7 @@ const RecipesIndex = () => {
 
                 <div className="pageHolderContentTopRight">
                     {
-                        isSearchOpen ? <SearchInput searchClicked={searchRecipes} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchRecipes} /> :
+                        isSearchOpen ? <SearchInput search_value={searchTerm} searchClicked={searchRecipes} onSearchChanged={onSearchChanged} closeSearchClicked={closeSearchRecipes} /> :
                         <div style={{display: "flex"}}>
                             <button onClick={showSearchRecipes} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faSearch} /></button>
                             <button onClick={showAddRecipe} className={`squareButtonPrimary ${styles.ordersButton}`}><FontAwesomeIcon icon={faAdd} /></button>
