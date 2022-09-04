@@ -33,7 +33,7 @@ const OrdersIndex = () => {
 
 
     const [isLoading, setIsLoading] = useState(true)
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    const [pagination, setPagination] = useState({page:1, limit: 30, totalPagesCount: 0})
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -98,9 +98,8 @@ const OrdersIndex = () => {
         if(searchTerm && searchTerm.length > 0){
             try{
                 setIsLoading(true)
-                const result = await getRequest(SEARCH_ORDERS_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+                const result = await getRequest(SEARCH_ORDERS_URL+"?searchTerm="+searchTerm+"&page="+pagination.page+"&limit="+pagination.limit)
                 setIsLoading(false)
-                console.log(result)
 
                 setSearchResult(result.response)
             }
@@ -187,6 +186,10 @@ const OrdersIndex = () => {
                 }),
             );
         }
+    }
+
+    const handlePageClick = (e) => {
+
     }
 
     return ( <>
@@ -291,9 +294,12 @@ const OrdersIndex = () => {
                     {
                         orders && orders.docs && orders.docs.length == 0 && !value.state.loading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrders} emptyButtonText={"Try Again"} />
                     }
+
+                
                 </div>
             </div>
         </div>
+
         {
             showAdd && <AddOrder addOrder={addOrder} closeAdd={closeAddOrder} />
         }
