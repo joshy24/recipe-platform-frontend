@@ -28,13 +28,15 @@ import { AppContext } from "../../pages/AppContext";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
+import SearchInput from "../general/searchInput"
+
 import { getRequest, putRequest } from "../../utils/api.requests"
 
 import { PRODUCTS_TO_ADD_URL, ADD_PRODUCTS_TO_ORDER_URL } from "../../utils/api.endpoints"
 
 const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
-    const value = AppContext();
+    const appContext = AppContext();
     
     const [products, setProducts] = useState([])
 
@@ -44,8 +46,12 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
     const [error, setError] = useState("")
 
+    const [pagination, setPagination] = useState({offset:0, limit: 30})
+
+    const [searchTerm, setSearchTerm] = useState("")
+
     useEffect(() => {
-        getProductsToAdd()
+        getProductsToAddSearch()
     }, [])
 
     const onChange = (e, product) => {
@@ -83,6 +89,48 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
         }
     }
 
+    const emptySearchAndGetProducts = async() => {
+        setSearchTerm("")
+
+        appContext.setLoading(true)
+
+        try{
+            const result = await getRequest(PRODUCTS_TO_ADD_URL+"?id="+order._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+
+            const new_result = result.response.map(product => {
+                return {...product, quantity: 0}
+            })
+
+            setProducts(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+        }
+    }
+
+    const getProductsToAddSearch = async() => {
+        appContext.setLoading(true)
+
+        try{
+            const result = await getRequest(PRODUCTS_TO_ADD_URL+"?id="+order._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+
+            const new_result = result.response.map(product => {
+                return {...product, quantity: 0}
+            })
+
+            setProducts(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+        }
+    }
+
     const addProductToSelected = (product) => {
         setError("")
         
@@ -105,14 +153,14 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
     const doAddProducts = async()=>{
         if(selectedProducts.length > 0){
-            value.setBlockingLoading(true)
+            appContext.setBlockingLoading(true)
 
             setError("")
            
             try{
                 const response = await putRequest(ADD_PRODUCTS_TO_ORDER_URL, {id: order._id, products: selectedProducts})
 
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
 
                 loadOrderProducts()
 
@@ -120,7 +168,7 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
             }
             catch(err){
                 console.log(err)
-                value.setBlockingLoading(false)
+                appContext.setBlockingLoading(false)
             }
         }
         else{
@@ -130,12 +178,22 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
         }
     }
 
+    const onSearchChanged = (event) => {
+        const value = event.target.value
+
+        setSearchTerm(value)
+    }
+
     return <div className="popUpAdd">
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
                 <div>
                     <h4 style={BigTextStyle}>Add Products to Order</h4>
                     <h5 style={mediumTextStyle}>Select Products to add</h5>
+
+                    <div style={{marginTop: "16px"}}>
+                        <SearchInput search_value={searchTerm} searchClicked={getProductsToAddSearch} onSearchChanged={onSearchChanged} closeSearchClicked={emptySearchAndGetProducts} />
+                    </div>
                 </div>
 
                 <div style={{display: "flex"}}>
@@ -147,7 +205,7 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
-                    !isLoading ? 
+                    !appContext.state.isLoading ? 
                         <>
                             {
                                 products && products.length > 0 ? <tbody>
@@ -164,7 +222,7 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
                                 }
                                 </tbody>
 
-                                : <EmptyResult  message={"No Products found to add. Add some products on the products page"} onEmptyButtonClicked={getProductsToAdd} emptyButtonText={"Try Again"} />
+                                : <EmptyResult  message={"No Products found to add. Add some products on the products page"} onEmptyButtonClicked={getProductsToAddSearch} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

@@ -1,11 +1,7 @@
 
-import {useEffect, useState} from "react"
+import {useState} from "react"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
-
-import { getAmount, toUpperCase } from "../../utils/helper"
+import { toUpperCase, getPriceOfQuantity, getAmount  } from "../../utils/helper"
 
 const productToAdd = ({product, selectedProducts, addToSelected}) => {
     const [quantity, setQuantity] = useState(1)
@@ -31,7 +27,7 @@ const productToAdd = ({product, selectedProducts, addToSelected}) => {
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
-            {getAmount(quantity * product.price)}
+            {getAmount(product.actual_selling_price * quantity)}
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>
