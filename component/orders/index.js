@@ -133,7 +133,7 @@ const OrdersIndex = () => {
         value.setLoading(true)
 
         try{
-            const result = await getRequest(ALL_ORDERS_URL+"?limit="+pagination.limit+"&offset="+pagination.offset)
+            const result = await getRequest(ALL_ORDERS_URL+"?limit="+pagination.limit+"&page="+pagination.page)
             
             setOrders(result.response)
 
