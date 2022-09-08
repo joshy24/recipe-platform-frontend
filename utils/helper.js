@@ -7,6 +7,8 @@ export const getPriceOfQuantity = (originalPrice, originalQuantity, requiredQuan
     return ( originalPrice * requiredQuantity ) / originalQuantity
 }
 
+export const defaultPaginationObject = {page:0, limit: process.env.NEXT_PUBLIC_PAGINATION_LIMIT, totalPagesCount: 1}
+
 export const downloadFile = (data, file_name) => {
     const url = window.URL.createObjectURL(new Blob([data]))
     const link = document.createElement('a')

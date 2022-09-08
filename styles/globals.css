@@ -1258,3 +1258,8 @@ Pagination
         padding-left: 16px;
     }
 }
+
+
+.skeletonHolder{
+    padding: 0px 45px 30px 45px;
+}

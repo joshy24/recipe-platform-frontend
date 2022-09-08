@@ -14,7 +14,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import SearchInput from "../general/searchInput"
 
-import {getAmount, getDate} from "../../utils/helper"
+import {getAmount, getDate, defaultPaginationObject } from "../../utils/helper"
 
 import { useRouter } from "next/router"
 
@@ -40,7 +40,7 @@ const RecipesIndex = () => {
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [recipes, setRecipes] = useState({})
     
-    const [pagination, setPagination] = useState({page:0, limit: process.env.NEXT_PUBLIC_PAGINATION_LIMIT, totalPagesCount: 1})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -216,18 +216,19 @@ const RecipesIndex = () => {
             </div>
 
             <div className="tabbedListMainHolder">
+                
+                <div className="largeTopMargin">
+                    {
+                        recipes && recipes.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                    }
+                </div>
+
                 <div className="tabbedListTableHolder">
+                    {
+                            !appContext.state.isLoading ? 
+                        <table className="tabbedListTable" style={{width: "100%"}}>
 
-                    <div className="largeTopMargin">
-                        {
-                            recipes && recipes.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
-                        }
-                    </div>
-
-                    <table className="tabbedListTable" style={{width: "100%"}}>
-
-                        {
-                            !appContext.state.isLoading ? <tbody>
+                            <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "31%"}}>Name</th>
                                     <th style={{width: "23%"}}>Created</th>
@@ -236,7 +237,7 @@ const RecipesIndex = () => {
 
                                 {
                                     recipes && recipes.docs && recipes.docs.length > 0 && recipes.docs.map(recipe => {
-                                        return <tr onClick={e => navigateToRecipe(e, recipe._id)} className="notHeader">
+                                        return <tr key={recipe._id} onClick={e => navigateToRecipe(e, recipe._id)} className="notHeader">
                                                     <td >{recipe.name}</td>
                                                     <td >{getDate(recipe.created)}</td>
                                                     <td >{getAmount(recipe.totalCost)}</td>
@@ -244,22 +245,23 @@ const RecipesIndex = () => {
                                     })
                                 }
 
-                                
                             </tbody>
-                            : <Skeleton count={8} height={50} />
-                        }
-                        
-                    </table>
+                        </table>
+                        : <div className="skeletonHolder">
+                            <Skeleton count={8} height={50} />
+                        </div>
+                    }
 
                     {             
                         (recipes && recipes.docs && recipes.docs.length==0) && !appContext.state.isLoading && <EmptyResult message="No recipes found" onEmptyButtonClicked={loadRecipes} emptyButtonText="Reload" />    
                     }
 
-                    {
-                        recipes && recipes.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
-                    }
-
                 </div>
+
+                {
+                    recipes && recipes.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                }
+
             </div>
         </div>
 

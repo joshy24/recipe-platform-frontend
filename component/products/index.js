@@ -15,7 +15,7 @@ import Pagination from "../general/pagination"
 
 import { useRouter } from "next/router"
 
-import { getAmount, getDate } from "../../utils/helper"
+import { getAmount, getDate, defaultPaginationObject } from "../../utils/helper"
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -46,7 +46,7 @@ const ProductsIndex = () => {
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [products, setProducts] = useState({})
     
-    const [pagination, setPagination] = useState({page:0, limit: 30, totalPagesCount: 1})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -225,9 +225,9 @@ const ProductsIndex = () => {
                         }
                     </div>
 
-                    <table className="tabbedListTable" style={{width: "100%"}}> 
-                        { 
-                            !appContext.state.isLoading ? <tbody>
+                    {
+                        !appContext.state.isLoading ? <table className="tabbedListTable" style={{width: "100%"}}> 
+                                <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "31%"}}>Name</th>
                                     <th style={{width: "23%"}}>Created</th>
@@ -237,7 +237,7 @@ const ProductsIndex = () => {
                                 
                                 {
                                     products && products.docs && products.docs.length > 0 && products.docs.map(product => {
-                                        return <tr onClick={e => navigateToProduct(e, product._id)} className="notHeader">
+                                        return <tr key={product._id} onClick={e => navigateToProduct(e, product._id)} className="notHeader">
                                             <td >{product.name}</td>
                                             <td >{getDate(product.created)}</td>
                                             <td >{getAmount(product.totalCost)}</td>
@@ -245,18 +245,21 @@ const ProductsIndex = () => {
                                         </tr>
                                     }) 
                                 }
-                            </tbody> : <Skeleton count={8} height={50} />
-                        } 
-                    </table>
+                            </tbody> 
+                        </table> : <div className="skeletonHolder">
+                            <Skeleton count={8} height={50} />
+                        </div>
+                    }
 
                     {             
                         (products && products.docs && products.docs.length==0) && !appContext.state.isLoading && <EmptyResult message="No products found" onEmptyButtonClicked={loadProducts} emptyButtonText="Reload" />    
                     }
-
-                    {
-                        products && products.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
-                    }
                 </div>
+
+                {
+                    products && products.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                }
+
             </div>
         </div>
         {

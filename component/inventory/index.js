@@ -23,7 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faTrash, faSearch, faFileExport, faAdd, faPen, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
-import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
+import { toUpperCase, getAmount, downloadFile, defaultPaginationObject } from "../../utils/helper"
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -48,7 +48,7 @@ const IngredientsIndex = () => {
     
     const [filters, setFilters] = useState({type: "materials", status: "All", searchTerm: ""})
 
-    const [pagination, setPagination] = useState({page:0, limit: 2, totalPagesCount: 1})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [whatIsOpen, setWhatIsOpen] = useState(false)
 
@@ -219,7 +219,7 @@ const IngredientsIndex = () => {
             appContext.setMessage("An error occurred processing the request.")
         }
     }
-
+    
     async function onFieldChanged(event){
         event.preventDefault()
         const target = event.target;
@@ -228,20 +228,33 @@ const IngredientsIndex = () => {
 
         setFilters({...filters, [name]:aVal})
 
+        const pageQuery = getPageQueryParam(name)
+            
         appContext.setLoading(true)
 
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&page="+(pagination.page + 1)+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
+            let url = get_inventory_url + "?limit="+pagination.limit+"&page="+pageQuery+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
             
             var result = await getRequest(url)
 
             setInventory(result.response)
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
         catch(err){
             appContext.setLoading(false)
         }
+    }
+
+    const getPageQueryParam = (name) => {
+        if(name == "type"){
+            setPagination({...pagination, page: 0})
+            return 1
+        }
+
+        return pagination.page + 1
     }
 
     const handlePageClick = async (event) => {
@@ -339,16 +352,18 @@ const IngredientsIndex = () => {
         </div>
 
         <div className="tabbedListMainHolder">
-            <div className="tabbedListTableHolder">
-                <div className="largeTopMargin">
-                    {
-                        inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
-                    }
-                </div>
+            <div className="largeTopMargin">
+                {
+                    inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                }
+            </div>
 
-                <table className="tabbedListTable" style={{width: "100%"}}>
-                    {
-                        !appContext.state.isLoading ? <tbody>
+            <div className="tabbedListTableHolder">
+                
+                {
+                    !appContext.state.isLoading ?
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                            <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Name</th>
                                     <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Quantity</th>
@@ -362,7 +377,7 @@ const IngredientsIndex = () => {
                                 </tr>
                                 {
                                     inventory && inventory.docs && inventory.docs.map(invent => {
-                                        return <tr className="notHeader">
+                                        return <tr key={invent._id} className="notHeader">
                                             <td style={{paddingLeft: "30px"}}>{toUpperCase(invent.name)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_quantity && invent.purchase_quantity.amount}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_size}</td>
@@ -378,19 +393,22 @@ const IngredientsIndex = () => {
                                         </tr>
                                     })
                                 }
-                            </tbody> : <Skeleton count={8} height={40} />
-                    }
-                </table>
+                            </tbody> 
+                    </table>
+                    : <div className="skeletonHolder">
+                        <Skeleton count={8} height={50} />
+                    </div>
+                }
 
                 {
                     (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!inventory || !inventory.docs || inventory.docs.length == 0)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
                 }
 
-                {
-                    inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
-                }
-
             </div>
+            
+            {
+                inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+            }
         </div>
 
         { 

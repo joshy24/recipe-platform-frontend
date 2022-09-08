@@ -20,7 +20,7 @@ import EmptyResult from "../general/emptyResult"
 
 import { AppContext } from "../../pages/AppContext";
 
-import { getAmount, toUpperCase, getDate } from "../../utils/helper"
+import { getAmount, toUpperCase, getDate, defaultPaginationObject } from "../../utils/helper"
 
 import { getRequest, postRequest } from "../../utils/api.requests"
 
@@ -35,7 +35,7 @@ const OrdersIndex = () => {
 
 
     const [isLoading, setIsLoading] = useState(true)
-    const [pagination, setPagination] = useState({page:0, limit: 1, totalPagesCount: 1})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -243,43 +243,49 @@ const OrdersIndex = () => {
             </div>
 
             <div className="tabbedListMainHolder">
+                <div className="largeTopMargin">
+                    {
+                        orders && orders.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.age} />
+                    }
+                </div>
+                
                 <div className="tabbedListTableHolder">
 
-                    <div className="largeTopMargin">
-                        {
-                            orders && orders.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.age} />
-                        }
-                    </div>
-
-                    <table className="tabbedListTable" style={{width: "100%"}}>
-                        {
-                            !appContext.state.isLoading ? <tbody>
-                            <tr className="header" style={{marginBottom: "24px"}}>
-                                <th style={{width: "28%"}}>Name</th>
-                                <th style={{width: "18%"}}>Created</th>
-                                <th style={{width: "18%"}}>Status</th>
-                            </tr>
-                            {
-                                orders && orders.docs && orders.docs.length && orders.docs.map(order => {
-                                    return <tr onClick={e => navigateToOrder(e, order._id)} className="notHeader">
-                                            <td >{order.name}</td>
-                                            <td >{getDate(order.created)}</td>
-                                            <td >{order.status}</td>
-                                        </tr>
-                                })
-                            } 
-                            </tbody> : <Skeleton count={8} height={50} />
-                        }
-                    </table>
+                    {
+                        !appContext.state.isLoading ?
+                        <table className="tabbedListTable" style={{width: "100%"}}>
+                           
+                            <tbody>
+                                <tr className="header" style={{marginBottom: "24px"}}>
+                                    <th style={{width: "28%"}}>Name</th>
+                                    <th style={{width: "18%"}}>Created</th>
+                                    <th style={{width: "18%"}}>Status</th>
+                                </tr>
+                                {
+                                    orders && orders.docs && orders.docs.length && orders.docs.map(order => {
+                                        return <tr key={order._id} onClick={e => navigateToOrder(e, order._id)} className="notHeader">
+                                                <td >{order.name}</td>
+                                                <td >{getDate(order.created)}</td>
+                                                <td >{order.status}</td>
+                                            </tr>
+                                    })
+                                } 
+                            </tbody> 
+                        </table> :  
+                        <div className="skeletonHolder">
+                            <Skeleton count={8} height={50} />
+                        </div>
+                    }   
                     
                     {
                         orders && orders.docs && orders.docs.length == 0 && !appContext.state.isLoading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrders} emptyButtonText={"Try Again"} />
                     }
 
-                    {
-                        orders && orders.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick}  currentPage={pagination.page}/>
-                    }
                 </div>
+
+                {
+                    orders && orders.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick}  currentPage={pagination.page}/>
+                }
                 
             </div>
         </div>
