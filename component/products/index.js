@@ -11,6 +11,8 @@ import AddProduct from '../general/addproduct'
 
 import SearchInput from "../general/searchInput"
 
+import Pagination from "../general/pagination"
+
 import { useRouter } from "next/router"
 
 import { getAmount, getDate } from "../../utils/helper"
@@ -32,7 +34,7 @@ const add_product_url = BASE_URL + ADD_PRODUCT
 
 const ProductsIndex = () => {
 
-    const value = AppContext()
+    const appContext = AppContext()
 
     const router = useRouter()
     const navigateToProduct = (e, id) => {
@@ -44,14 +46,14 @@ const ProductsIndex = () => {
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [products, setProducts] = useState({})
     
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    const [pagination, setPagination] = useState({page:0, limit: 30, totalPagesCount: 1})
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
 
     useEffect(() => {
         loadProducts()
-    }, [])
+    }, [pagination.page])
 
     const switchWhatIs = (e) => {
         e.preventDefault();
@@ -83,18 +85,16 @@ const ProductsIndex = () => {
     }
 
     const searchProducts = async () => {
-        value.setLoading(true)
-
         if(searchTerm && searchTerm.length > 0){
             try{
-                value.setLoading(true)
-                const result = await getRequest(SEARCH_PRODUCTS_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
-                value.setLoading(false)
+                appContext.setLoading(true)
+                const result = await getRequest(SEARCH_PRODUCTS_URL+"?searchTerm="+searchTerm+"&page="+(pagination.page+1)+"&limit="+pagination.limit)
+                appContext.setLoading(false)
 
                 setProducts(result.response)
             }
             catch(err){
-                value.setLoading(false)
+                appContext.setLoading(false)
             }
         }
     }
@@ -106,59 +106,41 @@ const ProductsIndex = () => {
     }
 
     const addProduct = async (data) => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
             const result = await postRequest(add_product_url, data)
 
             closeAddProduct()
 
-            value.setLoading(false)
+            appContext.setLoading(false)
 
             router.push("/product/"+result.response._id)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
     const loadProducts = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
-            const result = await getRequest(get_products_url+"?limit="+pagination.limit+"&offset="+pagination.offset)
+            const result = await getRequest(get_products_url+"?limit="+pagination.limit+"&page="+(pagination.page+1))
 
             setProducts(result.response)
 
-            value.setLoading(false)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
+
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
-    const showProducts = () => {
-
-    }
-
-    const showDeleteProduct = () => {
-
-    }
-
-    const closeDeleteProduct = () => {
-
-    }
-
-    const deleteProduct = async () => {
-
-    }
-
-    const showProductLoading = () => {
-
-    }
-
-    const showSkeletonLoading = () => {
-        
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
     }
 
     return ( <>
@@ -236,42 +218,43 @@ const ProductsIndex = () => {
 
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
+
+                    <div className="largeTopMargin">
+                        {
+                            products && products.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                        }
+                    </div>
+
                     <table className="tabbedListTable" style={{width: "100%"}}> 
-                        <tbody>
-                            <tr className="header" style={{marginBottom: "24px"}}>
-                                <th style={{width: "31%"}}>Name</th>
-                                <th style={{width: "23%"}}>Created</th>
-                                <th style={{width: "23%"}}>Total cost</th>
-                                <th style={{width: "23%"}}>Actual Selling Price</th>
-                            </tr>
-                            
-                            {
-                                !value.state.Loading ? <>
-                                    {
-                                        products && products.docs && products.docs.length > 0 && products.docs.map(product => {
-                                            return <tr onClick={e => navigateToProduct(e, product._id)} className="notHeader">
-                                                <td >{product.name}</td>
-                                                <td >{getDate(product.created)}</td>
-                                                <td >{getAmount(product.totalCost)}</td>
-                                                <td >{getAmount(product.actual_selling_price)}</td>
-                                            </tr>
-                                        }) 
-                                    }
-                                </>
-                                : <tr className="notHeader">
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td ><Skeleton height={60} count={6} /></td>
-                                    <td className="tabbedListContentHorizontalTableContent">
-                                        <Skeleton height={60} count={6} />
-                                    </td>
+                        { 
+                            !appContext.state.isLoading ? <tbody>
+                                <tr className="header" style={{marginBottom: "24px"}}>
+                                    <th style={{width: "31%"}}>Name</th>
+                                    <th style={{width: "23%"}}>Created</th>
+                                    <th style={{width: "23%"}}>Total cost</th>
+                                    <th style={{width: "23%"}}>Actual Selling Price</th>
                                 </tr>
-                            }
-                        </tbody>
+                                
+                                {
+                                    products && products.docs && products.docs.length > 0 && products.docs.map(product => {
+                                        return <tr onClick={e => navigateToProduct(e, product._id)} className="notHeader">
+                                            <td >{product.name}</td>
+                                            <td >{getDate(product.created)}</td>
+                                            <td >{getAmount(product.totalCost)}</td>
+                                            <td >{getAmount(product.actual_selling_price)}</td>
+                                        </tr>
+                                    }) 
+                                }
+                            </tbody> : <Skeleton count={8} height={50} />
+                        } 
                     </table>
 
                     {             
-                        (products && products.docs && products.docs.length==0) && !value.state.Loading && <EmptyResult message="No products found" onEmptyButtonClicked={loadProducts} emptyButtonText="Reload" />    
+                        (products && products.docs && products.docs.length==0) && !appContext.state.isLoading && <EmptyResult message="No products found" onEmptyButtonClicked={loadProducts} emptyButtonText="Reload" />    
+                    }
+
+                    {
+                        products && products.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
                     }
                 </div>
             </div>

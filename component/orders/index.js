@@ -9,6 +9,8 @@ import styles from "../../styles/Orders.module.css"
 import AddOrder from '../general/addorder'
 import { useRouter } from "next/router"
 
+import Pagination from "../general/pagination"
+
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -23,17 +25,17 @@ import { getAmount, toUpperCase, getDate } from "../../utils/helper"
 import { getRequest, postRequest } from "../../utils/api.requests"
 
 import { ALL_ORDERS_URL, CREATE_ORDER_URL, SEARCH_ORDERS_URL} from "../../utils/api.endpoints"
-
+   
 const OrdersIndex = () => {
 
-    const value = AppContext()
+    const appContext = AppContext()
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
 
 
     const [isLoading, setIsLoading] = useState(true)
-    const [pagination, setPagination] = useState({page:1, limit: 30, totalPagesCount: 0})
+    const [pagination, setPagination] = useState({page:0, limit: 1, totalPagesCount: 1})
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -42,7 +44,7 @@ const OrdersIndex = () => {
 
     useEffect(() => {
         loadOrders()
-    }, [])
+    }, [pagination.page])
 
     
 
@@ -93,12 +95,12 @@ const OrdersIndex = () => {
     }
 
     const searchOrders = async () => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         if(searchTerm && searchTerm.length > 0){
             try{
                 setIsLoading(true)
-                const result = await getRequest(SEARCH_ORDERS_URL+"?searchTerm="+searchTerm+"&page="+pagination.page+"&limit="+pagination.limit)
+                const result = await getRequest(SEARCH_ORDERS_URL+"?searchTerm="+searchTerm+"&page="+pagination.page+"&limit="+(pagination.page+1))
                 setIsLoading(false)
 
                 setSearchResult(result.response)
@@ -111,61 +113,39 @@ const OrdersIndex = () => {
     }
 
     const addOrder = async (e, order) => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
 
         try{
             await postRequest(CREATE_ORDER_URL, order)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
             
             closeAddOrder()
 
             loadOrders()
         }
         catch(err){
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
-            value.setMessage({visible: true, message: "An error occurred saving those details", title: "Saving Error", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "An error occurred saving those details", title: "Saving Error", type: "ERROR"})
         }
     }
 
     const loadOrders = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
-            const result = await getRequest(ALL_ORDERS_URL+"?limit="+pagination.limit+"&page="+pagination.page)
+            const result = await getRequest(ALL_ORDERS_URL+"?limit="+pagination.limit+"&page="+(pagination.page+1))
             
             setOrders(result.response)
 
-            value.setLoading(false)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
+
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
-    }
-
-    const showOrders = () => {
-
-    }
-
-    const showDeleteOrder = () => {
-
-    }
-
-    const closeDeleteOrder = () => {
-
-    }
-
-    const deleteOrder = async () => {
-
-    }
-
-    const showOrderLoading = () => {
-
-    }
-
-    const showSkeletonLoading = () => {
-        
     }
 
     const onSearchChanged = (event) => {
@@ -188,8 +168,8 @@ const OrdersIndex = () => {
         }
     }
 
-    const handlePageClick = (e) => {
-
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
     }
 
     return ( <>
@@ -213,7 +193,7 @@ const OrdersIndex = () => {
                 <div className="pageHolderContentTopCenter">
                     <div>
                         <h4>Total</h4>
-                        <h5>{(orders && orders.docs) ? orders.docs.length : 0}</h5>
+                        <h5>{(orders && orders.totalDocs) ? orders.totalDocs : 0}</h5>
                     </div>
                 </div>
 
@@ -264,45 +244,50 @@ const OrdersIndex = () => {
 
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
-                    <table className="tabbedListTable" style={{width: "100%"}}>
-                        <tr className="header" style={{marginBottom: "24px"}}>
-                            <th style={{width: "28%"}}>Name</th>
-                            <th style={{width: "18%"}}>Created</th>
-                            <th style={{width: "18%"}}>Status</th>
-                        </tr>
-                        {
-                            orders && orders.docs && orders.docs.length && orders.docs.map(order => {
-                                return <tr onClick={e => navigateToOrder(e, order._id)} className="notHeader">
-                                        <td >{order.name}</td>
-                                        <td >{getDate(order.created)}</td>
-                                        <td >{order.status}</td>
-                                    </tr>
-                            })
-                        } 
 
+                    <div className="largeTopMargin">
                         {
-                            value.state.loading && <tr className="notHeader">
-                            <td ><Skeleton height={60} count={6} /></td>
-                            <td ><Skeleton height={60} count={6} /></td>
-                            <td ><Skeleton height={60} count={6} /></td>
-                            <td ><Skeleton height={60} count={6} /></td>
-                        </tr> 
+                            orders && orders.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.age} />
                         }
+                    </div>
 
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+                        {
+                            !appContext.state.isLoading ? <tbody>
+                            <tr className="header" style={{marginBottom: "24px"}}>
+                                <th style={{width: "28%"}}>Name</th>
+                                <th style={{width: "18%"}}>Created</th>
+                                <th style={{width: "18%"}}>Status</th>
+                            </tr>
+                            {
+                                orders && orders.docs && orders.docs.length && orders.docs.map(order => {
+                                    return <tr onClick={e => navigateToOrder(e, order._id)} className="notHeader">
+                                            <td >{order.name}</td>
+                                            <td >{getDate(order.created)}</td>
+                                            <td >{order.status}</td>
+                                        </tr>
+                                })
+                            } 
+                            </tbody> : <Skeleton count={8} height={50} />
+                        }
                     </table>
-
+                    
                     {
-                        orders && orders.docs && orders.docs.length == 0 && !value.state.loading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrders} emptyButtonText={"Try Again"} />
+                        orders && orders.docs && orders.docs.length == 0 && !appContext.state.isLoading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrders} emptyButtonText={"Try Again"} />
                     }
 
-                
+                    {
+                        orders && orders.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick}  currentPage={pagination.page}/>
+                    }
                 </div>
+                
             </div>
         </div>
 
         {
             showAdd && <AddOrder addOrder={addOrder} closeAdd={closeAddOrder} />
         }
+
         </>
     )
 }

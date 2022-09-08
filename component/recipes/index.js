@@ -20,6 +20,8 @@ import { useRouter } from "next/router"
 
 import { AppContext } from "../../pages/AppContext";
 
+import Pagination from "../general/pagination"
+
 import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { BASE_URL, CREATE_RECIPE, GET_ALL_RECIPES, SEARCH_RECIPES_URL } from "../../utils/api.endpoints"
@@ -29,24 +31,23 @@ const create_recipe_url = BASE_URL + CREATE_RECIPE
 const get_recipes_url = BASE_URL + GET_ALL_RECIPES
 
 const RecipesIndex = () => {
-    const value = AppContext()
+
+    const appContext = AppContext()
 
     const router = useRouter()
 
     const [showAdd, setShowAdd] = useState(false)
     const [whatIsOpen, setWhatIsOpen] = useState(false)
     const [recipes, setRecipes] = useState({})
-
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    
+    const [pagination, setPagination] = useState({page:0, limit: process.env.NEXT_PUBLIC_PAGINATION_LIMIT, totalPagesCount: 1})
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
 
     useEffect(() => {
         loadRecipes()
-    }, [])
-
-    
+    }, [pagination.page])
 
     const navigateToRecipe = (e, id) => {
         e.preventDefault()
@@ -88,15 +89,15 @@ const RecipesIndex = () => {
         e.preventDefault()
         if(searchTerm && searchTerm.length > 0){
             try{
-                value.setLoading(true)
-                const result = await getRequest(SEARCH_RECIPES_URL+"?searchTerm="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
-                value.setLoading(false)
+                appContext.setLoading(true)
+                const result = await getRequest(SEARCH_RECIPES_URL+"?searchTerm="+searchTerm+"&page="+(pagination.page+1)+"&limit="+pagination.limit)
+                appContext.setLoading(false)
 
                 setRecipes(result.response)
             }
             catch(err){
                 console.log(err)
-                value.setLoading(false)
+                appContext.setLoading(false)
             }
         }
     }
@@ -114,8 +115,6 @@ const RecipesIndex = () => {
 
             closeAddRecipe()
 
-            console.log(result)
-
             router.push(`/recipe/${result.response._id}`)
         }
         catch(err){
@@ -124,44 +123,26 @@ const RecipesIndex = () => {
     }
 
     const loadRecipes = async () => {
-        value.setLoading(true)
+        appContext.setLoading(true)
         
         try{
-            const url = get_recipes_url+"?limit="+pagination.limit+"&offset="+pagination.offset
+            const url = get_recipes_url+"?limit="+pagination.limit+"&page="+(pagination.page+1)
 
             const result = await getRequest(url)
 
             setRecipes(result.response)
 
-            value.setLoading(false)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
+
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
-    const showRecipes = () => {
-
-    }
-
-    const showDeleteRecipe = () => {
-
-    }
-
-    const closeDeleteRecipe = () => {
-
-    }
-
-    const deleteRecipe = async () => {
-
-    }
-
-    const showRecipeLoading = () => {
-
-    }
-
-    const showSkeletonLoading = () => {
-        
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
     }
 
     return ( <>
@@ -236,9 +217,17 @@ const RecipesIndex = () => {
 
             <div className="tabbedListMainHolder">
                 <div className="tabbedListTableHolder">
-                    <table className="tabbedListTable" style={{width: "100%"}}>
+
+                    <div className="largeTopMargin">
                         {
-                            !value.state.isLoading ? <tbody>
+                            recipes && recipes.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                        }
+                    </div>
+
+                    <table className="tabbedListTable" style={{width: "100%"}}>
+
+                        {
+                            !appContext.state.isLoading ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "31%"}}>Name</th>
                                     <th style={{width: "23%"}}>Created</th>
@@ -246,7 +235,7 @@ const RecipesIndex = () => {
                                 </tr>
 
                                 {
-                                    recipes.docs && recipes.docs.length > 0 && recipes.docs.map(recipe => {
+                                    recipes && recipes.docs && recipes.docs.length > 0 && recipes.docs.map(recipe => {
                                         return <tr onClick={e => navigateToRecipe(e, recipe._id)} className="notHeader">
                                                     <td >{recipe.name}</td>
                                                     <td >{getDate(recipe.created)}</td>
@@ -257,10 +246,19 @@ const RecipesIndex = () => {
 
                                 
                             </tbody>
-                            : <Skeleton count={8} height={40} />
+                            : <Skeleton count={8} height={50} />
                         }
                         
                     </table>
+
+                    {             
+                        (recipes && recipes.docs && recipes.docs.length==0) && !appContext.state.isLoading && <EmptyResult message="No recipes found" onEmptyButtonClicked={loadRecipes} emptyButtonText="Reload" />    
+                    }
+
+                    {
+                        recipes && recipes.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                    }
+
                 </div>
             </div>
         </div>

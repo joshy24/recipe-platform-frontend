@@ -13,6 +13,8 @@ import EmptyResult from "../general/emptyResult"
 
 import SearchInput from "../general/searchInput"
 
+import Pagination from "../general/pagination"
+
 import Papa from "papaparse"
 
 import Image from "next/image"
@@ -36,7 +38,7 @@ const get_inventory_url = BASE_URL + GET_ALL_INVENTORY
 
 const IngredientsIndex = () => {
 
-    const value = AppContext()
+    const appContext = AppContext()
 
     const [showAdd, setShowAdd] = useState(false)
 
@@ -46,11 +48,11 @@ const IngredientsIndex = () => {
     
     const [filters, setFilters] = useState({type: "materials", status: "All", searchTerm: ""})
 
+    const [pagination, setPagination] = useState({page:0, limit: 2, totalPagesCount: 1})
+
     const [whatIsOpen, setWhatIsOpen] = useState(false)
 
     const [inventory, setInventory] = useState([])
-
-    const [pagination] = useState({limit: 30, offset: 0})
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
@@ -60,7 +62,7 @@ const IngredientsIndex = () => {
 
     useEffect(() => {
         search();
-    }, [])
+    }, [pagination.page])
 
     const switchWhatIs = (e) => {
         e.preventDefault();
@@ -92,19 +94,21 @@ const IngredientsIndex = () => {
     }
 
     const search = async () => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+filters.type+"&searchTerm="+searchTerm+"&status="+filters.status
+            let url = get_inventory_url + "?limit="+pagination.limit+"&page="+(pagination.page + 1)+"&type="+filters.type+"&searchTerm="+searchTerm+"&status="+filters.status
             
             var result = await getRequest(url)
 
             setInventory(result.response)
 
-            value.setLoading(false)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
+
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
@@ -112,14 +116,6 @@ const IngredientsIndex = () => {
         const value = event.target.value
 
         setSearchTerm(value)
-    }
-
-    const showExport = () => {
-
-    }
-
-    const hideExport = () => {
-
     }
 
     const showEditInventory = (e, anInventory) => {
@@ -134,10 +130,9 @@ const IngredientsIndex = () => {
     }
 
     const editInventory = async(e, inventorytoEdit) => {
-        console.log(inventorytoEdit)
         e.preventDefault();
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
 
         try{
             filters.type == "ingredients" ? 
@@ -148,11 +143,11 @@ const IngredientsIndex = () => {
 
             search();
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
         catch(err){
-            value.setBlockingLoading(false)
-            value.setMessage("An error occurred processing the request.")
+            appContext.setBlockingLoading(false)
+            appContext.setMessage("An error occurred processing the request.")
         }
     }
 
@@ -185,12 +180,12 @@ const IngredientsIndex = () => {
     const deleteInventoryItem = async () => {
         hideDeleteInventoryItem()
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(filters.type == "ingredients" ? DELETE_INGREDIENT_URL : DELETE_MATERIAL_URL, {id:inventoryInFocus._id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             setInventoryInFocus({})
 
@@ -199,14 +194,14 @@ const IngredientsIndex = () => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
     }
 
     const addInventory = async (e, inventoryToAdd) => {
         e.preventDefault();
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
 
         try{
             var result = inventoryToAdd.type == "Ingredient" ? 
@@ -217,11 +212,11 @@ const IngredientsIndex = () => {
 
             search();
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
         catch(err){
-            value.setBlockingLoading(false)
-            value.setMessage("An error occurred processing the request.")
+            appContext.setBlockingLoading(false)
+            appContext.setMessage("An error occurred processing the request.")
         }
     }
 
@@ -233,20 +228,24 @@ const IngredientsIndex = () => {
 
         setFilters({...filters, [name]:aVal})
 
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
+            let url = get_inventory_url + "?limit="+pagination.limit+"&page="+(pagination.page + 1)+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
             
             var result = await getRequest(url)
 
             setInventory(result.response)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
+    }
+
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
     }
 
     return <> 
@@ -341,10 +340,15 @@ const IngredientsIndex = () => {
 
         <div className="tabbedListMainHolder">
             <div className="tabbedListTableHolder">
+                <div className="largeTopMargin">
+                    {
+                        inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                    }
+                </div>
+
                 <table className="tabbedListTable" style={{width: "100%"}}>
                     {
-                        !value.state.isLoading ? 
-                            <tbody>
+                        !appContext.state.isLoading ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Name</th>
                                     <th style={{width: "10%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Quantity</th>
@@ -374,13 +378,16 @@ const IngredientsIndex = () => {
                                         </tr>
                                     })
                                 }
-                            </tbody>
-                        : <Skeleton count={8} height={40} />
+                            </tbody> : <Skeleton count={8} height={40} />
                     }
                 </table>
 
                 {
-                    (!value.state.isLoading && !value.state.isBlockingLoading && (!inventory || !inventory.docs || inventory.docs.length == 0)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
+                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!inventory || !inventory.docs || inventory.docs.length == 0)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
+                }
+
+                {
+                    inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
                 }
 
             </div>

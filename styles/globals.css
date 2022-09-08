@@ -281,6 +281,22 @@ Margin
 }
 
 
+.tinyTopMargin{
+    margin-top: 8px;
+}
+
+.smallTopMargin{
+    margin-top: 16px;
+}
+
+.mediumTopMargin{
+    margin-top: 24px;
+}
+
+.largeTopMargin{
+    margin-top: 40px;
+}
+
 
 
 
@@ -323,8 +339,8 @@ button{
     height: 42px;
     max-width: 42px;
     max-height: 42px;
-    color: #FFFFFF;
-    background: rgba(189, 91, 252, 0.85);
+    color: #FFFFFF !important;
+    background: rgba(189, 91, 252, 0.85) !important;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     display: flex;
@@ -336,7 +352,7 @@ button{
     height: 42px;
     max-height: 42px;
     color: #FFFFFF;
-    background: rgba(189, 91, 252, 0.85);
+    background: rgba(189, 91, 252, 0.85) !important; 
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     display: flex;
@@ -444,6 +460,10 @@ button:hover{
 
 .link{
     text-decoration: underline;
+}
+
+.no-link{
+    text-decoration: none;
 }
 
 
@@ -845,7 +865,7 @@ New UI's
 .tabbedListTable{
     border-spacing: 1px 10px;
     border-collapse: separate;
-    padding: 30px 45px 30px 45px;
+    padding: 0px 45px 30px 45px;
 }
 
 .tabbedListTable .header{
@@ -1184,8 +1204,57 @@ select field styling
 
 
 
+
+/*
+Pagination 
+*/
+
 .rpPagination{
-    background: #000000;
-    width: 100%;
+    width: auto;
+    max-width: 600px;
+    margin-right: 0px;
+    padding-right: 50px;
+    margin-left: 0px;
+    padding-left: 50px;
     height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.sidePadding{
+    padding: 0px 16px;
+}
+
+.paginationBreak{
+    color: #BD5BFC;
+    display: flex;
+}
+
+.paginationLink{
+    list-style: none;
+    margin-right: 12px;
+}
+
+.paginationLink:hover{
+    cursor: pointer;
+}
+
+
+.mobilePaginationDisplay{
+    display: none;
+}
+
+@media screen and (max-width: 700px) {
+    .mobilePaginationDisplay{
+        display: block;
+    }
+
+    .fullPaginationDisplay{
+        display: none;
+    }
+
+    .rpPagination{
+        padding-right: 16px;
+        padding-left: 16px;
+    }
 }
