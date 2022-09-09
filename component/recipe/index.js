@@ -378,7 +378,7 @@ const RecipeIndex = ({id}) => {
                                         </tr>
 
                                         {
-                                            ingredients && ingredients.docs && ingredients.length > 0 && ingredients.map(ingredient => {
+                                            ingredients && ingredients.docs && ingredients.docs.length > 0 && ingredients.docs.map(ingredient => {
                                                 return <tr key={ingredient._id} className="notHeader">
                                                     <td>{toUpperCase(ingredient.name)}</td>
                                                     <td>{ingredient.quantity}</td>

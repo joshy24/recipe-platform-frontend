@@ -34,6 +34,8 @@ import { getRequest, putRequest } from "../../utils/api.requests"
 
 import { PRODUCTS_TO_ADD_URL, ADD_PRODUCTS_TO_ORDER_URL } from "../../utils/api.endpoints"
 
+import { getDate, defaultPaginationObject } from "../../utils/helper"
+
 const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
     const appContext = AppContext();
@@ -42,31 +44,29 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
     const [selectedProducts, setSelectedProducts] = useState([])
 
-    const [isLoading, setIsLoading] = useState(true)
-
     const [error, setError] = useState("")
 
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [searchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
         getProductsToAddSearch()
-    }, [])
+    }, [pagination.page])
 
     const onChange = (e, product) => {
         const value = e.target.value
 
         product.quantity = value
 
-        const foundIndex = products.findIndex(aProduct => aProduct._id == product._id)
+        const foundIndex = products.docs.findIndex(aProduct => aProduct._id == product._id)
 
         if(foundIndex != -1){
             const sm = selectedProducts
 
             sm.splice(foundIndex,1,product)
 
-            setProducts(sm)
+            setProducts({...products, docs: sm})
         }
     }
 
@@ -95,13 +95,15 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(PRODUCTS_TO_ADD_URL+"?id="+order._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(PRODUCTS_TO_ADD_URL+"?id="+order._id+"&search_term="+"&page="+pagination.page+"&limit="+pagination.limit)
 
-            const new_result = result.response.map(product => {
+            const new_result = result.response.docs.map(product => {
                 return {...product, quantity: 0}
             })
 
-            setProducts(new_result)
+            setProducts({...result.response, docs: new_result})
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
@@ -115,13 +117,15 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(PRODUCTS_TO_ADD_URL+"?id="+order._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(PRODUCTS_TO_ADD_URL+"?id="+order._id+"&search_term="+searchTerm+"&page="+pagination.page+"&limit="+pagination.limit)
 
-            const new_result = result.response.map(product => {
+            const new_result = result.response.docs.map(product => {
                 return {...product, quantity: 0}
             })
 
-            setProducts(new_result)
+            setProducts({...result.response, docs: new_result})
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
@@ -184,6 +188,10 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
         setSearchTerm(value)
     }
 
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
+    }
+
     return <div className="popUpAdd">
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
@@ -203,20 +211,18 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
             </div>
             <div className="popUpAddInnerContentBottom">
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
-                <table className="tabbedListTable" style={{width: "100%"}}>      
                 {
                     !appContext.state.isLoading ? 
-                        <>
+                        <table className="tabbedListTable" style={{width: "100%"}}>      
                             {
-                                products && products.length > 0 ? <tbody>
+                                products && products.docs && products.docs.length > 0 ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "24%", paddingLeft: "20px"}}>Name</th>
                                     <th style={{width: "24%", paddingLeft: "20px"}}>Quantity To Add</th>
-                                    <th style={{width: "24%", paddingLeft: "20px"}}>Total Cost</th>
                                     <th style={{width: "28%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
-                                    products.map(product => {
+                                    products.docs.map(product => {
                                         return <ProductToAdd addToSelected={addProductToSelected} product={product} onChange={onChange} selectedProducts={selectedProducts} />
                                     })
                                 }
@@ -224,10 +230,10 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
                                 : <EmptyResult  message={"No Products found to add. Add some products on the products page"} onEmptyButtonClicked={getProductsToAddSearch} emptyButtonText={"Try Again"} />
                             }
-                        </>
-                    : <Skeleton count={8} height={40} />
+                        </table> : <div className="skeletonHolder">
+                                    <Skeleton count={8} height={50} />
+                                </div>
                 }
-                </table>
             </div>
         </div>
     </div>

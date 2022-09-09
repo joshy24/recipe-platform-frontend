@@ -4,7 +4,7 @@ import { useState } from "react"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { checkValidProductToAdd } from "../../utils/helper"
+import { checkValidProductToAdd, checkValidLabourCost, checkValidOverheadCost } from "../../utils/helper"
 
 const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPrice}) => {
 
@@ -21,12 +21,22 @@ const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPric
     const doEditProduct = () => {
         setError("")
 
-        const checkValid = checkValidProductToAdd(product)
-
-        if(!checkValid){
-            setError("The name, labour cost, overhead cost and profit margin fields are compulsory")
+        if(!checkValidProductToAdd(product)){
+            setError("The name field is required")
             return;
         }
+
+        if(!checkValidLabourCost(product)){
+            setError("The labour cost needs to be set before saving")
+            return;
+        }
+
+
+        if(!checkValidOverheadCost(product)){
+            setError("The overhead cost needs to be set before saving")
+            return;
+        }
+    
         
         editProduct(product)
     }

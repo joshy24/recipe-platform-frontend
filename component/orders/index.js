@@ -20,7 +20,7 @@ import EmptyResult from "../general/emptyResult"
 
 import { AppContext } from "../../pages/AppContext";
 
-import { getAmount, toUpperCase, getDate, defaultPaginationObject } from "../../utils/helper"
+import { getDate, defaultPaginationObject } from "../../utils/helper"
 
 import { getRequest, postRequest } from "../../utils/api.requests"
 

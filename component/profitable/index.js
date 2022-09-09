@@ -10,9 +10,11 @@ import { AppContext } from "../../pages/AppContext";
 
 import { useRouter } from "next/router"
 
+import Pagination from "../general/pagination"
+
 import { faTrash, faCaretDown, faCaretUp, faEye, faPen } from '@fortawesome/free-solid-svg-icons'
 
-import { toUpperCase, getAmount, downloadFile } from "../../utils/helper"
+import { toUpperCase, getAmount, defaultPaginationObject } from "../../utils/helper"
 
 import Image from "next/image"
 
@@ -29,7 +31,7 @@ const Profitable = () => {
 
     const router = useRouter()
 
-    const [pagination] = useState({limit: 30, offset: 0})
+    const [pagination] = useState(defaultPaginationObject)
 
     const appContext = AppContext()
 
@@ -77,7 +79,7 @@ const Profitable = () => {
 
     useEffect(() => {
         search();
-    }, [])
+    }, [pagination.page])
 
 
     const switchWhatIs = (e) => {
@@ -97,11 +99,13 @@ const Profitable = () => {
         appContext.setLoading(true)
 
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+filters.type+"&status="+filters.status
+            let url = get_inventory_url + "?limit="+pagination.limit+"&page="+pagination.page+"&type="+filters.type+"&status="+filters.status
             
             var result = await getRequest(url)
 
-            setInventory(result.response.docs)
+            setInventory(result.response)
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
@@ -124,20 +128,37 @@ const Profitable = () => {
 
         setFilters({...filters, [name]:aVal})
 
+        const pageQuery = getPageQueryParam(name)
+
         appContext.setLoading(true)
 
         try{
-            let url = get_inventory_url + "?limit="+pagination.limit+"&offset="+pagination.offset+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
+            let url = get_inventory_url + "?limit="+pagination.limit+"&page="+pageQuery+"&type="+ (name == "type" ? aVal : filters.type)+"&searchTerm="+(name == "searchTerm" ? aVal : filters.searchTerm)+"&status="+(name == "status" ? aVal : filters.status)
             
             var result = await getRequest(url)
 
             setInventory(result.response.docs)
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
         catch(err){
             appContext.setLoading(false)
         }
+    }
+
+    const getPageQueryParam = (name) => {
+        if(name == "type"){
+            setPagination({...pagination, page: 0})
+            return 1
+        }
+
+        return pagination.page + 1
+    }
+
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
     }
 
     const onCheckBoxChanged= (event, id) => {
@@ -230,6 +251,11 @@ const Profitable = () => {
         </div>
 
         <div className="tabbedListMainHolder">
+            <div className="largeTopMargin">
+                {
+                    inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                }
+            </div>
             <div className="tabbedListTableHolder">
                 <table className="tabbedListTable" style={{width: "100%"}}>
                     {
@@ -245,7 +271,7 @@ const Profitable = () => {
                                     <th style={{width: "24%", paddingLeft: "20px", fontSize: "14px"}}>New Price</th>
                                 </tr>
                                 {
-                                    inventory.map(invent => {
+                                    inventory.docs && inventory.docs.map(invent => {
                                         return <tr className="notHeader">
                                             <td style={{paddingLeft: "30px"}}>{toUpperCase(invent.name)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_quantity && invent.purchase_quantity.amount}</td>
@@ -262,15 +288,21 @@ const Profitable = () => {
                                     })
                                 }
                             </tbody>
-                        : <Skeleton count={8} height={40} />
+                        : <div className="skeletonHolder">
+                        <Skeleton count={8} height={50} />
+                    </div>
                     }
                 </table>
 
                 {
-                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (inventory.length == 0 || !inventory)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
+                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!inventory.docs || inventory.docs.length == 0)) && <EmptyResult message="No items found. Try adjusting search parameters." onEmptyButtonClicked={search} emptyButtonText="Try Again" />
                 }
 
             </div>
+
+            {
+                inventory && inventory.docs && <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+            }
         </div>
     </>
 }

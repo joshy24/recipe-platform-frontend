@@ -89,6 +89,13 @@ const ProductIndex = ({id}) => {
         await loadProductRecipes();
     }
 
+    useEffect(() => {
+        if((recipes.docs && recipes.docs.length == 0) && (materials.docs && materials.docs.length == 0)){
+            appContext.setMessage({visible: true, message: "Please add Recipes and Materials to this product", title: "Message", type: "INFO"})
+        }
+    }, [materials, recipes])
+
+    
     const switchWhatIs = (e) => {
         e.preventDefault();
         setWhatIsOpen(!whatIsOpen)
@@ -407,7 +414,7 @@ const ProductIndex = ({id}) => {
     const getProposedSellingCost = () => {
         const totalCost = getTotalCost() + product.labour_cost + product.overhead_cost
 
-        const profit = (product.profit_margin / 100) * totalCost
+        const profit = product.profit_margin ? (product.profit_margin / 100) * totalCost : 0
         
         return totalCost + profit
     }

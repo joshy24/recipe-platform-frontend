@@ -47,6 +47,22 @@ export const checkValidProductToAdd = (product) => {
     return true;
 }
 
+export const checkValidLabourCost = (product) => {
+    if(!product.labour_cost || product.labour_cost == 0 ){
+        return false
+    }
+
+    return true;
+}
+
+export const checkValidOverheadCost = (product) => {
+    if(!product.overhead_cost || product.overhead_cost == 0 ){
+        return false
+    }
+
+    return true;
+}
+
 export const getBankDetails = () => {
     return [
         {

@@ -27,9 +27,6 @@ const productToAdd = ({product, selectedProducts, addToSelected}) => {
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
-            {getAmount(product.actual_selling_price * quantity)}
-        </td>
-        <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>
         </td>
     </tr>
