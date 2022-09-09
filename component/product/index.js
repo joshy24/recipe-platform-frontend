@@ -17,11 +17,13 @@ import EditProductMaterial from "./editMaterial"
 
 import DeleteDialog from "../general/deletedialog"
 
+import Pagination from "../general/pagination"
+
 import EditProduct from "./edit"
 
 import Image from "next/image"
 
-import { toUpperCase, getAmount } from "../../utils/helper"
+import { toUpperCase, getAmount, defaultPaginationObject } from "../../utils/helper"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -37,9 +39,8 @@ const DetailsTab = "Details"
 const RecipesTab = "Recipes"
 const MaterialsTab = "Materials"
 
-
 const ProductIndex = ({id}) => {
-    const value = AppContext()
+    const appContext = AppContext()
 
     const router = useRouter()
 
@@ -51,8 +52,9 @@ const ProductIndex = ({id}) => {
     const [product, setProduct] = useState({})
     const [materials, setMaterials] = useState({})
     const [recipes, setRecipes] = useState({})
-    const [materialPaginate, setMaterialPaginate] = useState({offset: 0, limit: 30})
-    const [recipePaginate, setRecipePaginate] = useState({offset: 0, limit: 30})
+
+    const [materialPaginate, setMaterialPaginate] = useState(defaultPaginationObject)
+    const [recipePaginate, setRecipePaginate] = useState(defaultPaginationObject)
 
     const [entityInFocus, setEntityInFocus] = useState({})
 
@@ -70,6 +72,14 @@ const ProductIndex = ({id}) => {
     useEffect(() => {
         loadAllAsync()
     }, [])
+
+    useEffect(() => {
+        loadProductMaterials()
+    }, [materialPaginate.page])
+
+    useEffect(() => {
+        loadProductRecipes()
+    }, [recipePaginate.page])
 
     const loadAllAsync = async () => {
         await loadProduct()
@@ -95,52 +105,75 @@ const ProductIndex = ({id}) => {
     */
 
     const loadProduct = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
         try{
             const result = await getRequest(get_product_url+"?id="+id)
             
             setProduct(result.response)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
     const loadProductRecipes = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
         try{
-            const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&offset=${recipePaginate.offset}&limit=${recipePaginate.limit}`)
-
-            console.log(result.response)
+            const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&page=${recipePaginate.page+1}&limit=${recipePaginate.limit}`)
 
             setRecipes(result.response)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
             console.log(err)
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
     const loadProductMaterials = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
         try{
-            const result = await getRequest(ALL_MATERIALS_URL+`?id=${id}&offset=${materialPaginate.offset}&limit=${materialPaginate.limit}`)
+            const result = await getRequest(ALL_MATERIALS_URL+`?id=${id}&page=${materialPaginate.page+1}&limit=${materialPaginate.limit}`)
 
             setMaterials(result.response)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
             console.log(err)
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }   
 
+    const checkRecipesAdded = () => {
+        if(!recipes || !recipes.docs || recipes.docs.length == 0){
+            return false
+        }
+
+        return true;
+    }
+
+    const checkMaterialsAdded = () => {
+        if(!materials || !materials.docs || materials.docs.length == 0){
+            return false
+        }
+
+        return true;
+    }
+
     const openEditProduct = () => {
+        if(appContext.state.isLoading){
+            return 
+        }
+
+        if(!checkMaterialsAdded() && !checkRecipesAdded()){
+            appContext.setMessage({visible: true, message: "Please add Recipes and Materials before editing the product", title: "Message", type: "INFO"})
+            return;
+        }
+
         setShowEditProduct(true)
     }
 
@@ -149,12 +182,12 @@ const ProductIndex = ({id}) => {
     }
 
     const editProduct = async (editedProduct) => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await putRequest(EDIT_PRODUCT_URL, {id:id, ...editedProduct})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideEditProduct()
 
@@ -163,9 +196,9 @@ const ProductIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
-            value.setMessage({visible: true, message: "Could not edit product successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit product successfully", title: "Message", type: "ERROR"})
         }
     }
 
@@ -197,12 +230,12 @@ const ProductIndex = ({id}) => {
     }
 
     const editProductMaterial = async (newEditedMaterial) => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await putRequest(EDIT_PRODUCT_MATERIAL_URL, {id:id, material_id: newEditedMaterial._id, quantity: newEditedMaterial.quantity})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             
             hideEditMaterial()
@@ -212,9 +245,9 @@ const ProductIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
-            value.setMessage({visible: true, message: "Could not edit product material successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit product material successfully", title: "Message", type: "ERROR"})
         }
     }
 
@@ -227,23 +260,23 @@ const ProductIndex = ({id}) => {
     }
 
     const deleteProduct = async () => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_PRODUCT_URL, {id:id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteProduct();
 
             router.push("/products")
         }
         catch(err){
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteProduct();
 
-            value.setMessage({visible: true, message: `Could not delete ${product.name} successfully`, title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: `Could not delete ${product.name} successfully`, title: "Message", type: "ERROR"})
         }
     }
 
@@ -259,12 +292,12 @@ const ProductIndex = ({id}) => {
     }
 
     const editProductRecipe = async (newEditedRecipe) => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await putRequest(EDIT_PRODUCT_RECIPE_URL, {id:id, recipe_id: newEditedRecipe._id, quantity: newEditedRecipe.yield.amount})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             
             hideEditProductRecipe()
@@ -274,9 +307,9 @@ const ProductIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
-            value.setMessage({visible: true, message: "Could not edit product recipe successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit product recipe successfully", title: "Message", type: "ERROR"})
         }
     }
 
@@ -292,23 +325,23 @@ const ProductIndex = ({id}) => {
     }
 
     const deleteProductRecipe = async () => { 
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_PRODUCT_RECIPE, {id:id, recipe_id: entityInFocus._id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteProductRecipe();
 
             loadProductRecipes()
         }
         catch(err){
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteProductRecipe();
 
-            value.setMessage({visible: true, message: "Could not delete product recipe successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not delete product recipe successfully", title: "Message", type: "ERROR"})
         }
     }
 
@@ -325,25 +358,24 @@ const ProductIndex = ({id}) => {
 
     const deleteProductMaterial = async () => {
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_PRODUCT_MATERIAL, {id:id, material_id: entityInFocus._id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteProductMaterial()
 
             loadProductMaterials()
         }
         catch(err){
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteProductMaterial()
 
-            value.setMessage({visible: true, message: "Could not delete product material successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not delete product material successfully", title: "Message", type: "ERROR"})
         }
-        
     }
 
     const getRecipesCost = () => {
@@ -378,6 +410,14 @@ const ProductIndex = ({id}) => {
         const profit = (product.profit_margin / 100) * totalCost
         
         return totalCost + profit
+    }
+
+    const handleMaterialsPageClick = async (event) => {
+        setMaterialPaginate({...materialPaginate, page: event.selected})
+    }
+
+    const handleRecipesPageClick = async (event) => {
+        setRecipePaginate({...recipePaginate, page: event.selected})
     }
 
     return <div className="pageHolderContent">
@@ -456,55 +496,61 @@ const ProductIndex = ({id}) => {
                 </div>
             </div>
         </div>
-
+        
         <div className="tabbedListMainHolder">
             <div className="tabbedListTabsHolder">
                 <div onClick={e => switchSelectedTab(e, DetailsTab)} className={`${selectedTab == DetailsTab ? "selected" : ""} tabbedListTabsItem`}>
-                    <h5>Details</h5>
+                    <h5>{DetailsTab}</h5>
                 </div>
                 <div onClick={e => switchSelectedTab(e, RecipesTab)} className={`${selectedTab == RecipesTab ? "selected" : ""} tabbedListTabsItem`}>
-                    <h5>Recipes</h5>
+                    <h5>{RecipesTab}</h5>
                 </div>
                 <div onClick={e => switchSelectedTab(e, MaterialsTab)} className={`${selectedTab == MaterialsTab ? "selected" : ""} tabbedListTabsItem`}>
-                    <h5>Materials</h5>
+                    <h5>{MaterialsTab}</h5>
                 </div>
             </div>
-
-            <div className="tabbedListTableHolder"> 
+            
                 {
                     selectedTab == DetailsTab ? 
-                    <table className="tabbedListTable" style={{width: "100%"}}>
-                        <tr className="notHeader">
-                            <td style={{width: "24%"}}>Cost Price</td>
-                            <td style={{width: "76%"}}>{product && getAmount(getTotalCost())}</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Labour Cost</td>
-                            <td>{product && getAmount(product.labour_cost)}</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Overhead Cost</td>
-                            <td>{product && getAmount(product.overhead_cost)}</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Total Cost Price</td>
-                            <td>{product && getAmount(getTotalCostPrice())}</td>
-                        </tr>
-                        <tr className="notHeader" style={{marginBottom: "24px"}}>
-                            <td>Profit Margin</td>
-                            <td>{product && product.profit_margin}%</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Proposed Selling Price</td>
-                            <td>{product && getAmount(getProposedSellingCost())}</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Actual Selling Price</td>
-                            <td>{product && getAmount(product.actual_selling_price)}</td>
-                        </tr>
-                    </table> :  selectedTab == RecipesTab ? 
+                    <div className="tabbedListTableHolder largeTopMargin"> 
+                        <table className="tabbedListTable" style={{width: "100%"}}>
+                            <tr className="notHeader">
+                                <td style={{width: "24%"}}>Cost Price</td>
+                                <td style={{width: "76%"}}>{product && getAmount(getTotalCost())}</td>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Labour Cost</td>
+                                <td>{product && getAmount(product.labour_cost)}</td>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Overhead Cost</td>
+                                <td>{product && getAmount(product.overhead_cost)}</td>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Total Cost Price</td>
+                                <td>{product && getAmount(getTotalCostPrice())}</td>
+                            </tr>
+                            <tr className="notHeader" style={{marginBottom: "24px"}}>
+                                <td>Profit Margin</td>
+                                <td>{(product && product.profit_margin) ? product.profit_margin : 0}%</td>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Proposed Selling Price</td>
+                                <td>{product && getAmount(getProposedSellingCost())}</td>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Actual Selling Price</td>
+                                <td>{product && getAmount(product.actual_selling_price)}</td>
+                            </tr>
+                        </table>
+                    </div> :  selectedTab == RecipesTab ? 
                     
-                    <>
+                    <div className="tabbedListTableHolder"> 
+                        <div className="largeTopMargin">
+                            {
+                                recipes && recipes.docs && <Pagination pageCount={recipePaginate.totalPagesCount} handlePageClick={handleRecipesPageClick} currentPage={recipePaginate.page} />
+                            }
+                        </div>
                         {
                             recipes && recipes.docs && recipes.docs.length > 0 ? <table className="tabbedListTable" style={{width: "100%"}}>
                             <tr className="header" style={{marginBottom: "24px"}}>
@@ -530,11 +576,19 @@ const ProductIndex = ({id}) => {
                                 })
                             }
                             
-                        </table> : <div style={{marginTop: "40px"}}> <EmptyResult  message={"No Recipes found for this product"} onEmptyButtonClicked={loadProductRecipes} emptyButtonText={"Try Again"} /> </div>
+                            </table> : <div style={{marginTop: "40px"}}> <EmptyResult  message={"No Recipes found for this product"} onEmptyButtonClicked={loadProductRecipes} emptyButtonText={"Try Again"} /> </div>
                         }
-                    </>
+                        {
+                            recipes && recipes.docs && <Pagination pageCount={recipePaginate.totalPagesCount} handlePageClick={handleRecipesPageClick} currentPage={recipePaginate.page} />
+                        }
+                    </div>
                     
-                    : <>
+                    : <div className="tabbedListTableHolder"> 
+                        <div className="largeTopMargin">
+                            {
+                                materials && materials.docs && <Pagination pageCount={materialPaginate.totalPagesCount} handlePageClick={handleMaterialsPageClick} currentPage={materialPaginate.page} />
+                            }
+                        </div>
                         {
                             (materials && materials.docs && materials.docs.length > 0) ? <table className="tabbedListTable" style={{width: "100%"}}>
                             <tr className="header" style={{marginBottom: "24px"}}>
@@ -561,12 +615,11 @@ const ProductIndex = ({id}) => {
                         </table> :  <div style={{marginTop: "40px"}}> <EmptyResult  message={"No Materials found for this product"} onEmptyButtonClicked={loadProductMaterials} emptyButtonText={"Try Again"} /> </div>
                         }
 
-
-
-                    </>
+                        {
+                            materials && materials.docs && <Pagination pageCount={materialPaginate.totalPagesCount} handlePageClick={handleMaterialsPageClick} currentPage={materialPaginate.page} />
+                        }
+                    </div>
                 }
-            </div>
-
         </div>
 
         {

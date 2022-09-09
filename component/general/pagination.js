@@ -3,8 +3,8 @@
 import ReactPaginate from 'react-paginate';
 
 const Pagination = ({handlePageClick, pageCount, currentPage}) => {
-    
-    return <div>
+    console.log(pageCount)
+    return pageCount > 0 ? <div>
                 <div className="fullPaginationDisplay">
                     <ReactPaginate
                         breakLabel="..."
@@ -56,7 +56,7 @@ const Pagination = ({handlePageClick, pageCount, currentPage}) => {
                         disabledClassName="rectangleButtonGrey paginationLink"
                     />
                 </div>
-    </div>
+    </div> : <></>
 }
 
 export default Pagination;

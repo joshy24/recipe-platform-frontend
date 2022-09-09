@@ -25,6 +25,8 @@ const mediumTextStyle = {
 
 import { AppContext } from "../../pages/AppContext";
 
+import { defaultPaginationObject } from "../../utils/helper"
+
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -46,7 +48,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
 
     const [error, setError] = useState("")
 
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [searchTerm, setSearchTerm] = useState("")
 
@@ -59,14 +61,14 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
 
         material.quantity = value
 
-        const foundIndex = materials.findIndex(aMaterial => aMaterial._id == material._id)
+        const foundIndex = materials.docs.findIndex(aMaterial => aMaterial._id == material._id)
 
         if(foundIndex != -1){
             const sm = selectedMaterials
 
             sm.splice(foundIndex,1,material)
 
-            setMaterials(sm)
+            setMaterials({...materials, docs: sm})
         }
     }
 
@@ -96,13 +98,15 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id+"&search_term="+"&page="+pagination.page+"&limit="+pagination.limit)
 
             const new_result = result.response.map(material => {
                 return {...material, quantity: 0}
             })
 
-            setMaterials(new_result)
+            setMaterials({...result.response, docs: new_result})
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
@@ -116,13 +120,15 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(MATERIALS_TO_ADD+"?product_id="+product._id+"&search_term="+searchTerm+"&page="+pagination.page+"&limit="+pagination.limit)
 
-            const new_result = result.response.map(material => {
+            const new_result = result.response.docs.map(material => {
                 return {...material, quantity: 0}
             })
 
-            setMaterials(new_result)
+            setMaterials({...result.response, docs: new_result})
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
@@ -209,7 +215,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
                     !appContext.state.isLoading ? 
                         <>
                             {
-                                materials && materials.length > 0 ? <tbody>
+                                materials && materials.docs && materials.docs.length > 0 ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Name</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Quantity</th>
@@ -220,13 +226,11 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
                                     <th style={{width: "16%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
-                                    materials.map(material => {
+                                    materials.docs.map(material => {
                                         return <MaterialToAdd addToSelected={addMaterialToSelected} material={material} onChange={onChange} selectedMaterials={selectedMaterials} />
                                     })
                                 }
-                            </tbody>
-
-                                : <EmptyResult  message={"No Materials found to add. Add materials to inventory"} onEmptyButtonClicked={getMaterialsToAddSearch} emptyButtonText={"Try Again"} />
+                            </tbody> : <EmptyResult  message={"No Materials found to add. Add materials to inventory"} onEmptyButtonClicked={getMaterialsToAddSearch} emptyButtonText={"Try Again"} />
                             }
                         </>
                     : <Skeleton count={8} height={40} />

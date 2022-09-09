@@ -40,7 +40,7 @@ export const toUpperCase = (aString) =>{
 }
 
 export const checkValidProductToAdd = (product) => {
-    if(!product.name || product.name.length == 0 || !product.profit_margin || product.profit_margin.length<=0 || !product.labour_cost || !product.overhead_cost){
+    if(!product.name || product.name.length == 0){
         return false
     }
 
@@ -251,5 +251,8 @@ export const getAmount = (amount) => {
         default: 
           return "₦"+a;
       }
+    }
+    else{
+        return "₦0"
     }
 }

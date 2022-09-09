@@ -26,6 +26,8 @@ const mediumTextStyle = {
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
+import { defaultPaginationObject } from "../../utils/helper"
+
 import { postRequest, getRequest } from "../../utils/api.requests"
 
 import SearchInput from "../general/searchInput"
@@ -44,7 +46,7 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
 
     const [error, setError] = useState("")
 
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [searchTerm, setSearchTerm] = useState("")
 
@@ -57,14 +59,14 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
 
         recipe.quantity = value
 
-        const foundIndex = recipes.findIndex(aRecipe => aRecipe._id == recipe._id)
+        const foundIndex = recipes.docs.findIndex(aRecipe => aRecipe._id == recipe._id)
 
         if(foundIndex != -1){
             const sm = selectedRecipes
 
             sm.splice(foundIndex,1,recipe)
 
-            setRecipes(sm)
+            setRecipes({...recipes, docs: sm})
         }
     }
 
@@ -74,13 +76,15 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id+"&search_term="+"&page="+pagination.page+"&limit="+pagination.limit)
 
-            const new_result = result.response.map(recipe => {
+            const new_result = result.response.docs.map(recipe => {
                 return {...recipe, quantity: 0}
             })
+            
+            setRecipes({...result.response, docs: new_result})
 
-            setRecipes(new_result)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
             
             appContext.setLoading(false)
         }
@@ -94,13 +98,15 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(RECIPES_TO_ADD+"?product_id="+product._id+"&search_term="+searchTerm+"&page="+pagination.page+"&limit="+pagination.limit)
             
-            const new_result = result.response.map(recipe => {
+            const new_result = result.response.docs.map(recipe => {
                 return {...recipe, quantity: 0}
             })
 
-            setRecipes(new_result)
+            setRecipes({...result.response, docs: new_result})
+
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
 
             appContext.setLoading(false)
         }
@@ -189,20 +195,20 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
                     !appContext.state.isLoading ? 
                         <>
                             {
-                                recipes && recipes.length > 0 ? <tbody>
-                                <tr className="header" style={{marginBottom: "24px"}}>
-                                    <th style={{width: "25%", paddingLeft: "20px"}}>Name</th>
-                                    <th style={{width: "25%", paddingLeft: "20px"}}>Yield</th>
-                                    <th style={{width: "25%", paddingLeft: "20px"}}>Yield To Add</th>
-                                    <th style={{width: "25%", paddingLeft: "20px"}}>Unit</th>
-                                    <th style={{width: "25%", paddingLeft: "20px"}}></th>
-                                </tr>
-                                {
-                                    recipes.map(recipe => {
-                                        return <RecipeToAdd addToSelected={addRecipesToSelected} recipe={recipe} onChange={onChange} selectedRecipes={selectedRecipes} />
-                                    })
-                                }
-                            </tbody>
+                                recipes && recipes.docs && recipes.docs.length > 0 ? <tbody>
+                                    <tr className="header" style={{marginBottom: "24px"}}>
+                                        <th style={{width: "25%", paddingLeft: "20px"}}>Name</th>
+                                        <th style={{width: "25%", paddingLeft: "20px"}}>Yield</th>
+                                        <th style={{width: "25%", paddingLeft: "20px"}}>Yield To Add</th>
+                                        <th style={{width: "25%", paddingLeft: "20px"}}>Unit</th>
+                                        <th style={{width: "25%", paddingLeft: "20px"}}></th>
+                                    </tr>
+                                    {
+                                        recipes.docs.map(recipe => {
+                                            return <RecipeToAdd addToSelected={addRecipesToSelected} recipe={recipe} onChange={onChange} selectedRecipes={selectedRecipes} />
+                                        })
+                                    }
+                                </tbody>
 
                                 : <EmptyResult  message={"No Recipes found to add. Add recipes on the recipes pages"} onEmptyButtonClicked={getRecipesToAddSearch} emptyButtonText={"Try Again"} />
                             }

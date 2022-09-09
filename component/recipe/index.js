@@ -17,7 +17,7 @@ import { faPen, faAdd, faTrash, faCaretDown, faCaretUp } from '@fortawesome/free
 
 import Image from "next/image"
 
-import { toUpperCase, getAmount } from "../../utils/helper"
+import { toUpperCase, getAmount, defaultPaginationObject } from "../../utils/helper"
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -39,7 +39,7 @@ const RecipeIndex = ({id}) => {
 
     const router = useRouter();
 
-    const value = AppContext()
+    const appContext = AppContext()
 
     const [showAddIngredients, setShowAddIngredients] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
@@ -54,7 +54,7 @@ const RecipeIndex = ({id}) => {
 
     const [ingredients, setIngredients] = useState([])
 
-    const [pagination, setPagination] = useState({offset: 0, limit: 30})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [showEditRecipeIngredient, setShowEditRecipeIngredient] = useState(false)
 
@@ -99,19 +99,21 @@ const RecipeIndex = ({id}) => {
     }
 
     const loadRecipeIngredients = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
         try{
-            const result = await getRequest(ALL_RECIPE_INGREDIENTS_URL+`?id=${id}&offset=${pagination.offset}&limit=${pagination.limit}`)
+            const result = await getRequest(ALL_RECIPE_INGREDIENTS_URL+`?id=${id}&page=${pagination.page}&limit=${pagination.limit}`)
 
             setIngredients(result.response)
 
-            value.setLoading(false)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
+
+            appContext.setLoading(false)
 
             getRecipeCost()
         }
         catch(err){
             console.log(err)
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
@@ -132,7 +134,7 @@ const RecipeIndex = ({id}) => {
     }
 
     const editRecipe = async (e, editedRecipe) => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         try{
             const result = await putRequest(EDIT_RECIPE_URL, {...recipe, ...editedRecipe})
 
@@ -142,25 +144,23 @@ const RecipeIndex = ({id}) => {
 
             loadRecipe()
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
         catch(err){
             console.log(err)
-            value.setMessage({visible: true, message: "Could not edit recipe successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit recipe successfully", title: "Message", type: "ERROR"})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
     }
 
     const editIngredient = async (newEditedRecipe) => {
-        value.setBlockingLoading(true)
-        
-        console.log(newEditedRecipe)
+        appContext.setBlockingLoading(true)
 
         try{
             await putRequest(EDIT_RECIPE_INGREDIENT_URL, {id:id, ingredient_id: newEditedRecipe._id, quantity: newEditedRecipe.quantity})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             
             hideEditRecipeIngredient()
@@ -170,11 +170,11 @@ const RecipeIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideEditRecipeIngredient()
 
-            value.setMessage({visible: true, message: "Could not edit recipe ingredient successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit recipe ingredient successfully", title: "Message", type: "ERROR"})
         }
     }
 
@@ -199,17 +199,17 @@ const RecipeIndex = ({id}) => {
 
     const deleteRecipe = async () => {
 
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
 
         try{
             await deleteRequest(DELETE_RECIPE_URL, {id: id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             router.push("/recipes")
         }
         catch(err){
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
     }
 
@@ -225,12 +225,12 @@ const RecipeIndex = ({id}) => {
     }
     
     const deleteIngredient = async () => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_RECIPE_INGREDIENT_URL, {ingredient_id:entityInFocus._id, id:id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteIngredient();
 
@@ -239,11 +239,11 @@ const RecipeIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteIngredient()
 
-            value.setMessage({visible: true, message: "Could not delete ingredient from recipe", title: "Error Deleting", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not delete ingredient from recipe", title: "Error Deleting", type: "ERROR"})
         }
     }
 
@@ -368,7 +368,7 @@ const RecipeIndex = ({id}) => {
                         <>
                             <table className="tabbedListTable" style={{width: "100%"}}>      
                                 {
-                                    !value.state.isLoading ? <tbody>
+                                    !appContext.state.isLoading ? <tbody>
                                         <tr className="header" style={{marginBottom: "24px"}}>
                                             <th style={{width: "20%"}}>Name</th>
                                             <th style={{width: "20%"}}>Quantity</th>
@@ -378,8 +378,8 @@ const RecipeIndex = ({id}) => {
                                         </tr>
 
                                         {
-                                            ingredients && ingredients.length > 0 && ingredients.map(ingredient => {
-                                                return <tr className="notHeader">
+                                            ingredients && ingredients.docs && ingredients.length > 0 && ingredients.map(ingredient => {
+                                                return <tr key={ingredient._id} className="notHeader">
                                                     <td>{toUpperCase(ingredient.name)}</td>
                                                     <td>{ingredient.quantity}</td>
                                                     <td>{ingredient.purchase_size}</td>
@@ -397,7 +397,7 @@ const RecipeIndex = ({id}) => {
                             </table>
 
                             {
-                                (!value.state.isLoading && !value.state.isBlockingLoading && (!ingredients || ingredients.length == 0)) && <EmptyResult message="No ingredients found for this recipe" onEmptyButtonClicked={loadRecipeIngredients} emptyButtonText="Try Again" />
+                                (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!ingredients || ingredients.length == 0)) && <EmptyResult message="No ingredients found for this recipe" onEmptyButtonClicked={loadRecipeIngredients} emptyButtonText="Try Again" />
                             }
                         </>
                 }

@@ -12,6 +12,8 @@ import EditOrderProduct from "./editorderproduct"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import Pagination from "../general/pagination"
+
 import { AppContext } from "../../pages/AppContext";
 
 import { faPen, faAdd, faTrash, faCaretDown, faCaretUp, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
@@ -25,7 +27,7 @@ import DeleteDialog from "../general/deletedialog"
 import MessageDialog from "../general/messagedialog"
 import EmptyResult from "../general/emptyResult"
 
-import { getAmount, toUpperCase, getDate } from "../../utils/helper"
+import { getAmount, toUpperCase, getDate, defaultPaginationObject } from "../../utils/helper"
 
 const DetailsTab = "Details"
 const ProductsTab = "Products"
@@ -49,10 +51,10 @@ const OrderIndex = ({id}) => {
 
     const [showEditOrder, setShowEditOrder] = useState(false)
     const [products, setProducts] = useState([])
-    const [pagination, setPagination] = useState({offset: 0, limit: 30})
     const [showFulfillOrderMessage, setShowFulfillOrderMessage] = useState(false)
     const [isStatus, setIsStatus] = useState(false)
 
+    const [pagination, setPagination] = useState(defaultPaginationObject)
     
     const [recipes, setRecipes] = useState({})
     const [productPaginate, setProductPaginate] = useState({offset: 0, limit: 30})
@@ -71,13 +73,16 @@ const OrderIndex = ({id}) => {
         await loadOrder()
 
         await loadOrderProducts()
-
     }
 
     const switchWhatIs = (e) => {
         e.preventDefault();
         setWhatIsOpen(!whatIsOpen)
     }
+
+    useEffect(() => {
+        loadOrderProducts()
+    }, [pagination.page])
 
     /*const showAddRecipesModal = () => {
         setShowAddIngredients(true)
@@ -128,7 +133,7 @@ const OrderIndex = ({id}) => {
     const loadOrderProducts = async() => {
         value.setLoading(true)
         try{
-            const result = await getRequest(ORDER_PRODUCTS_URL+"?id="+id+`&offset=${pagination.offset}&limit=${pagination.limit}`)
+            const result = await getRequest(ORDER_PRODUCTS_URL+"?id="+id+`&page=${pagination.page}&limit=${pagination.limit}`)
 
             setProducts(result.response)
 
@@ -311,6 +316,10 @@ const OrderIndex = ({id}) => {
 
     }
 
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
+    }
+
     return <div className="pageHolderContent">
         <div className="pageHolderContentTop">
             <div className="pageHolderContentTopLeft">
@@ -377,7 +386,7 @@ const OrderIndex = ({id}) => {
                 </div>
             </div>
         </div>
-
+        
         <div className="tabbedListMainHolder">
             <div className="tabbedListTabsHolder">
                 <div onClick={e => switchSelectedTab(e, DetailsTab)} className={`${selectedTab == DetailsTab ? "selected" : ""} tabbedListTabsItem`}>
@@ -388,63 +397,78 @@ const OrderIndex = ({id}) => {
                 </div>
             </div>
 
-            <div className="tabbedListTableHolder"> 
-                {
-                    selectedTab == DetailsTab ? 
+            {
+                selectedTab == DetailsTab ? <div className="tabbedListTableHolder"> 
                     <table className="tabbedListTable" style={{width: "100%"}}>
-                        <tr className="notHeader" style={{marginBottom: "24px"}}>
-                            <th style={{width: "20%"}}>Name</th>
-                            <th style={{width: "80%"}}>{order && order.name && toUpperCase(order.name)}</th>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Date</td>
-                            <td>{order && order.created && getDate(order.created)}</td>
-                        </tr>
-                        
-                        <tr className="notHeader">
-                            <td>Order status</td>
-                            <td className="tabbedListContentHorizontalTableContent">
-                                {order && order.status}
-                                {
-                                    order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>
-                                }
-                            </td>
-                        </tr>
-                       
-                        <tr className="notHeader">
-                            <td>Fulfillment date</td>
-                            <td>{order && order.fulfillment_date && getDate(order.fulfillment_date)}</td>
-                        </tr>
-                        <tr className="notHeader">
-                            <td>Total selling price</td>
-                            <td>{getAmount(getTotalCost())}</td>
-                        </tr>
-                    </table> : <table className={styles.tabbedListTable} style={{width: "100%"}}>
-                                    <tr style={{marginBottom: "24px"}}>
-                                        <th style={{width: "25%"}}>Name</th>
-                                        <th style={{width: "25%"}}>Quantity</th>
-                                        <th style={{width: "25%"}}>Total Cost</th>
-                                        <th style={{width: "25%"}}></th>
-                                    </tr>
+                        <tbody>
+                            <tr className="notHeader" style={{marginBottom: "24px"}}>
+                                <th style={{width: "20%"}}>Name</th>
+                                <th style={{width: "80%"}}>{order && order.name && toUpperCase(order.name)}</th>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Date</td>
+                                <td>{order && order.created && getDate(order.created)}</td>
+                            </tr>
+                            
+                            <tr className="notHeader">
+                                <td>Order status</td>
+                                <td className="tabbedListContentHorizontalTableContent">
+                                    {order && order.status}
                                     {
-                                        products && products.length > 0 && products.map(product => {
-                                            return <tr>
-                                                    <td>{product && toUpperCase(product.name)}</td>
-                                                    <td>{product.quantity}</td>
-                                                    
-                                                    <td>{getAmount(product.totalCost)}</td>
-                                                    <td className="tabbedListContentHorizontalTableContent">
-                                                        <button onClick={e => openEditOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
-                                                        <button onClick={e => openDeleteOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
-                                                    </td>
-                                                </tr>
-                                        })
+                                        order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>
                                     }
-                                </table>
-                }
-            </div>
+                                </td>
+                            </tr>
+                        
+                            <tr className="notHeader">
+                                <td>Fulfillment date</td>
+                                <td>{order && order.fulfillment_date && getDate(order.fulfillment_date)}</td>
+                            </tr>
+                            <tr className="notHeader">
+                                <td>Total selling price</td>
+                                <td>{getAmount(getTotalCost())}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> : <div className="tabbedListTableHolder">  
+                            
+                            <div className="largeTopMargin">
+                                {
+                                    <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                                }
+                            </div>
 
-        </div>
+                            <table className={styles.tabbedListTable} style={{width: "100%"}}>
+                                    <tbody>
+                                        <tr style={{marginBottom: "24px"}}>
+                                            <th style={{width: "25%"}}>Name</th>
+                                            <th style={{width: "25%"}}>Quantity</th>
+                                            <th style={{width: "25%"}}>Total Cost</th>
+                                            <th style={{width: "25%"}}></th>
+                                        </tr>
+                                        {
+                                            products && products.length > 0 && products.map(product => {
+                                                return <tr key={product._id}>
+                                                        <td>{product && toUpperCase(product.name)}</td>
+                                                        <td>{product.quantity}</td>
+                                                        
+                                                        <td>{getAmount(product.totalCost)}</td>
+                                                        <td className="tabbedListContentHorizontalTableContent">
+                                                            <button onClick={e => openEditOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
+                                                            <button onClick={e => openDeleteOrderProduct(e, product)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
+                                                        </td>
+                                                    </tr>
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+
+                                {
+                                    <Pagination pageCount={pagination.totalPagesCount} handlePageClick={handlePageClick} currentPage={pagination.page} />
+                                }
+                            </div>
+            }
+            </div>
 
         {
             showEditOrder && <EditOrder hideEditOrder={hideEditOrder} editOrder={editOrder} aOrder={order} />

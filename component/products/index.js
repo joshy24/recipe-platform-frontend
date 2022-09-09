@@ -106,19 +106,19 @@ const ProductsIndex = () => {
     }
 
     const addProduct = async (data) => {
-        appContext.setLoading(true)
+        appContext.setBlockingLoading(true)
 
         try{
             const result = await postRequest(add_product_url, data)
 
             closeAddProduct()
 
-            appContext.setLoading(false)
+            appContext.setBlockingLoading(false)
 
             router.push("/product/"+result.response._id)
         }
         catch(err){
-            appContext.setLoading(false)
+            appContext.setBlockingLoading(false)
         }
     }
 
