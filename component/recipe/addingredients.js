@@ -34,6 +34,8 @@ import { postRequest, getRequest } from "../../utils/api.requests"
 
 import { INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../../utils/api.endpoints"
 
+import { defaultPaginationObject } from "../../utils/helper"
+
 const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => {
 
     const appContext = AppContext();
@@ -44,13 +46,13 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
 
     const [error, setError] = useState("")
 
-    const [pagination, setPagination] = useState({offset:0, limit: 30})
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [searchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
         getIngredientsToAddSearch()
-    }, [])
+    }, [pagination.page])
 
     const onChange = (e, ingredient) => {
         const value = e.target.value
@@ -94,7 +96,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+"&page="+pagination.page+"&limit="+pagination.limit)
 
             const new_result = result.response.map(ingredient => {
                 return {...ingredient, quantity: 0}
@@ -114,13 +116,15 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
         appContext.setLoading(true)
 
         try{
-            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+searchTerm+"&offset="+pagination.offset+"&limit="+pagination.limit)
+            const result = await getRequest(INGREDIENTS_TO_ADD+"?recipe_id="+recipe._id+"&search_term="+searchTerm+"&page="+pagination.page+"&limit="+pagination.limit)
 
-            const new_result = result.response.map(ingredient => {
+            const new_result = result.response.docs.map(ingredient => {
                 return {...ingredient, quantity: 0}
             })
 
-            setIngredients(new_result)
+            setPagination({...pagination, totalPagesCount: result.response.totalPages})
+
+            setIngredients({...result.response, docs: new_result})
 
             appContext.setLoading(false)
         }
@@ -183,6 +187,10 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
         setSearchTerm(value)
     }
 
+    const handlePageClick = async (event) => {
+        setPagination({...pagination, page: event.selected})
+    }
+
     return <div className="popUpAdd">
         <div className="popUpAddInnerContent">
             <div className="popUpAddInnerContentTop">
@@ -207,7 +215,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                     !appContext.state.isLoading ? 
                         <>
                             {
-                                ingredients && ingredients.length > 0 ? <tbody>
+                                ingredients && ingredients.docs && ingredients.docs.length > 0 ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Name</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Quantity</th>
@@ -218,7 +226,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
                                     <th style={{width: "16%", paddingLeft: "20px"}}></th>
                                 </tr>
                                 {
-                                    ingredients.map(ingredient => {
+                                    ingredients.docs.map(ingredient => {
                                         return <IngredientToAdd addToSelected={addIngredientToSelected} ingredient={ingredient} onChange={onChange} selectedIngredients={selectedIngredients} />
                                     })
                                 }
