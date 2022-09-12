@@ -563,8 +563,8 @@ const ProductIndex = ({id}) => {
                             <tr className="header" style={{marginBottom: "24px"}}>
                                 <th style={{width: "20%"}}>Name</th>
                                 <th style={{width: "20%"}}>Quantity</th>
-                                <th style={{width: "20%"}}>Cost</th>
                                 <th style={{width: "20%"}}>Unit</th>
+                                <th style={{width: "20%"}}>Cost</th>
                                 <th style={{width: "20%"}}></th>
                             </tr>
                             {
@@ -572,9 +572,8 @@ const ProductIndex = ({id}) => {
                                     return <tr className="notHeader">
                                                 <td>{toUpperCase(aRecipe.name)}</td>
                                                 <td>{ aRecipe.yield ? aRecipe.yield.amount : 0 }</td>
-                                                <td>{ getAmount(aRecipe.cost) }</td>
                                                 <td>{ aRecipe.yield ? aRecipe.yield.unit : "" }</td>
-                                                
+                                                <td>{ getAmount(aRecipe.cost) }</td>
                                                 <td className="tabbedListContentHorizontalTableContent">
                                                     <button onClick={e => showEditProductRecipe(e, aRecipe)} style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                                                     <button onClick={e => showDeleteProductRecipe(e, aRecipe)} style={{marginLeft: "16px"}} className="squareButtonSecondary"><FontAwesomeIcon icon={faTrash} /></button>
