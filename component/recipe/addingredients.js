@@ -40,7 +40,7 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => 
 
     const appContext = AppContext();
     
-    const [ingredients, setIngredients] = useState([])
+    const [ingredients, setIngredients] = useState({})
 
     const [selectedIngredients, setSelectedIngredients] = useState([])
 

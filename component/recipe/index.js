@@ -248,11 +248,11 @@ const RecipeIndex = ({id}) => {
     }
 
     const getRecipeCost = () => {
-        if(!ingredients || ingredients.length == 0){
+        if(!ingredients.docs || ingredients.docs.length == 0){
             return getAmount(0);
         }
 
-        const aSum = ingredients.reduce((accumulator, ingredient) => {
+        const aSum = ingredients.docs.reduce((accumulator, ingredient) => {
             return accumulator+=ingredient.totalCost
         }, 0)
 
@@ -397,7 +397,7 @@ const RecipeIndex = ({id}) => {
                             </table>
 
                             {
-                                (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!ingredients || ingredients.length == 0)) && <EmptyResult message="No ingredients found for this recipe" onEmptyButtonClicked={loadRecipeIngredients} emptyButtonText="Try Again" />
+                                (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!ingredients.docs || ingredients.docs.length == 0)) && <EmptyResult message="No ingredients found for this recipe" onEmptyButtonClicked={loadRecipeIngredients} emptyButtonText="Try Again" />
                             }
                         </>
                 }
