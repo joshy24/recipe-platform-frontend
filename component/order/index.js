@@ -246,6 +246,8 @@ const OrderIndex = ({id}) => {
             console.log(result)
 
             value.setBlockingLoading(false)
+
+            loadOrder()
         }
         catch(err){
             value.setBlockingLoading(false)

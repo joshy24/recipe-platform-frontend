@@ -230,9 +230,7 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
 
                                 : <EmptyResult  message={"No Products found to add. Add some products on the products page"} onEmptyButtonClicked={getProductsToAddSearch} emptyButtonText={"Try Again"} />
                             }
-                        </table> : <div className="skeletonHolder">
-                                    <Skeleton count={8} height={50} />
-                                </div>
+                        </table> : <Skeleton count={8} height={50} />   
                 }
             </div>
         </div>
