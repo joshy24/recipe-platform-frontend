@@ -619,7 +619,8 @@ box
    width: 500px;
    max-width: 500px;
    overflow-y: auto;
-   height: 96%;
+   max-height: 96%;
+   height: auto;
 }
 
 .popUpInnerContent .popUpInnerContentTop{
