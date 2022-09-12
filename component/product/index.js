@@ -414,7 +414,11 @@ const ProductIndex = ({id}) => {
     const getProposedSellingCost = () => {
         const totalCost = getTotalCost() + parseInt(product.labour_cost) + parseInt(product.overhead_cost)
 
+        console.log(totalCost)
+
         const profit = product.profit_margin ? (product.profit_margin / 100) * totalCost : 0
+
+        console.log(profit)
         
         return totalCost + profit
     }
