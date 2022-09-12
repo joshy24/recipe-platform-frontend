@@ -70,7 +70,7 @@ const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPric
             <div className="inputFieldHolder">
                 <h4>Profit Margin</h4>
                 
-                <input className="ptInput" onChange={onChange} type="number" name="profit_margin" value={product.profit_margin} /> %
+                <input className="ptInput" onChange={onChange} type="number" name="profit_margin" value={product.profit_margin} />
             </div>
 
             <div className="inputFieldHolder">

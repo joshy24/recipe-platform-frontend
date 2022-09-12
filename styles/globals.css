@@ -617,6 +617,7 @@ box
    min-width: 200px;
    width: 500px;
    max-width: 500px;
+   overflow-y: scroll;
 }
 
 .popUpInnerContent .popUpInnerContentTop{
