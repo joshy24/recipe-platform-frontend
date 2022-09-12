@@ -104,6 +104,8 @@ const OrdersIndex = () => {
                 setIsLoading(false)
 
                 setSearchResult(result.response)
+
+                setPagination({...pagination, totalPagesCount: result.response.totalPages})
             }
             catch(err){
                 console.log(err)
@@ -278,7 +280,7 @@ const OrdersIndex = () => {
                     }   
                     
                     {
-                        orders && orders.docs && orders.docs.length == 0 && !appContext.state.isLoading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={searchOrders} emptyButtonText={"Try Again"} />
+                        orders && orders.docs && orders.docs.length == 0 && !appContext.state.isLoading && <EmptyResult  message={"No Orders found "} onEmptyButtonClicked={loadOrders} emptyButtonText={"Try Again"} />
                     }
 
                 </div>
