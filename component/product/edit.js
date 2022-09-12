@@ -1,8 +1,5 @@
 
-import { useState } from "react"
-
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { useState, useEffect } from "react"
 
 import { checkValidProductToAdd, checkValidLabourCost, checkValidOverheadCost } from "../../utils/helper"
 
