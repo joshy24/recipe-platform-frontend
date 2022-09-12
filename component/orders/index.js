@@ -262,7 +262,7 @@ const OrdersIndex = () => {
                                     <th style={{width: "18%"}}>Status</th>
                                 </tr>
                                 {
-                                    orders && orders.docs && orders.docs.length && orders.docs.map(order => {
+                                    orders && orders.docs && orders.docs.length > 0 && orders.docs.map(order => {
                                         return <tr key={order._id} onClick={e => navigateToOrder(e, order._id)} className="notHeader">
                                                 <td >{order.name}</td>
                                                 <td >{getDate(order.created)}</td>
