@@ -12,7 +12,7 @@ const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPric
     useEffect(() => {
         //Todo Recalculate proposed selling price
 
-        const newTotalCost = totalCost + product.labour_cost ? product.labour_cost : 0 + product.overhead_cost ? product.overhead_cost : 0
+        const newTotalCost = totalCost + (product.labour_cost ? product.labour_cost : 0) + (product.overhead_cost ? product.overhead_cost : 0)
 
         console.log(newTotalCost)
 
