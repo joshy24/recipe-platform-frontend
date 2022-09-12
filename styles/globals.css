@@ -618,7 +618,8 @@ box
    min-width: 200px;
    width: 500px;
    max-width: 500px;
-   overflow-y: scroll;
+   overflow-y: auto;
+   height: 90%;
 }
 
 .popUpInnerContent .popUpInnerContentTop{
@@ -642,6 +643,15 @@ box
 
 .popButtonHolder > *{
    margin-right: 16px;
+}
+
+
+
+@media screen and (max-width: 300px) {
+    /*.popUpInnerContent{
+        margin-top: 300px;
+        margin-bottom: 20px;
+    }*/
 }
 
 
