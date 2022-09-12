@@ -126,9 +126,10 @@ const SignUp = () => {
                 value.setBlockingLoading(true)
 
                 await Auth.signup(userData);
-                router.push("/dashboard")
 
                 value.setBlockingLoading(false)
+                
+                router.push("/dashboard")
             }
         }
         catch(err){

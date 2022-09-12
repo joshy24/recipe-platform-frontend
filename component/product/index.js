@@ -408,11 +408,11 @@ const ProductIndex = ({id}) => {
     }
 
     const getTotalCostPrice = () => {
-        return getTotalCost() + product.labour_cost + product.overhead_cost
+        return getTotalCost() + parseInt(product.labour_cost) + parseInt(product.overhead_cost)
     }
 
     const getProposedSellingCost = () => {
-        const totalCost = getTotalCost() + product.labour_cost + product.overhead_cost
+        const totalCost = getTotalCost() + parseInt(product.labour_cost) + parseInt(product.overhead_cost)
 
         const profit = product.profit_margin ? (product.profit_margin / 100) * totalCost : 0
         
