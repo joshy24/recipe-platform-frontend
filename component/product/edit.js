@@ -14,6 +14,8 @@ const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPric
 
         const newTotalCost = totalCost + product.labour_cost ? product.labour_cost : 0 + product.overhead_cost ? product.overhead_cost : 0
 
+        console.log(newTotalCost)
+
         const newProposedSellingPrice = newTotalCost + (product.profit_margin ? (product.profit_margin * newTotalCost / 100) : 0)
 
         setProposedSellingPrice(newProposedSellingPrice)
