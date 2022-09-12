@@ -111,16 +111,21 @@ const RecipesIndex = () => {
     }
 
     const addRecipe = async (e, data) => {
+        appContext.setBlockingLoading(true)
         e.preventDefault();
         try{
             const result = await postRequest(create_recipe_url, data)
 
             closeAddRecipe()
 
+            appContext.setBlockingLoading(false)
+
             router.push(`/recipe/${result.response._id}`)
         }
         catch(err){
             console.log(err)
+            appContext.setBlockingLoading(false)
+            appContext.setMessage({visible: true, message: "Could not create recipe...", title: "Message", type: "ERROR"})
         }
     }
 
