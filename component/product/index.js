@@ -404,6 +404,7 @@ const ProductIndex = ({id}) => {
     }
 
     const getTotalCost = () => {
+        console.log("total Cost - "+ (getRecipesCost() + getMaterialsCost()))
         return getRecipesCost() + getMaterialsCost()
     }
 
