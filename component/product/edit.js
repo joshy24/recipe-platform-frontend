@@ -6,14 +6,38 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { checkValidProductToAdd, checkValidLabourCost, checkValidOverheadCost } from "../../utils/helper"
 
-const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPrice}) => {
+const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPrice, totalCost}) => {
 
     const [product, setProduct] = useState({name: productToEdit.name, labour_cost: productToEdit.labour_cost, actual_selling_price: productToEdit.actual_selling_price, overhead_cost:productToEdit.overhead_cost, profit_margin: productToEdit.profit_margin})
+    const [proposedSellingCost, setProposedSellingPrice] = useState(proposedSellingPrice)
     const [error, setError] = useState("")
+
+    useEffect(() => {
+        //Todo Recalculate proposed selling price
+
+        const newTotalCost = totalCost + product.labour_cost ? product.labour_cost : 0 + product.overhead_cost ? product.overhead_cost : 0
+
+        const newProposedSellingPrice = newTotalCost + (product.profit_margin ? (product.profit_margin * newTotalCost / 100) : 0)
+
+        setProposedSellingPrice(newProposedSellingPrice)
+
+    }, [product])
 
     const onChange = (e) => {
         const value = e.target.value
         const name = e.target.name
+
+        /*if(name == "profit_margin"){
+            const old_profit_amount = product.profit_margin * proposedSellingPrice / 100
+
+            const proposedSellingWithoutProfitMargin = proposedSellingPrice - old_profit_amount
+
+            const new_profit_amount = value * proposedSellingWithoutProfitMargin / 100
+
+            const new_proposed_selling_price =  new_profit_amount + proposedSellingPrice
+
+            setProposedSellingPrice(new_proposed_selling_price)
+        }*/
 
         setProduct({...product, [name]:value});
     }
@@ -76,7 +100,7 @@ const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPric
             <div className="inputFieldHolder">
                 <h4>Proposed Selling Price</h4>
                 
-                <h5>{proposedSellingPrice}</h5>
+                <h5>{proposedSellingCost}</h5>
             </div>
 
             <div className="inputFieldHolder">

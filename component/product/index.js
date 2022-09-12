@@ -657,7 +657,7 @@ const ProductIndex = ({id}) => {
         }
 
         {
-            showEditProduct && <EditProduct productToEdit={product} closeEdit={hideEditProduct} editProduct={editProduct} proposedSellingPrice={getAmount(getProposedSellingCost())} />
+            showEditProduct && <EditProduct totalCost={getTotalCost()} productToEdit={product} closeEdit={hideEditProduct} editProduct={editProduct} proposedSellingPrice={getAmount(getProposedSellingCost())} />
         }
 
     </div>
