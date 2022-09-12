@@ -3,6 +3,8 @@ import React, { useState,useEffect,useContext  } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import EmptyResult from "../general/emptyResult"
+
 import Image from "next/image"
 
 import { faAdd, faSearch, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
