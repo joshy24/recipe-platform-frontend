@@ -10,7 +10,7 @@ const EditProduct = ({productToEdit, closeEdit, editProduct, proposedSellingPric
     const [error, setError] = useState("")
 
     useEffect(() => {
-        const newTotalCost = totalCost() + (product.labour_cost ? product.labour_cost : 0) + (product.overhead_cost ? product.overhead_cost : 0)
+        const newTotalCost = parseInt(totalCost()) + parseInt(product.labour_cost ? product.labour_cost : 0) + parseInt(product.overhead_cost ? product.overhead_cost : 0)
 
         const newProposedSellingPrice = newTotalCost + (product.profit_margin ? (product.profit_margin * newTotalCost / 100) : 0)
 
