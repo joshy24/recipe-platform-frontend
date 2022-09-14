@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const EditOrder = ({hideEditOrder, editOrder, aOrder}) => {
 
-    const [order, setOrder] = useState({name: aOrder.name, status: aOrder.status, fulfillment_date: aOrder.fulfillment_date})
+    const [order, setOrder] = useState({name: aOrder.name, status: aOrder.status, fulfillment_date: aOrder.fulfillment_date, note: aOrder.note})
 
     const onChange = (e) => {
         const value = e.target.value
@@ -46,7 +46,12 @@ const EditOrder = ({hideEditOrder, editOrder, aOrder}) => {
                 
                     <DatePicker className="ptInput" minDate={new Date()} onChange={date => setOrder({...order, fulfillment_date:date})} selected={order.fulfillment_date} />
             </div>*/}
+                
+                <div className="inputFieldHolder">
+                    <h4>Note</h4>
 
+                    <input className="ptInput" onChange={onChange} type="text" name="note" value={order.note} placeholder="Enter order note" />
+                </div>
 
                 <div className="popButtonHolder">
                     <button onClick={e => editOrder(e, order)} className="colorWhite rectangleButtonPrimary">Save</button>

@@ -430,6 +430,10 @@ const OrderIndex = ({id}) => {
                                 <td>Total selling price</td>
                                 <td>{getAmount(getTotalCost())}</td>
                             </tr>
+                            <tr className="notHeader">
+                                <td>Note</td>
+                                <td>{order && order.note}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div> : <div className="tabbedListTableHolder">  
