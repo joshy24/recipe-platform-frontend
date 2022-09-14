@@ -400,7 +400,7 @@ const OrderIndex = ({id}) => {
             </div>
 
             {
-                selectedTab == DetailsTab ? <div className="tabbedListTableHolder"> 
+                selectedTab == DetailsTab ? <div className="tabbedListTableHolder largeTopMargin"> 
                     <table className="tabbedListTable" style={{width: "100%"}}>
                         <tbody>
                             <tr className="notHeader" style={{marginBottom: "24px"}}>

@@ -27,25 +27,11 @@ const EditOrder = ({hideEditOrder, editOrder, aOrder}) => {
                     <input className="ptInput" onChange={onChange} type="text" name="name" value={order.name} placeholder="Enter order name" />
                 </div>
 
-                {/*<div className="inputFieldHolder">
-                    <h4>Description</h4>
-
-                    <input className="ptInput" onChange={onChange} type="text" name="description" value={order.description} placeholder="Enter order description" />
-                </div>*/}
-
                 <div className="inputFieldHolder">
                     <h4>Fulfillment date</h4>
 
                     <DatePicker className="ptInput" minDate={new Date()} onChange={date => setOrder({...order, fulfillment_date:date})} selected={new Date(order.fulfillment_date)} />
-
-                    {/*<input className="ptInput" onChange={onChange} type="text" name="fulfillment_date" value={getDate(aOrder.fulfillment_date)} placeholder="Enter order description" />*/}
                 </div>
-
-                {/*<div className="inputFieldHolder">
-                    <h4>Fulfillment Date</h4>
-                
-                    <DatePicker className="ptInput" minDate={new Date()} onChange={date => setOrder({...order, fulfillment_date:date})} selected={order.fulfillment_date} />
-            </div>*/}
                 
                 <div className="inputFieldHolder">
                     <h4>Note</h4>
