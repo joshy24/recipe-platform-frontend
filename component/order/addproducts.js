@@ -211,26 +211,29 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
             </div>
             <div className="popUpAddInnerContentBottom">
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
-                {
-                    !appContext.state.isLoading ? <table className="tabbedListTable" style={{width: "100%"}}>      
-                            {
-                                products && products.docs && products.docs.length > 0 ? <tbody>
-                                <tr className="header" style={{marginBottom: "24px"}}>
-                                    <th style={{width: "24%", paddingLeft: "20px"}}>Name</th>
-                                    <th style={{width: "24%", paddingLeft: "20px"}}>Quantity To Add</th>
-                                    <th style={{width: "28%", paddingLeft: "20px"}}></th>
-                                </tr>
+                <table className="tabbedListTable" style={{width: "100%"}}>      
+                    {
+                        !appContext.state.isLoading ?
+                            <>
                                 {
-                                    products.docs.map(product => {
-                                        return <ProductToAdd addToSelected={addProductToSelected} product={product} onChange={onChange} selectedProducts={selectedProducts} />
-                                    })
-                                }
-                                </tbody>
+                                    products && products.docs && products.docs.length > 0 ? <tbody>
+                                    <tr className="header" style={{marginBottom: "24px"}}>
+                                        <th style={{width: "24%", paddingLeft: "20px"}}>Name</th>
+                                        <th style={{width: "24%", paddingLeft: "20px"}}>Quantity To Add</th>
+                                        <th style={{width: "28%", paddingLeft: "20px"}}></th>
+                                    </tr>
+                                    {
+                                        products.docs.map(product => {
+                                            return <ProductToAdd addToSelected={addProductToSelected} product={product} onChange={onChange} selectedProducts={selectedProducts} />
+                                        })
+                                    }
+                                    </tbody>
 
-                                : <EmptyResult  message={"No Products found to add. Add some products on the products page"} onEmptyButtonClicked={getProductsToAddSearch} emptyButtonText={"Try Again"} />
-                            }
-                        </table> : <Skeleton count={8} height={50} />   
-                }
+                                    : <EmptyResult  message={"No Products found to add. Add some products on the products page"} onEmptyButtonClicked={getProductsToAddSearch} emptyButtonText={"Try Again"} />
+                                }
+                            </> : <Skeleton count={8} height={50} />   
+                    }
+                </table> 
             </div>
         </div>
     </div>
