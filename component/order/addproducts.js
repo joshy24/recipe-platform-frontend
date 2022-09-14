@@ -212,8 +212,7 @@ const AddProducts = ({hideAddProduct, loadOrderProducts, order}) => {
             <div className="popUpAddInnerContentBottom">
                 <h5 className="colorOrange">{error && error.length > 0 && error}</h5>
                 {
-                    !appContext.state.isLoading ? 
-                        <table className="tabbedListTable" style={{width: "100%"}}>      
+                    !appContext.state.isLoading ? <table className="tabbedListTable" style={{width: "100%"}}>      
                             {
                                 products && products.docs && products.docs.length > 0 ? <tbody>
                                 <tr className="header" style={{marginBottom: "24px"}}>
