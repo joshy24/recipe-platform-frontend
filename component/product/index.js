@@ -385,6 +385,11 @@ const ProductIndex = ({id}) => {
         }
     }
 
+    const goToRecipe = (e, recipe_id) => {
+        e.preventDefault()
+        router.push("/recipe/"+recipe_id);
+    }
+
     const getRecipesCost = () => {
         if(!recipes || !recipes.docs)
             return 0
@@ -569,7 +574,7 @@ const ProductIndex = ({id}) => {
                             </tr>
                             {
                                 recipes && recipes.docs && recipes.docs.length > 0 && recipes.docs.map(aRecipe => {
-                                    return <tr className="notHeader">
+                                    return <tr key={aRecipe._id} onClick={e => goToRecipe(e,aRecipe._id)} className="notHeader">
                                                 <td>{toUpperCase(aRecipe.name)}</td>
                                                 <td>{ aRecipe.yield ? aRecipe.yield.amount : 0 }</td>
                                                 <td>{ aRecipe.yield ? aRecipe.yield.unit : "" }</td>

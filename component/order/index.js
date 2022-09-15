@@ -305,6 +305,11 @@ const OrderIndex = ({id}) => {
         
     }
 
+    const goToProduct = (e, product_id) => {
+        e.preventDefault()
+        router.push("/product/"+product_id);
+    }
+
     const getTotalCost = () => {
         if(products && products.length > 0){
             const costSum = products.reduce((acc, aProduct) => {
@@ -454,7 +459,7 @@ const OrderIndex = ({id}) => {
                                         </tr>
                                         {
                                             products && products.length > 0 && products.map(product => {
-                                                return <tr key={product._id}>
+                                                return <tr onClick={e => goToProduct(e, product._id)} key={product._id}>
                                                         <td>{product && toUpperCase(product.name)}</td>
                                                         <td>{product.quantity}</td>
                                                         

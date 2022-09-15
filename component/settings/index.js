@@ -5,8 +5,11 @@ import { AppContext } from "../../pages/AppContext";
 
 import { useRouter } from "next/router"
 
+import {EDIT_PROFILE_URL} from "../../utils/api.endpoints"
+
 import AuthHelperMethods from "../../utils/AuthHelperMethods";
 const Auth = new AuthHelperMethods();
+
 
 const SettingsIndex = () => {
     const router = useRouter() 
@@ -56,9 +59,11 @@ const SettingsIndex = () => {
                 showValidInput()
             } else {
 
-                //const result = await putRequest()
-
                 user.profit_margin = percentage;
+
+                const result = await putRequest(EDIT_PROFILE_URL, )
+
+                
 
                 Auth.setAdmin(user)
     
