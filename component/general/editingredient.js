@@ -55,7 +55,7 @@ const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEd
 
                 <div className="inputHorizontalHolder">
                     <div className="inputFieldHolder">
-                        <h4>Purchase Size</h4>
+                        <h4>Purchase Unit</h4>
                         
                         <input className="ptSearchInput" onChange={onChange} type="text" name="purchase_size" value={ingredient.purchase_size} placeholder="Enter purchase size" />
                     </div>

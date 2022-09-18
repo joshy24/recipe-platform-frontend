@@ -459,7 +459,7 @@ const OrderIndex = ({id}) => {
                                         </tr>
                                         {
                                             products && products.length > 0 && products.map(product => {
-                                                return <tr className={styles.productItem} onClick={e => goToProduct(e, product._id)} key={product._id}>
+                                                return <tr className={styles.productItem} key={product._id}>
                                                         <td>{product && toUpperCase(product.name)}</td>
                                                         <td>{product.quantity}</td>
                                                         
