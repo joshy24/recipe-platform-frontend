@@ -2,6 +2,11 @@ import AuthHelperMethods from "./AuthHelperMethods"
 
 const Auth = new AuthHelperMethods();
 
+export const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+export const stringRegex = /^[a-zA-Z\-]+$/
+
+export const phoneNumberRegex = /(^[0]\d{10}$)|(^[\+]?[234]\d{12}$)/
 
 export const getPriceOfQuantity = (originalPrice, originalQuantity, requiredQuantity) => {
     return ( originalPrice * requiredQuantity ) / originalQuantity

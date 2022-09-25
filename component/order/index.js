@@ -38,7 +38,7 @@ const OrderIndex = ({id}) => {
 
     const [selected, setSelected] = useState(1)
 
-    const value = AppContext()
+    const appContext = AppContext()
 
     const [showAddProduct, setShowAddProduct] = useState(false)
     const [selectedTab, setSelectedTab] = useState(DetailsTab)
@@ -116,31 +116,31 @@ const OrderIndex = ({id}) => {
     */
 
     const loadOrder = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
 
         try{
             const result = await getRequest(GET_ORDER_URL+"?id="+id)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
 
             setOrder(result.response)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
     const loadOrderProducts = async() => {
-        value.setLoading(true)
+        appContext.setLoading(true)
         try{
             const result = await getRequest(ORDER_PRODUCTS_URL+"?id="+id+`&page=${pagination.page}&limit=${pagination.limit}`)
 
             setProducts(result.response)
 
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
         catch(err){
-            value.setLoading(false)
+            appContext.setLoading(false)
         }
     }
 
@@ -157,7 +157,7 @@ const OrderIndex = ({id}) => {
     }
 
     const editOrder = async (e, editedOrder) => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         try{
             const newEditedOrder = {...order, ...editedOrder, id:order._id }
             console.log(newEditedOrder)
@@ -169,13 +169,13 @@ const OrderIndex = ({id}) => {
 
             loadOrder()
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
         catch(err){
             console.log(err)
-            value.setMessage({visible: true, message: "Could not edit order successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit order successfully", title: "Message", type: "ERROR"})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
     } 
 
@@ -219,12 +219,12 @@ const OrderIndex = ({id}) => {
 
     const deleteOrder = async () => {
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_ORDER_URL, {id:id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             router.push("/orders")
 
@@ -232,37 +232,37 @@ const OrderIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
         }
         
     }
 
     const fulfillOrder = async () => {
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             const result = await putRequest(FULFILL_ORDER_URL, {id: order._id})
 
             console.log(result)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             loadOrder()
         }
         catch(err){
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
             console.log(err)
         }
     }
     
     const deleteOrderProduct = async () => {
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await deleteRequest(DELETE_ORDER_PRODUCT_URL, {product_id:entityInFocus._id, id:id})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteOrderProduct();
 
@@ -271,22 +271,22 @@ const OrderIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideDeleteOrderProduct()
 
-            value.setMessage({visible: true, message: "Could not delete product from order", title: "Error Deleting", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not delete product from order", title: "Error Deleting", type: "ERROR"})
         }
     }
 
     const editOrderProduct = async (newEditedProduct) => {
         
-        value.setBlockingLoading(true)
+        appContext.setBlockingLoading(true)
         
         try{
             await putRequest(EDIT_ORDER_PRODUCT_URL, {id:id, product_id: newEditedProduct._id, quantity: newEditedProduct.quantity})
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             
             hideEditOrderProduct()
@@ -296,11 +296,11 @@ const OrderIndex = ({id}) => {
         catch(err){
             console.log(err)
 
-            value.setBlockingLoading(false)
+            appContext.setBlockingLoading(false)
 
             hideEditOrderProduct()
 
-            value.setMessage({visible: true, message: "Could not edit order product successfully", title: "Message", type: "ERROR"})
+            appContext.setMessage({visible: true, message: "Could not edit order product successfully", title: "Message", type: "ERROR"})
         }
         
     }
