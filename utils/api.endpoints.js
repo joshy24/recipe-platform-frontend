@@ -18,6 +18,10 @@ export const GET_ENTITIES_COUNT = API_VERSION+"/entities_count"
 
 
 
+//Utils
+
+export const GET_UNITS_URL = BASE_URL+API_VERSION+"/units"
+
 
 
 //Products

@@ -23,14 +23,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { faTrash, faSearch, faFileExport, faAdd, faPen, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 
-import { toUpperCase, getAmount, downloadFile, defaultPaginationObject } from "../../utils/helper"
+import { toUpperCase, getAmount, downloadFile, defaultPaginationObject, getPlainUnits } from "../../utils/helper"
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, DELETE_INGREDIENT_URL, DELETE_MATERIAL_URL, CREATE_INGREDIENT, CREATE_MATERIAL, GET_ALL_INVENTORY, EDIT_INGREDIENT_URL, EDIT_MATERIAL_URL} from "../../utils/api.endpoints"
+import { BASE_URL, DELETE_INGREDIENT_URL, DELETE_MATERIAL_URL, CREATE_INGREDIENT, CREATE_MATERIAL, GET_ALL_INVENTORY, EDIT_INGREDIENT_URL, EDIT_MATERIAL_URL, GET_UNITS_URL} from "../../utils/api.endpoints"
 
 const create_ingredient_url = BASE_URL + CREATE_INGREDIENT
 const create_material_url = BASE_URL + CREATE_MATERIAL
@@ -50,6 +50,8 @@ const IngredientsIndex = () => {
 
     const [pagination, setPagination] = useState(defaultPaginationObject)
 
+    const [units, setUnits] = useState(null)
+
     const [whatIsOpen, setWhatIsOpen] = useState(false)
 
     const [inventory, setInventory] = useState([])
@@ -59,6 +61,9 @@ const IngredientsIndex = () => {
     const [searchResult, setSearchResult] = useState([])
     const [inventoryInFocus, setInventoryInFocus] = useState({})
 
+    useEffect(() => {
+        getUnits()
+    }, [])
 
     useEffect(() => {
         search();
@@ -93,13 +98,33 @@ const IngredientsIndex = () => {
         setIsSearchOpen(false)
     }
 
+    const getUnits = async () => {
+        appContext.setLoading(true);
+
+        try{
+            let result = await getRequest(GET_UNITS_URL)
+
+            if(!!result){
+                const processedUnits = getPlainUnits(result.response)
+
+                console.log(processedUnits)
+                setUnits(processedUnits)
+            }
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+            appContext.setMessage({visible: true, message: "An error occurred fetching units", title: "Units Not Loaded", type: "ERROR"})
+        }
+    }
+
     const search = async () => {
         appContext.setLoading(true)
 
         try{
             let url = get_inventory_url + "?limit="+pagination.limit+"&page="+(pagination.page + 1)+"&type="+filters.type+"&searchTerm="+searchTerm+"&status="+filters.status
             
-            var result = await getRequest(url)
+            let result = await getRequest(url)
 
             setInventory(result.response)
 
@@ -412,7 +437,7 @@ const IngredientsIndex = () => {
         </div>
 
         { 
-            showAdd && <AddIngredient closeAddIngredient={closeShowAdd} addInventory={addInventory} /> 
+            showAdd && <AddIngredient closeAddIngredient={closeShowAdd} addInventory={addInventory} units={units} /> 
         }
 
         {

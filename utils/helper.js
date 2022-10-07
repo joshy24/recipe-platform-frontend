@@ -277,3 +277,20 @@ export const getAmount = (amount) => {
         return "₦0"
     }
 }
+
+
+
+export const getPlainUnits = (units) => {
+    const allUnits = [];
+
+    units.map(aUnit => { 
+        let latestUnit = aUnit;
+        
+        do{
+            allUnits.push({name: latestUnit.name, abbreviation: latestUnit.abbreviation})
+            latestUnit = latestUnit.unit
+        }while(!!latestUnit)
+    })
+
+    return allUnits;
+}

@@ -3,7 +3,7 @@ import { useState } from "react"
 
 import { getAmount, toUpperCase } from "../../utils/helper"
 
-const AddIngredient = ({closeAddIngredient, addInventory}) => {
+const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
 
     const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_size: "", price: 0, quantity_in_stock: 0, lowLevel: 0})
     
@@ -53,7 +53,10 @@ const AddIngredient = ({closeAddIngredient, addInventory}) => {
                     <div className="inputFieldHolder">
                         <h4>Purchase Unit</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="text" name="purchase_size" value={ingredient.purchase_size} placeholder="Enter purchase unit" />
+                        <select style={{marginLeft: "0px"}} onChange={onChange} name="purchase_size" className="pageContentTopSelectField ptSearchInput">
+                            <option value="kg">Kilograms(kg)</option>
+                            <option value="g">Grams(g)</option>
+                        </select>
                     </div>
 
                     <div className="inputFieldHolder">
