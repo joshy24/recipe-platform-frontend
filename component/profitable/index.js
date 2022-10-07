@@ -278,7 +278,7 @@ const Profitable = () => {
                                             <td style={{paddingLeft: "30px"}}>{invent.purchase_size}</td>
                                             <td style={{paddingLeft: "30px"}}>{getAmount(invent.price)}</td>
                                             <td style={{paddingLeft: "30px"}}>{invent.quantity_in_stock}</td>
-                                            <td style={{paddingLeft: "30px"}}>{getAmount(invent.price * invent.quantity_in_stock)}</td>
+                                            <td style={{paddingLeft: "30px"}}>{getAmount(invent.costOfQuantityInStock)}</td>
                                             <td style={{paddingLeft: "30px"}} className="tabbedListContentHorizontalTableContent">
                                                 <input value={changeList[invent._id]} onChange={e => onAmountChanged(e,invent)} style={{minWidth: "80px"}} className="ptInput" type="number" name="changeInputValue" />
                                                 <button onClick={e => applyChange(e, invent)} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Apply</button>
