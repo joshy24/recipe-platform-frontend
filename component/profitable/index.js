@@ -31,7 +31,7 @@ const Profitable = () => {
 
     const router = useRouter()
 
-    const [pagination] = useState(defaultPaginationObject)
+    const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const appContext = AppContext()
 
