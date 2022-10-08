@@ -264,7 +264,7 @@ const Profitable = () => {
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Name</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Quantity</th>
-                                    <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Size</th>
+                                    <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Purchase Unit</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Price</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Quantity (In Stock)</th>
                                     <th style={{width: "12%", paddingLeft: "20px", fontSize: "14px"}}>Price (In Stock)</th>
