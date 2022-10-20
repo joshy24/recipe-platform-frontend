@@ -74,10 +74,10 @@ const AddUnit = ({closeAddUnit, getUnits, baseUnits}) => {
                 </div>
 
                 <div className={styles.addUnitRow}>
-                    <h5 style={{width: "16%"}}>Child</h5>
-                    <input className={`ptSearchInput ${styles.addUnitRowItem}`} onChange={onChange} type="text" name="name" value={unit.name} placeholder="Name e.g Gram" />
-                    <input className={`ptSearchInput ${styles.addUnitRowItem}`} onChange={onChange} type="text" name="abbreviation" value={unit.abbreviation} placeholder="Abbreviation e.g g" />
-                    <input className={`ptSearchInput ${styles.addUnitRowItem}`} onChange={onChange} type="number" name="amount" value={unit.amount} placeholder="Amount e.g 1000" />
+                    <h5 style={{width: "16%"}}>Unit</h5>
+                    <input className={`ptSearchInput ${styles.addUnitRowItem}`} onChange={onChange} type="text" name="name" value={unit.name} placeholder="Name - e.g Gram" />
+                    <input className={`ptSearchInput ${styles.addUnitRowItem}`} onChange={onChange} type="text" name="abbreviation" value={unit.abbreviation} placeholder="Abbreviation - e.g g" />
+                    <input className={`ptSearchInput ${styles.addUnitRowItem}`} onChange={onChange} type="number" name="amount" value={unit.amount} placeholder="Amount - e.g 1000" />
                 </div>
 
                 <div className="popButtonHolder" style={{marginTop: "30px"}}>
