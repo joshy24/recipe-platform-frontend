@@ -44,14 +44,27 @@ const SettingsIndex = () => {
     const [showEditUnit, setShowEditUnit] = useState(false)
 
     const [units, setUnits] = useState([])
+    const [filteredUnits, setFilteredUnits] = useState([])
+    
 
     const [percentage, setPercentage] = useState((!user.profit_margin || user.profit_margin == 0) ? "" : user.profit_margin)
 
     const [entityInFocus, setEntityInfocus] = useState(null)
 
+    const [baseUnit, setBaseUnit] = useState(null)
+
     useEffect(() => {
         getUnits()
     }, [])
+
+    useEffect(() => {
+        const baseUnits = getBaseUnits(units)
+
+        if(baseUnits.length > 0 && !baseUnit){
+            setBaseUnit(baseUnits[0])
+        }
+        
+    }, [units])
 
     const closeDeleteUnit = () => {
         setEntityInfocus({})
@@ -132,6 +145,7 @@ const SettingsIndex = () => {
 
             if(!!result){
                 setUnits(result.response)
+                setFilteredUnits(result.response)
             }
 
             appContext.setLoading(false);
@@ -152,10 +166,27 @@ const SettingsIndex = () => {
         
     }
 
-    const onChange = (e, cancelInput) => {
+    const onChange = (e) => {
         let value = e.target.value;
         let name = e.target.name 
         setPercentage(value)
+    }
+
+    const onBaseUnitChange = (e) => {
+        let value = e.target.value;
+
+        if(value == "none"){
+            setFilteredUnits(units)
+        }
+        else{
+            const filteredtItems = units.filter(aUnit => {
+                return (aUnit.parent.toString() == value.abbreviation.toString() || aUnit.parent.toString() == value._id.toString()) && !aUnit.isBase
+            })
+
+            setFilteredUnits(filteredtItems)
+        }
+
+        setBaseUnit(value)
     }
 
     const saveInput = async () => {
@@ -239,8 +270,22 @@ const SettingsIndex = () => {
                 </div>
 
                 <div className="tabbedListMainHolder" style={{width: "100%", minWidth: "600px", marginTop: "16px", paddingTop: "0px"}}>
-                    <div className="tabbedListTableHolder largeTopMargin">      
+                    <div className="tabbedListTableHolder largeTopMargin">   
                         {
+                            !appContext.state.isLoading && units && <div className={`${styles.tabbedListTable}`}>
+                                <select onChange={onBaseUnitChange} name="parent" className="pageContentTopSelectField ptSearchInput">
+                                    <option value="none">None</option>
+                                    {
+                                        getBaseUnits(units).map(aBaseUnit => {
+                                            return <option value={aBaseUnit}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
+                                        })
+                                    }
+                                </select>
+                            </div>
+                        }
+
+                        {
+
                             !appContext.state.isLoading ? 
                             <table className={`${styles.tabbedListTable}`} style={{width: "100%", minWidth: "600px"}}>
                                 <tbody>
@@ -251,7 +296,7 @@ const SettingsIndex = () => {
                                         <th style={{width: "25%"}}></th>
                                     </tr>
                                     {
-                                        units && units.length > 0 && units.map(unit => {
+                                        filteredUnits && filteredUnits.length > 0 && filteredUnits.map(unit => {
                                             return <tr className={styles.productItem} key={unit._id}>
                                                     <td>{unit && toUpperCase(unit.name)} {unit.isBase && "(base unit)"}</td>
                                                     <td>{unit.abbreviation}</td>
