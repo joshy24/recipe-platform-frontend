@@ -3,7 +3,7 @@ import { useState } from "react"
 
 import { getAmount, toUpperCase } from "../../utils/helper"
 
-const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEdit, inventoryType}) => {
+const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEdit, inventoryType, units}) => {
 
     const getType = () => {
         switch(inventoryType){
@@ -57,7 +57,13 @@ const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEd
                     <div className="inputFieldHolder">
                         <h4>Purchase Unit</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="text" name="purchase_size" value={ingredient.purchase_size} placeholder="Enter purchase size" />
+                        <select value={ingredient.purchase_size} style={{marginLeft: "0px"}} onChange={onChange} name="purchase_size" className="pageContentTopSelectField ptSearchInput">
+                            {
+                                units.map(aUnit => {
+                                    return <option value={aUnit.name}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                })
+                            }
+                        </select>
                     </div>
 
                     <div className="inputFieldHolder">

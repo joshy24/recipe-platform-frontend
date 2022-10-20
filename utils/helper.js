@@ -173,7 +173,6 @@ export const getBankDetails = () => {
     ]
 }
 
-
 export const getTrueAmount = (currency,amount) => {
     amount = parseInt(amount)
     if(currency.currency.code == "NGN"){
@@ -183,7 +182,6 @@ export const getTrueAmount = (currency,amount) => {
         return amount
     }
 }
-
 
 export const getTruePM = (time) => {
     switch(time){
@@ -278,8 +276,6 @@ export const getAmount = (amount) => {
     }
 }
 
-
-
 export const getPlainUnits = (units) => {
     const allUnits = [];
 
@@ -293,4 +289,15 @@ export const getPlainUnits = (units) => {
     })
 
     return allUnits;
+}
+
+export const getBaseUnits = (units) => {
+    const baseUnits = []
+
+    units.map(aUnit => {
+        if(aUnit.isBase)
+          baseUnits.push(aUnit)
+    })
+    
+    return baseUnits;
 }

@@ -105,10 +105,7 @@ const IngredientsIndex = () => {
             let result = await getRequest(GET_UNITS_URL)
 
             if(!!result){
-                const processedUnits = getPlainUnits(result.response)
-
-                console.log(processedUnits)
-                setUnits(processedUnits)
+                setUnits(result.response)
             }
         }
         catch(err){
@@ -441,7 +438,7 @@ const IngredientsIndex = () => {
         }
 
         {
-            showEdit && <EditIngredient closeEditIngredient={hideEditInventory} saveEditedInventory={editInventory} inventoryToEdit={inventoryInFocus} inventoryType={filters.type} />
+            showEdit && <EditIngredient closeEditIngredient={hideEditInventory} saveEditedInventory={editInventory} inventoryToEdit={inventoryInFocus} inventoryType={filters.type} units={units} />
         }
 
         {

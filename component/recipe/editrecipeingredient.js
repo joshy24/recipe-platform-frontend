@@ -4,13 +4,14 @@ import { useState } from 'react'
 import { toUpperCase } from "../../utils/helper"
 
 
-const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditClicked}) => {
+const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditClicked, units}) => {
 
     const [quantity, setQuantity] = useState(ingredient.quantity)
+    const [unit, setUnit] = useState(ingredient.purchase_size)
 
     const doEdit = () => {
         if(quantity !== ingredient.quantity){
-            onPerformEditClicked({...ingredient, quantity: quantity})
+            onPerformEditClicked({...ingredient, quantity: quantity, purchase_size: unit})
         }
     }
 
@@ -18,6 +19,12 @@ const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditCli
         const value = e.target.value
 
         setQuantity(value);
+    }
+
+    const onUnitChange = (e) => {
+        const value = e.target.value
+        
+        setUnit(value);
     }
 
     return <div className="popUp">
@@ -28,6 +35,16 @@ const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditCli
                         <h4>Quantity</h4>
 
                         <input className="ptInput" onChange={onChange} type="number" name="name" value={quantity} />
+                    </div>
+
+                    <div className="inputFieldHolder">
+                        <select value={unit} style={{marginLeft: "0px", width: "100%"}} onChange={onUnitChange} name="purchase_size" className="pageContentTopSelectField ptInput">
+                            {
+                                units.map(aUnit => {
+                                    return <option value={aUnit.name}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                })
+                            }
+                        </select>
                     </div>
 
                     <div className="popButtonHolder">

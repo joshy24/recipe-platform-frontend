@@ -36,7 +36,7 @@ import { INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../../utils/a
 
 import { defaultPaginationObject } from "../../utils/helper"
 
-const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe}) => {
+const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe, units}) => {
 
     const appContext = AppContext();
     

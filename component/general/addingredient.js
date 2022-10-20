@@ -4,18 +4,13 @@ import { useState } from "react"
 import { getAmount, toUpperCase } from "../../utils/helper"
 
 const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
-
     const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_size: "", price: 0, quantity_in_stock: 0, lowLevel: 0})
     
     const onChange = (e) => {
         const value = e.target.value
         const name = e.target.name
-
+        
         setIngredient({...ingredient, [name]:value});
-    }
-
-    const toUpperCase = (aString) =>{
-        return aString.charAt(0).toUpperCase() + aString.slice(1)
     }
 
     return <div className="popUp">
@@ -54,8 +49,11 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
                         <h4>Purchase Unit</h4>
                         
                         <select style={{marginLeft: "0px"}} onChange={onChange} name="purchase_size" className="pageContentTopSelectField ptSearchInput">
-                            <option value="kg">Kilograms(kg)</option>
-                            <option value="g">Grams(g)</option>
+                            {
+                                units.map(aUnit => {
+                                    return <option value={aUnit.name}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                })
+                            }
                         </select>
                     </div>
 

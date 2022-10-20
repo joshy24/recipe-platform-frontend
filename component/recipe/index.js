@@ -28,7 +28,7 @@ import EmptyResult from "../general/emptyResult"
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_RECIPE, ALL_RECIPE_INGREDIENTS_URL, EDIT_RECIPE_URL, DELETE_RECIPE_URL, EDIT_RECIPE_INGREDIENT_URL, DELETE_RECIPE_INGREDIENT_URL } from "../../utils/api.endpoints"
+import { BASE_URL, GET_UNITS_URL, GET_RECIPE, ALL_RECIPE_INGREDIENTS_URL, EDIT_RECIPE_URL, DELETE_RECIPE_URL, EDIT_RECIPE_INGREDIENT_URL, DELETE_RECIPE_INGREDIENT_URL } from "../../utils/api.endpoints"
 
 const get_recipe_url = BASE_URL + GET_RECIPE
 
@@ -61,12 +61,16 @@ const RecipeIndex = ({id}) => {
     const [showDeleteRecipeIngredient, setShowDeleteRecipeIngredient] = useState(false)
 
     const [entityInFocus, setEntityInFocus] = useState({})
+
+    const [units, setUnits] = useState(null)
     
 
     useEffect(() => {
         loadRecipe()
 
         loadRecipeIngredients()
+
+        getUnits()
     }, [])
 
     
@@ -84,6 +88,23 @@ const RecipeIndex = ({id}) => {
     /*
     New functions
     */
+
+    const getUnits = async () => {
+        appContext.setLoading(true);
+
+        try{
+            let result = await getRequest(GET_UNITS_URL)
+
+            if(!!result){
+                setUnits(result.response)
+            }
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+            appContext.setMessage({visible: true, message: "An error occurred fetching units", title: "Units Not Loaded", type: "ERROR"})
+        }
+    }
 
     const loadRecipe = async() => {
         try{
@@ -158,7 +179,7 @@ const RecipeIndex = ({id}) => {
         appContext.setBlockingLoading(true)
 
         try{
-            await putRequest(EDIT_RECIPE_INGREDIENT_URL, {id:id, ingredient_id: newEditedRecipe._id, quantity: newEditedRecipe.quantity})
+            await putRequest(EDIT_RECIPE_INGREDIENT_URL, {id:id, ingredient_id: newEditedRecipe._id, quantity: newEditedRecipe.quantity, purchase_size: newEditedRecipe.purchase_size})
 
             appContext.setBlockingLoading(false)
 
@@ -406,7 +427,7 @@ const RecipeIndex = ({id}) => {
         </div>
 
         {
-            showAddIngredients && <AddIngredients recipe={recipe} loadRecipeIngredients={loadRecipeIngredients} hideAddIngredients={hideAddIngredients} />
+            showAddIngredients && <AddIngredients units={units} recipe={recipe} loadRecipeIngredients={loadRecipeIngredients} hideAddIngredients={hideAddIngredients} />
         }
 
         {
@@ -418,7 +439,7 @@ const RecipeIndex = ({id}) => {
         }
 
         {
-            showEditRecipeIngredient && <EditRecipeIngredient ingredient={entityInFocus} onPerformEditClicked={editIngredient} onCancelEditClicked={hideEditRecipeIngredient} />
+            showEditRecipeIngredient && <EditRecipeIngredient units={units} ingredient={entityInFocus} onPerformEditClicked={editIngredient} onCancelEditClicked={hideEditRecipeIngredient} />
         }
 
         {

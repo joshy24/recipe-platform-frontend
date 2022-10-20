@@ -1,5 +1,5 @@
-//export const BASE_URL = "http://localhost:4000"
-export const BASE_URL = "https://afternoon-bastion-95495.herokuapp.com"
+export const BASE_URL = "http://localhost:4000"
+//export const BASE_URL = "https://afternoon-bastion-95495.herokuapp.com"
 export const API_VERSION = "/api/v1"
 
 
@@ -18,9 +18,17 @@ export const GET_ENTITIES_COUNT = API_VERSION+"/entities_count"
 
 
 
-//Utils
+//Units
 
-export const GET_UNITS_URL = BASE_URL+API_VERSION+"/units"
+export const GET_UNITS_URL = BASE_URL + API_VERSION+"/units"
+
+export const CREATE_UNITS_URL = BASE_URL + API_VERSION + "/units"
+
+export const CREATE_CHILD_UNIT_URL = BASE_URL + API_VERSION + "/units/child"
+
+export const DELETE_UNIT_URL = BASE_URL + API_VERSION + "/units"
+
+export const EDIT_UNIT_URL = BASE_URL + API_VERSION + "/units"
 
 
 

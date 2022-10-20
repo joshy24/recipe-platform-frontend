@@ -623,7 +623,29 @@ box
    height: auto;
 }
 
+.popUpInnerContentWide{
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    width: 700px;
+    max-width: 800px;
+    overflow-y: auto;
+    max-height: 96%;
+    height: auto;
+}
+
 .popUpInnerContent .popUpInnerContentTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popUpInnerContentWide .popUpInnerContentTop{
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -634,6 +656,11 @@ box
    margin-bottom: 30px;
    color: #BD5BFC;
 }
+
+.popUpInnerContentWide h3{
+    margin-bottom: 30px;
+    color: #BD5BFC;
+ }
 
 .popButtonHolder{
    display: flex;
@@ -912,18 +939,6 @@ New UI's
     height: 70px;
     max-height: 70px;
     min-height: 70px;
-}
-
-.tabbedListTable .notHeader th{
-    text-align: left;
-    padding-left: 60px;
-    margin-bottom: 16px;
-    font-weight: 400;
-    border-right: 1px solid #BD5BFC;
-    height: 70px;
-    max-height: 70px;
-    min-height: 70px;
-    color: #4D4D4C;
 }
 
 .tabbedListTable td{

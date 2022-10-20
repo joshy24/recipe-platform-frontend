@@ -22,10 +22,9 @@ import { GET_ORDER_URL, ORDER_PRODUCTS_URL, EDIT_ORDER_URL, DELETE_ORDER_URL, FU
 
 import AddProducts from "./addproducts"
 
-import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
+import { getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 import DeleteDialog from "../general/deletedialog"
 import MessageDialog from "../general/messagedialog"
-import EmptyResult from "../general/emptyResult"
 
 import { getAmount, toUpperCase, getDate, defaultPaginationObject } from "../../utils/helper"
 
