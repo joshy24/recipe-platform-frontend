@@ -13,17 +13,41 @@ import { getBaseUnits } from "../../utils/helper"
 const AddUnit = ({closeAddUnit, getUnits, baseUnits}) => {
     const appContext = AppContext()
 
-    const [unit, setUnit] = useState({name: "", abbreviation: "", amount: 1000, isDefault: false, parent: null, isBase: false})
+    const [unit, setUnit] = useState({name: "", abbreviation: "", amount: 1000, isDefault: false, parent: null, isBase: true})
     
     const onChange = (e) => {
         const value = e.target.value
         const name = e.target.name
 
-        const isBase = (name=="parent" && value!="none") ? true : false
-        
-        setUnit({...unit, [name]:value, isBase:isBase});
-    }
+        if(name == "parent"){
+            if(value != "none"){
+                //we are setting a base for this unit, which means this unit is NOT a base unit that the user wants to add
+                const foundBaseUnit = baseUnits.filter(aBaseUnit => aBaseUnit.abbreviation === value).shift()
 
+                //We need to know if the base we are setting is a default one or one added by the user
+                if(foundBaseUnit.isDefault){
+                    //its a default base unit so we use abbreviation
+                    setUnit({...unit, parent: foundBaseUnit.abbreviation, isBase:false});
+                }
+                else{
+                    //its NOT a default base unit so we use _id
+                    setUnit({...unit, parent: foundBaseUnit._id, isBase:false});
+                }
+            }
+            else{
+                setUnit({...unit, parent: null, isBase:true});
+            }
+        }
+        else{
+            if(!unit.isBase && name == "amount"){
+                setUnit({...unit, amount:1});
+            }
+            else{
+                setUnit({...unit, [name]:value});
+            }
+        }
+    }
+    
     const doCreateUnit = async() => {
         appContext.setLoading(true);
 
@@ -67,7 +91,7 @@ const AddUnit = ({closeAddUnit, getUnits, baseUnits}) => {
                         <option value="none">None</option>
                         {
                             baseUnits.map(aBaseUnit => {
-                                return <option value={aBaseUnit}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
+                                return <option value={aBaseUnit.abbreviation}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
                             })
                         }
                     </select>

@@ -9,7 +9,6 @@ const logout_url = '/api/v1/admin/logout'
 export default class AuthHelperMethods{
 
     login = (email, password) => {
-        console.log(email,password)
         return  this.axios(login_url, {email,password}, "post")
                     .then(res => {
                         this.setToken(res.data.token); 

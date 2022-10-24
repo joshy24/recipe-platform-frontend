@@ -377,7 +377,7 @@ const RecipeIndex = ({id}) => {
                         <tr className="notHeader">
                             <td>Yield</td>
                             <td className="tabbedListContentHorizontalTableContent"> 
-                                <h5>{recipe && recipe.yield && recipe.yield.amount} {recipe && recipe.yield && recipe.yield.unit} {!recipe || !recipe.yield && 0}</h5>
+                                <h5>{recipe && recipe.yield && recipe.yield.amount} {recipe && recipe.yield && recipe.yield.unit.abbreviation} {!recipe || !recipe.yield && 0}</h5>
                                 <button style={{marginLeft: "16px"}} onClick={openEditRecipe} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
                             </td>
                         </tr>

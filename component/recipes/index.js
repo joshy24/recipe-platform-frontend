@@ -26,7 +26,7 @@ import Pagination from "../general/pagination"
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
-import { BASE_URL, CREATE_RECIPE, GET_ALL_RECIPES, SEARCH_RECIPES_URL } from "../../utils/api.endpoints"
+import { BASE_URL, CREATE_RECIPE, GET_ALL_RECIPES, SEARCH_RECIPES_URL, GET_UNITS_URL } from "../../utils/api.endpoints"
 
 const create_recipe_url = BASE_URL + CREATE_RECIPE
 
@@ -46,6 +46,12 @@ const RecipesIndex = () => {
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState(false)
+
+    const [units, setUnits] = useState(null)
+
+    useEffect(() => {
+        getUnits()
+    }, [])
 
     useEffect(() => {
         loadRecipes()
@@ -74,6 +80,24 @@ const RecipesIndex = () => {
     /*
     New functions
     */
+
+
+    const getUnits = async () => {
+        appContext.setLoading(true);
+
+        try{
+            let result = await getRequest(GET_UNITS_URL)
+
+            if(!!result){
+                setUnits(result.response)
+            }
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+            appContext.setMessage({visible: true, message: "An error occurred fetching units", title: "Units Not Loaded", type: "ERROR"})
+        }
+    }
 
     const showSearchRecipes = () => {
         setIsSearchOpen(true)
@@ -273,7 +297,7 @@ const RecipesIndex = () => {
         </div>
 
         {
-            showAdd && <AddRecipe closeAddRecipe={closeAddRecipe} addRecipe={addRecipe} />
+            showAdd && <AddRecipe units={units} closeAddRecipe={closeAddRecipe} addRecipe={addRecipe} />
         }
         </>
     )

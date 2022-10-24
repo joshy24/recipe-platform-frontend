@@ -32,7 +32,7 @@ import SearchInput from "../general/searchInput"
 
 import { postRequest, getRequest } from "../../utils/api.requests"
 
-import { INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL } from "../../utils/api.endpoints"
+import { INGREDIENTS_TO_ADD, ADD_INGREDIENTS_TO_RECIPE_URL, INGREDIENT_UNITS_URL } from "../../utils/api.endpoints"
 
 import { defaultPaginationObject } from "../../utils/helper"
 
@@ -49,6 +49,8 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe, unit
     const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [searchTerm, setSearchTerm] = useState("")
+
+    const [baseUnits, setBaseUnits] = useState({})
 
     useEffect(() => {
         getIngredientsToAddSearch()
@@ -67,6 +69,26 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe, unit
             sm.splice(foundIndex,1,ingredient)
 
             setIngredients(sm)
+        }
+    }
+
+    const getIngredientUnits = async(ingredient_id) => {
+        try{
+            appContext.setLoading(true)
+
+            const result = await getRequest(INGREDIENT_UNITS_URL+"?ingredient_id="+ingredient_id)
+
+            const new_result = result.response.map(ingredient => {
+                return {...ingredient, quantity: 0}
+            })
+
+            setIngredients(new_result)
+
+            appContext.setLoading(false)
+        }
+        catch(err){
+            appContext.setLoading(false)
+            console.log(err)
         }
     }
 
@@ -144,7 +166,8 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe, unit
         if(foundIndex == -1){
             sm.push({
                 ingredient: ingredient._id,
-                quantity: ingredient.quantity
+                quantity: ingredient.quantity,
+                unit: ingredient.unit
             })
         }
         else{
@@ -219,8 +242,9 @@ const AddIngredients = ({hideAddIngredients, loadRecipeIngredients, recipe, unit
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Name</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Quantity</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Size</th>
+                                    <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Unit</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Price</th>
+                                    <th style={{width: "12%", paddingLeft: "20px"}}>Unit To Add</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Quantity To Add</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Quantity To Add Cost</th>
                                     <th style={{width: "16%", paddingLeft: "20px"}}></th>

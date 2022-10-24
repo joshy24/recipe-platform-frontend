@@ -16,11 +16,15 @@ const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEd
         }
     }
 
-    const [ingredient, setIngredient] = useState({type: getType(), name: inventoryToEdit.name, purchase_quantity: inventoryToEdit.purchase_quantity.amount, purchase_size: inventoryToEdit.purchase_quantity.unit, price: inventoryToEdit.price, quantity_in_stock: inventoryToEdit.quantity_in_stock, lowLevel: inventoryToEdit.lowLevel})
+    const [ingredient, setIngredient] = useState({type: getType(), name: inventoryToEdit.name, purchase_quantity: inventoryToEdit.purchase_quantity.amount, purchase_unit: inventoryToEdit.purchase_quantity.unit.abbreviation, price: inventoryToEdit.price, quantity_in_stock: inventoryToEdit.quantity_in_stock, lowLevel: inventoryToEdit.lowLevel})
 
     const onChange = (e) => {
-        const value = e.target.value
+        let value = e.target.value
         const name = e.target.name
+
+        if(name === "purchase_unit"){
+            value = units.filter(aUnit => aUnit.abbreviation == value).shift()
+        }
 
         setIngredient({...ingredient, [name]:value});
     }
@@ -57,10 +61,10 @@ const EditIngredient = ({closeEditIngredient, saveEditedInventory, inventoryToEd
                     <div className="inputFieldHolder">
                         <h4>Purchase Unit</h4>
                         
-                        <select value={ingredient.purchase_size} style={{marginLeft: "0px"}} onChange={onChange} name="purchase_size" className="pageContentTopSelectField ptSearchInput">
+                        <select defaultValue={ingredient.purchase_unit} style={{marginLeft: "0px"}} onChange={onChange} name="purchase_unit" className="pageContentTopSelectField ptSearchInput">
                             {
                                 units.map(aUnit => {
-                                    return <option value={aUnit.name}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                    return <option value={aUnit.abbreviation}>{aUnit.name} ({aUnit.abbreviation})</option>
                                 })
                             }
                         </select>

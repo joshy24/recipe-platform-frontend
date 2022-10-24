@@ -4,12 +4,17 @@ import { useState } from "react"
 import { getAmount, toUpperCase } from "../../utils/helper"
 
 const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
-    const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_size: "", price: 0, quantity_in_stock: 0, lowLevel: 0})
+    
+    const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_unit: units[0]._id, price: 0, quantity_in_stock: 0, lowLevel: 0})
     
     const onChange = (e) => {
-        const value = e.target.value
+        let value = e.target.value
         const name = e.target.name
-        
+
+        if(name === "purchase_unit"){
+            value = units.filter(aUnit => aUnit._id == value).shift()
+        }
+
         setIngredient({...ingredient, [name]:value});
     }
 
@@ -48,10 +53,10 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
                     <div className="inputFieldHolder">
                         <h4>Purchase Unit</h4>
                         
-                        <select style={{marginLeft: "0px"}} onChange={onChange} name="purchase_size" className="pageContentTopSelectField ptSearchInput">
+                        <select style={{marginLeft: "0px"}} onChange={onChange} name="purchase_unit" className="pageContentTopSelectField ptSearchInput">
                             {
                                 units.map(aUnit => {
-                                    return <option value={aUnit.name}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                    return <option value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
                                 })
                             }
                         </select>

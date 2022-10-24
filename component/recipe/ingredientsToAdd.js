@@ -1,16 +1,27 @@
 
-import {useState} from "react"
+import {useEffect, useState} from "react"
 
 import { getAmount, toUpperCase, getPriceOfQuantity } from "../../utils/helper"
 
 const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
     const [quantity, setQuantity] = useState(1)
+    const [unit, setUnit] = useState(ingredient.units[0]._id)
     const [isAdded, setIsAdded] = useState(false)
+
+    useEffect(() => {
+        
+    },[])
 
     const onChange = (e) => {
         const value = e.target.value
 
         setQuantity(value)
+    }
+
+    const onUnitChange = (e) => {
+        const value = e.target.value
+
+        setUnit(value)
     }
 
     const doAddToSelected = () => {
@@ -24,9 +35,18 @@ const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
     return <tr className="notHeader">
         <td style={{paddingLeft: "30px"}}>{toUpperCase(ingredient.name)}</td>
         <td style={{paddingLeft: "30px"}}>{ingredient.purchase_quantity && ingredient.purchase_quantity.amount}</td>
-        <td style={{paddingLeft: "30px"}}>{ingredient.purchase_size}</td>
+        <td style={{paddingLeft: "16px", paddingRight: "16px"}}>{ingredient.purchase_quantity.unit.abbreviation}</td>
         <td style={{paddingLeft: "30px"}}>{getAmount(ingredient.price)}</td>
-        <td style={{paddingLeft: "30px"}}>
+        <td style={{paddingLeft: "16px", paddingRight: "16px"}}>
+            <select style={{marginLeft: "0px", maxWidth: "100%"}} onChange={onUnitChange} name="unit" className="pageContentTopSelectField ptSearchInput">
+                {
+                    ingredient.units && ingredient.units.map(aUnit => {
+                        return <option value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
+                    })
+                }
+            </select>
+        </td>
+        <td style={{paddingLeft: "16px", paddingRight: "16px"}}>
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >

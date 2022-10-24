@@ -30,6 +30,8 @@ export const DELETE_UNIT_URL = BASE_URL + API_VERSION + "/units"
 
 export const EDIT_UNIT_URL = BASE_URL + API_VERSION + "/units"
 
+export const INGREDIENT_UNITS_URL = BASE_URL + API_VERSION + "/units/ingredient"
+
 
 
 //Products

@@ -4,10 +4,10 @@ import { useState } from "react"
 import { toUpperCase } from "../../utils/helper"
 
 
-const AddRecipe = ({closeAddRecipe, addRecipe}) => {
+const AddRecipe = ({closeAddRecipe, addRecipe, units}) => {
 
     const [recipe, setRecipe] = useState({name: "", description: ""})
-    const [ayield, setYield] = useState({ amount: 0, unit: ""})
+    const [ayield, setYield] = useState({ amount: 0, unit: units[0]._id})
 
     const onChange = (e) => {
         const value = e.target.value
@@ -48,7 +48,13 @@ const AddRecipe = ({closeAddRecipe, addRecipe}) => {
             <div className="inputFieldHolder">
                 <h4>Unit</h4>
 
-                <input className="ptInput" onChange={onYieldChange} type="text" name="unit" value={ayield.unit} placeholder="Enter recipe unit" />
+                <select style={{marginLeft: "0px", maxWidth: "100%"}} onChange={onYieldChange} name="unit" className="pageContentTopSelectField ptSearchInput">
+                    {
+                        units && units.map(aUnit => {
+                            return <option value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
+                        })
+                    }
+                </select>
             </div>
 
         

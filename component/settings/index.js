@@ -51,7 +51,7 @@ const SettingsIndex = () => {
 
     const [entityInFocus, setEntityInfocus] = useState(null)
 
-    const [baseUnit, setBaseUnit] = useState(null)
+    const [baseUnit, setBaseUnit] = useState("none")
 
     useEffect(() => {
         getUnits()
@@ -142,10 +142,11 @@ const SettingsIndex = () => {
 
         try{
             let result = await getRequest(GET_UNITS_URL)
-
+            
             if(!!result){
                 setUnits(result.response)
                 setFilteredUnits(result.response)
+
             }
 
             appContext.setLoading(false);
@@ -179,8 +180,20 @@ const SettingsIndex = () => {
             setFilteredUnits(units)
         }
         else{
+            const foundBaseUnit = getBaseUnits(units).filter(aBaseUnit => aBaseUnit.abbreviation === value).shift()
+
             const filteredtItems = units.filter(aUnit => {
-                return (aUnit.parent.toString() == value.abbreviation.toString() || aUnit.parent.toString() == value._id.toString()) && !aUnit.isBase
+                try{
+                    if(aUnit.isDefault){
+                        return aUnit.parent.toString() == foundBaseUnit.abbreviation.toString() && !aUnit.isBase
+                    }
+                    else{
+                        return (aUnit.parent.toString() == foundBaseUnit._id.toString()) && !aUnit.isBase
+                    }
+                }
+                catch(err){
+                    console.log(err)
+                }
             })
 
             setFilteredUnits(filteredtItems)
@@ -272,15 +285,18 @@ const SettingsIndex = () => {
                 <div className="tabbedListMainHolder" style={{width: "100%", minWidth: "600px", marginTop: "16px", paddingTop: "0px"}}>
                     <div className="tabbedListTableHolder largeTopMargin">   
                         {
-                            !appContext.state.isLoading && units && <div className={`${styles.tabbedListTable}`}>
-                                <select onChange={onBaseUnitChange} name="parent" className="pageContentTopSelectField ptSearchInput">
-                                    <option value="none">None</option>
-                                    {
-                                        getBaseUnits(units).map(aBaseUnit => {
-                                            return <option value={aBaseUnit}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
-                                        })
-                                    }
-                                </select>
+                            !appContext.state.isLoading && units && units.length > 0 && <div className={`${styles.tabbedListTable}`}>
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    <h4 style={{margin: "0px 8px 0px 0px"}}>Base Units Filter</h4>
+                                    <select style={{margin: "0px"}} onChange={onBaseUnitChange} name="parent" className="pageContentTopSelectField ptSearchInput">
+                                        <option value="none">None</option>
+                                        {
+                                            getBaseUnits(units).map(aBaseUnit => {
+                                                return <option value={aBaseUnit.abbreviation}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
+                                            })
+                                        }
+                                    </select>
+                                </div>
                             </div>
                         }
 
