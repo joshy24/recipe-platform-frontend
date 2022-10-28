@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import styles from "../../styles/Settings.module.css"
 
-import AddUnit from "./addUnit"
+import AddUnit from "./addunit"
 import AddChildUnit from "./addchildunit"
 
 import { AppContext } from "../../pages/AppContext";
