@@ -301,3 +301,16 @@ export const getBaseUnits = (units) => {
     
     return baseUnits;
 }
+
+
+export const getChildQuantityFromParentQuantity = (desiredAmount, parentAmount, childAmount) => {
+    if(!childAmount || !parentAmount || !desiredAmount){
+        return desiredAmount
+    }
+    
+    if(childAmount == parentAmount){
+        return desiredAmount
+    }
+
+    return desiredAmount * parentAmount / childAmount
+}

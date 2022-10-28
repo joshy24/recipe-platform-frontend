@@ -239,6 +239,7 @@ const RecipeIndex = ({id}) => {
         setEntityInFocus(ingredientToDelete)
         setShowDeleteRecipeIngredient(true)
     }
+     
 
     const hideDeleteIngredient = () => {
         setEntityInFocus({})
@@ -269,7 +270,7 @@ const RecipeIndex = ({id}) => {
     }
 
     const getRecipeCost = () => {
-        if(!ingredients.docs || ingredients.docs.length == 0){
+        if(!ingredients || !ingredients.docs || ingredients.docs.length == 0){
             return getAmount(0);
         }
 
@@ -403,7 +404,7 @@ const RecipeIndex = ({id}) => {
                                                 return <tr key={ingredient._id} className="notHeader">
                                                     <td>{toUpperCase(ingredient.name)}</td>
                                                     <td>{ingredient.quantity}</td>
-                                                    <td>{ingredient.purchase_size}</td>
+                                                    <td>{ingredient.purchase_quantity.unit.name} ({ingredient.purchase_quantity.unit.abbreviation})</td>
                                                     <td>{getAmount(ingredient.totalCost)}</td>
                                                     <td className="tabbedListContentHorizontalTableContent">
                                                         <button style={{marginLeft: "16px"}} onClick={e => openEditRecipeIngredient(e, ingredient)} className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
@@ -418,7 +419,7 @@ const RecipeIndex = ({id}) => {
                             </table>
 
                             {
-                                (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!ingredients.docs || ingredients.docs.length == 0)) && <EmptyResult message="No ingredients found for this recipe" onEmptyButtonClicked={loadRecipeIngredients} emptyButtonText="Try Again" />
+                                (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!ingredients || !ingredients.docs || ingredients.docs.length == 0)) && <EmptyResult message="No ingredients found for this recipe" onEmptyButtonClicked={loadRecipeIngredients} emptyButtonText="Try Again" />
                             }
                         </>
                 }
@@ -439,7 +440,7 @@ const RecipeIndex = ({id}) => {
         }
 
         {
-            showEditRecipeIngredient && <EditRecipeIngredient units={units} ingredient={entityInFocus} onPerformEditClicked={editIngredient} onCancelEditClicked={hideEditRecipeIngredient} />
+            showEditRecipeIngredient && <EditRecipeIngredient ingredient={entityInFocus} onPerformEditClicked={editIngredient} onCancelEditClicked={hideEditRecipeIngredient} />
         }
 
         {

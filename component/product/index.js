@@ -129,7 +129,7 @@ const ProductIndex = ({id}) => {
         appContext.setLoading(true)
         try{
             const result = await getRequest(ALL_RECIPES_URL+`?id=${id}&page=${recipePaginate.page+1}&limit=${recipePaginate.limit}`)
-
+            console.log(result.response)
             setRecipes(result.response)
 
             appContext.setLoading(false)
@@ -302,7 +302,7 @@ const ProductIndex = ({id}) => {
         appContext.setBlockingLoading(true)
         
         try{
-            await putRequest(EDIT_PRODUCT_RECIPE_URL, {id:id, recipe_id: newEditedRecipe._id, quantity: newEditedRecipe.yield.amount})
+            await putRequest(EDIT_PRODUCT_RECIPE_URL, {id:id, recipe_id: newEditedRecipe._id, quantity: newEditedRecipe.yield.amount, unit: newEditedRecipe.yield.unit})
 
             appContext.setBlockingLoading(false)
 
@@ -577,7 +577,7 @@ const ProductIndex = ({id}) => {
                                     return <tr key={aRecipe._id} className="notHeader">
                                                 <td>{toUpperCase(aRecipe.name)}</td>
                                                 <td>{ aRecipe.yield ? aRecipe.yield.amount : 0 }</td>
-                                                <td>{ aRecipe.yield ? aRecipe.yield.unit : "" }</td>
+                                                <td>{ aRecipe.yield ? aRecipe.yield.unit.name : "" } ({ aRecipe.yield ? aRecipe.yield.unit.abbreviation : "" })</td>
                                                 <td>{ getAmount(aRecipe.cost) }</td>
                                                 <td className="tabbedListContentHorizontalTableContent">
                                                     <button onClick={e => showEditProductRecipe(e, aRecipe)} style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>

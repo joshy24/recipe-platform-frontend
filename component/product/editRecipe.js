@@ -6,18 +6,19 @@ import { toUpperCase } from "../../utils/helper"
 
 const EditProductRecipe = ({recipe, onPerformEditClicked, onCancelEditClicked}) => {
 
-    const [quantity, setQuantity] = useState(recipe.yield.amount)
+    const [recipeYield, setRecipeYield] = useState({amount: recipe.yield.amount, unit: recipe.yield.unit._id})
 
     const doEdit = () => {
         if(quantity !== recipe.yield.amount){
-            onPerformEditClicked({...recipe, yield: { amount: quantity}})
+            onPerformEditClicked({...recipe, yield: recipeYield})
         }
     }
 
     const onChange = (e) => {
         const value = e.target.value
+        const name = e.target.name
 
-        setQuantity(value);
+        setRecipeYield({...recipeYield, [name]:value});
     }
 
     return <div className="popUp">
@@ -27,7 +28,19 @@ const EditProductRecipe = ({recipe, onPerformEditClicked, onCancelEditClicked}) 
                     <div className="inputFieldHolder">
                         <h4>Amount</h4>
 
-                        <input className="ptInput" onChange={onChange} type="number" name="name" value={quantity} />
+                        <input className="ptInput" onChange={onChange} type="number" name="amount" value={recipeYield.amount} />
+                    </div>
+
+                    <div className="inputFieldHolder">
+                        <h4>Unit</h4>
+
+                        <select defaultValue={recipe.yield.unit._id} style={{margin: "0px", maxWidth: "100%"}} onChange={e => onChange(e)} name="unit" className="pageContentTopSelectField ptSearchInput">
+                            {
+                                recipe && recipe.units && recipe.units.map(aUnit => {
+                                    return <option value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                })
+                            }
+                        </select>
                     </div>
 
                     <div className="popButtonHolder">

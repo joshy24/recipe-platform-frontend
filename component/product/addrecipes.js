@@ -126,10 +126,8 @@ const AddRecipes = ({hideAddRecipe, loadProductRecipes, product}) => {
         if(foundIndex == -1){
             sm.push({
                 recipe: recipe._id,
-                quantity: {
-                    amount: recipe.quantity,
-                    unit: recipe.unit
-                }
+                unit: recipe.unit,
+                quantity: recipe.quantity
             })
         }
         else{

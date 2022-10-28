@@ -1,16 +1,12 @@
 
 import {useEffect, useState} from "react"
 
-import { getAmount, toUpperCase, getPriceOfQuantity } from "../../utils/helper"
+import { getAmount, toUpperCase, getPriceOfQuantity, getChildQuantityFromParentQuantity } from "../../utils/helper"
 
 const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
     const [quantity, setQuantity] = useState(1)
     const [unit, setUnit] = useState(ingredient.units[0]._id)
     const [isAdded, setIsAdded] = useState(false)
-
-    useEffect(() => {
-        
-    },[])
 
     const onChange = (e) => {
         const value = e.target.value
@@ -26,10 +22,15 @@ const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
 
     const doAddToSelected = () => {
         ingredient.quantity = quantity;
+        ingredient.unit = unit
 
         setIsAdded(!isAdded)
 
         addToSelected(ingredient)
+    }
+
+    const getUnitAmountFromId = () => {
+        return ingredient.units.filter(aUnit => aUnit._id == unit).shift().amount
     }
     
     return <tr className="notHeader">
@@ -50,7 +51,7 @@ const ingredientToAdd = ({ingredient, selectedIngredients, addToSelected}) => {
             <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
         </td>
         <td style={{paddingLeft: "30px"}} >
-            {getAmount(getPriceOfQuantity(ingredient.price, ingredient.purchase_quantity.amount, quantity))}
+            {getAmount(getPriceOfQuantity(ingredient.price, ingredient.purchase_quantity.amount, getChildQuantityFromParentQuantity(quantity, ingredient.purchase_quantity.unit.amount, getUnitAmountFromId())))}
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>

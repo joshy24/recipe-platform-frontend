@@ -45,7 +45,7 @@ const RecipesIndex = () => {
     const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [isSearchOpen, setIsSearchOpen] = useState(false)
-    const [searchTerm, setSearchTerm] = useState(false)
+    const [searchTerm, setSearchTerm] = useState("")
 
     const [units, setUnits] = useState(null)
 

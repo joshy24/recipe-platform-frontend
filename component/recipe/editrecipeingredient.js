@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { toUpperCase } from "../../utils/helper"
 
 
-const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditClicked, units}) => {
-
+const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditClicked}) => {
+    
     const [quantity, setQuantity] = useState(ingredient.quantity)
-    const [unit, setUnit] = useState(ingredient.purchase_size)
+    const [unit, setUnit] = useState(ingredient.purchase_quantity.unit._id)
 
     const doEdit = () => {
         if(quantity !== ingredient.quantity){
@@ -38,10 +38,10 @@ const EditRecipeIngredient = ({ingredient, onPerformEditClicked, onCancelEditCli
                     </div>
 
                     <div className="inputFieldHolder">
-                        <select value={unit} style={{marginLeft: "0px", width: "100%"}} onChange={onUnitChange} name="purchase_size" className="pageContentTopSelectField ptInput">
+                        <select defaultValue={ingredient.purchase_quantity.unit._id} style={{marginLeft: "0px", width: "100%"}} onChange={onUnitChange} name="purchase_size" className="pageContentTopSelectField ptInput">
                             {
-                                units.map(aUnit => {
-                                    return <option value={aUnit.name}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                ingredient && ingredient.units.map(aUnit => {
+                                    return <option key={aUnit._id} value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
                                 })
                             }
                         </select>

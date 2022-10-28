@@ -47,7 +47,13 @@ const EditRecipe = ({hideEditRecipe, editRecipe, aRecipe}) => {
             <div className="inputFieldHolder">
                 <h4>Unit</h4>
 
-                <input className="ptInput" onChange={onYieldChange} type="text" name="unit" value={ayield.unit} placeholder="Enter recipe unit" />
+                <select style={{marginLeft: "0px", maxWidth: "100%"}} onChange={onYieldChange} name="unit" className="pageContentTopSelectField ptSearchInput">
+                    {
+                        aRecipe.units && aRecipe.units.map(aUnit => {
+                            return <option key={aUnit._id} value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
+                        })
+                    }
+                </select>
             </div>
 
             <div className="popButtonHolder">
