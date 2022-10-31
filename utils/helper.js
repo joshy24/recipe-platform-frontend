@@ -294,7 +294,7 @@ export const getPlainUnits = (units) => {
 export const getBaseUnits = (units) => {
     const baseUnits = []
 
-    units.map(aUnit => {
+    units && units.map(aUnit => {
         if(aUnit.isBase)
           baseUnits.push(aUnit)
     })

@@ -99,7 +99,7 @@ const ProfitableApply = ({apply_details}) => {
                     </tbody>
                 </table>
                 {
-                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (products.length == 0 || !products)) && <EmptyResult message="No products were found." onEmptyButtonClicked={loadProducts} emptyButtonText="Try Again" />
+                    (!appContext.state.isLoading && !appContext.state.isBlockingLoading && (!products || products.length == 0)) && <EmptyResult message="No products were found." onEmptyButtonClicked={loadProducts} emptyButtonText="Try Again" />
                 }
             </div>
         </div>

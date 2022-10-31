@@ -266,6 +266,7 @@ const IngredientsIndex = () => {
             appContext.setLoading(false)
         }
         catch(err){
+            console.log(err)
             appContext.setLoading(false)
         }
     }
@@ -381,7 +382,6 @@ const IngredientsIndex = () => {
             </div>
 
             <div className="tabbedListTableHolder">
-                
                 {
                     !appContext.state.isLoading ?
                     <table className="tabbedListTable" style={{width: "100%"}}>

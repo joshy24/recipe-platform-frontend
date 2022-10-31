@@ -180,20 +180,8 @@ const SettingsIndex = () => {
             setFilteredUnits(units)
         }
         else{
-            const foundBaseUnit = getBaseUnits(units).filter(aBaseUnit => aBaseUnit.abbreviation === value).shift()
-
             const filteredtItems = units.filter(aUnit => {
-                try{
-                    if(aUnit.isDefault){
-                        return aUnit.parent.toString() == foundBaseUnit.abbreviation.toString() && !aUnit.isBase
-                    }
-                    else{
-                        return (aUnit.parent.toString() == foundBaseUnit._id.toString()) && !aUnit.isBase
-                    }
-                }
-                catch(err){
-                    console.log(err)
-                }
+                return (aUnit.parent == value) && !aUnit.isBase
             })
 
             setFilteredUnits(filteredtItems)
@@ -213,7 +201,7 @@ const SettingsIndex = () => {
 
                 user.profit_margin = percentage;
 
-                const result = await putRequest(EDIT_PROFILE_URL, )
+                const result = await putRequest(EDIT_PROFILE_URL, user)
 
                 Auth.setAdmin(user)
     
@@ -292,7 +280,7 @@ const SettingsIndex = () => {
                                         <option value="none">None</option>
                                         {
                                             getBaseUnits(units).map(aBaseUnit => {
-                                                return <option value={aBaseUnit.abbreviation}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
+                                                return <option key={aBaseUnit._id} value={aBaseUnit._id}>{aBaseUnit.name} ({aBaseUnit.abbreviation})</option>
                                             })
                                         }
                                     </select>

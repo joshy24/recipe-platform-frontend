@@ -103,8 +103,6 @@ const Signin = () => {
 
                 const res = await Auth.login(userData.email, userData.password);
 
-                res;
-
                 res.msg === 'not_found' ? showValidUser() : res.msg === 'wrong_password' ? showWrongPassword() : router.push("/dashboard")
 
                 value.setBlockingLoading(false)
