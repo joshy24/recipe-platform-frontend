@@ -230,7 +230,7 @@ const SettingsIndex = () => {
 
             <div className={styles.settingsDetails}>
                 <h4 style={{marginTop: "0px"}}>
-                    Profit margin of Recipes - 
+                    Profit margin - 
                 </h4>
 
                 <div className={styles.settingsInputFieldHolder}>
