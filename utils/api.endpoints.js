@@ -1,5 +1,5 @@
-//export const BASE_URL = "http://localhost:4000"
-export const BASE_URL = "https://afternoon-bastion-95495.herokuapp.com"
+export const BASE_URL = "http://localhost:4000"
+//export const BASE_URL = "https://afternoon-bastion-95495.herokuapp.com"
 export const API_VERSION = "/api/v1"
 
 
@@ -31,6 +31,8 @@ export const DELETE_UNIT_URL = BASE_URL + API_VERSION + "/units"
 export const EDIT_UNIT_URL = BASE_URL + API_VERSION + "/units"
 
 export const INGREDIENT_UNITS_URL = BASE_URL + API_VERSION + "/units/ingredient"
+
+export const GET_MATERIAL_UNITS_URL = BASE_URL + API_VERSION + "/units/material"
 
 
 

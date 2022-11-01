@@ -1,6 +1,8 @@
 
 import AddIngredient from "../general/addingredient"
 
+import AddMaterial from "../general/addmaterial"
+
 import EditIngredient from "../general/editingredient"
 
 import DeleteDialog from "../general/deletedialog"
@@ -30,7 +32,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import { postRequest, getRequest, putRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, DELETE_INGREDIENT_URL, DELETE_MATERIAL_URL, CREATE_INGREDIENT, CREATE_MATERIAL, GET_ALL_INVENTORY, EDIT_INGREDIENT_URL, EDIT_MATERIAL_URL, GET_UNITS_URL} from "../../utils/api.endpoints"
+import { BASE_URL, DELETE_INGREDIENT_URL, DELETE_MATERIAL_URL, CREATE_INGREDIENT, CREATE_MATERIAL, GET_ALL_INVENTORY, EDIT_INGREDIENT_URL, EDIT_MATERIAL_URL, GET_UNITS_URL, GET_MATERIAL_UNITS_URL} from "../../utils/api.endpoints"
 
 const create_ingredient_url = BASE_URL + CREATE_INGREDIENT
 const create_material_url = BASE_URL + CREATE_MATERIAL
@@ -41,6 +43,7 @@ const IngredientsIndex = () => {
     const appContext = AppContext()
 
     const [showAdd, setShowAdd] = useState(false)
+    const [showAddMaterial, setShowAddMaterial] = useState(false)
 
     const [showEdit, setShowEdit] = useState(false)
 
@@ -51,6 +54,7 @@ const IngredientsIndex = () => {
     const [pagination, setPagination] = useState(defaultPaginationObject)
 
     const [units, setUnits] = useState(null)
+    const [materialUnits, setMaterialUnits] = useState(null)
 
     const [whatIsOpen, setWhatIsOpen] = useState(false)
 
@@ -62,6 +66,7 @@ const IngredientsIndex = () => {
     const [inventoryInFocus, setInventoryInFocus] = useState({})
 
     useEffect(() => {
+        getMaterialUnits()
         getUnits()
     }, [])
 
@@ -80,6 +85,14 @@ const IngredientsIndex = () => {
 
     const closeShowAdd = () => {
         setShowAdd(false)
+    }
+
+    const openShowAddMaterial = () => {
+        setShowAddMaterial(true)
+    }
+
+    const closeShowAddMaterial = () => {
+        setShowAddMaterial(false)
     }
     
     const onPerformDeleteClicked = () => {
@@ -112,6 +125,23 @@ const IngredientsIndex = () => {
             console.log(err)
             appContext.setLoading(false)
             appContext.setMessage({visible: true, message: "An error occurred fetching units", title: "Units Not Loaded", type: "ERROR"})
+        }
+    }
+
+    const getMaterialUnits = async () => {
+        appContext.setLoading(true);
+
+        try{
+            let result = await getRequest(GET_MATERIAL_UNITS_URL)
+
+            if(!!result){
+                setMaterialUnits(result.response)
+            }
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+            appContext.setMessage({visible: true, message: "An error occurred fetching material units", title: "Material Units Not Loaded", type: "ERROR"})
         }
     }
 
@@ -220,17 +250,34 @@ const IngredientsIndex = () => {
         }
     }
 
-    const addInventory = async (e, inventoryToAdd) => {
+    const addIngredientToInventory = async (e, inventoryToAdd) => {
         e.preventDefault();
         
         appContext.setBlockingLoading(true)
 
         try{
-            var result = inventoryToAdd.type == "Ingredient" ? 
-             await postRequest(create_ingredient_url, {ingredient: inventoryToAdd})
-             : await postRequest(create_material_url, {material: inventoryToAdd});
+            var result = await postRequest(create_ingredient_url, {ingredient: inventoryToAdd})
 
             closeShowAdd()
+
+            search();
+
+            appContext.setBlockingLoading(false)
+        }
+        catch(err){
+            appContext.setBlockingLoading(false)
+            appContext.setMessage("An error occurred processing the request.")
+        }
+    }
+
+    const addMaterialToInventory = async (inventoryToAdd) => {
+        
+        appContext.setBlockingLoading(true)
+
+        try{
+            var result = await postRequest(create_material_url, {material: inventoryToAdd});
+             
+            closeShowAddMaterial()
 
             search();
 
@@ -317,7 +364,8 @@ const IngredientsIndex = () => {
                                 <option>Normal</option>
                             </select>
                             <button onClick={showSearch} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faSearch} /></button>
-                            <button onClick={openShowAdd} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faAdd} /></button>
+                            <button onClick={openShowAdd} className="rectangleButtonPrimary colorWhite"><FontAwesomeIcon icon={faAdd} style={{marginRight: "6px"}} /> Ingredient</button>
+                            <button onClick={openShowAddMaterial} className="rectangleButtonPrimary colorWhite"><FontAwesomeIcon icon={faAdd} style={{marginRight: "6px"}} /> Material</button>
                             <button onClick={performExport} className="squareButtonPrimary colorWhite"><FontAwesomeIcon icon={faFileExport} /></button>
                         </div>
                     }
@@ -434,7 +482,7 @@ const IngredientsIndex = () => {
         </div>
 
         { 
-            showAdd && <AddIngredient closeAddIngredient={closeShowAdd} addInventory={addInventory} units={units} /> 
+            showAdd && <AddIngredient closeAddIngredient={closeShowAdd} addInventory={addIngredientToInventory} units={units} /> 
         }
 
         {
@@ -443,6 +491,10 @@ const IngredientsIndex = () => {
 
         {
             isDelete.visible && <DeleteDialog onPerformDeleteClicked={deleteInventoryItem} onCancelDeleteClicked={hideDeleteInventoryItem} type={isDelete.type} message={isDelete.message} title={isDelete.title} />
+        }
+
+        {
+            showAddMaterial &&  <AddMaterial closeAddMaterial={closeShowAddMaterial} units={materialUnits} addMaterialToInventory={addMaterialToInventory} />
         }
     </>
 }

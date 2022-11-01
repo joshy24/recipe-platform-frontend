@@ -31,7 +31,7 @@ import { faPen, faAdd, faTrash, faCaretDown, faCaretUp } from '@fortawesome/free
 
 import { putRequest, getRequest, deleteRequest } from "../../utils/api.requests"
 
-import { BASE_URL, GET_PRODUCT, ALL_MATERIALS_URL, ALL_RECIPES_URL, DELETE_PRODUCT_MATERIAL, DELETE_PRODUCT_RECIPE, EDIT_PRODUCT_RECIPE_URL, EDIT_PRODUCT_MATERIAL_URL, DELETE_PRODUCT_URL, EDIT_PRODUCT_URL } from "../../utils/api.endpoints"
+import { BASE_URL, GET_PRODUCT, ALL_MATERIALS_URL, ALL_RECIPES_URL, DELETE_PRODUCT_MATERIAL, DELETE_PRODUCT_RECIPE, EDIT_PRODUCT_RECIPE_URL, EDIT_PRODUCT_MATERIAL_URL, DELETE_PRODUCT_URL, EDIT_PRODUCT_URL, GET_MATERIAL_UNITS_URL } from "../../utils/api.endpoints"
 
 const get_product_url = BASE_URL + GET_PRODUCT
 
@@ -53,6 +53,8 @@ const ProductIndex = ({id}) => {
     const [materials, setMaterials] = useState({})
     const [recipes, setRecipes] = useState({})
 
+    const [materialUnits, setMaterialUnits] = useState(null)
+
     const [materialPaginate, setMaterialPaginate] = useState(defaultPaginationObject)
     const [recipePaginate, setRecipePaginate] = useState(defaultPaginationObject)
 
@@ -70,6 +72,7 @@ const ProductIndex = ({id}) => {
     
 
     useEffect(() => {
+        getMaterialUnits()
         loadAllAsync()
     }, [])
 
@@ -110,6 +113,23 @@ const ProductIndex = ({id}) => {
     /*
     New functions
     */
+
+    const getMaterialUnits = async () => {
+        appContext.setLoading(true);
+
+        try{
+            let result = await getRequest(GET_MATERIAL_UNITS_URL)
+
+            if(!!result){
+                setMaterialUnits(result.response)
+            }
+        }
+        catch(err){
+            console.log(err)
+            appContext.setLoading(false)
+            appContext.setMessage({visible: true, message: "An error occurred fetching material units", title: "Material Units Not Loaded", type: "ERROR"})
+        }
+    }
 
     const loadProduct = async() => {
         appContext.setLoading(true)
@@ -614,7 +634,7 @@ const ProductIndex = ({id}) => {
                                     return <tr key={aMaterial._id} className="notHeader">
                                                 <td>{toUpperCase(aMaterial.name)}</td>
                                                 <td>{aMaterial.quantity}</td>
-                                                <td>{aMaterial.purchase_size}</td>
+                                                <td>{aMaterial.purchase_quantity.unit.name} ({aMaterial.purchase_quantity.unit.abbreviation})</td>
                                                 <td>{getAmount(aMaterial.totalCost)}</td>
                                                 <td className="tabbedListContentHorizontalTableContent">
                                                     <button onClick={e => openEditMaterial(e,aMaterial)} style={{marginLeft: "16px"}}  className="squareButtonPrimary"><FontAwesomeIcon icon={faPen} /></button>
@@ -634,7 +654,7 @@ const ProductIndex = ({id}) => {
         </div>
 
         {
-            showAddMaterial && <AddMaterials loadProductMaterials={loadProductMaterials} product={product} hideAddMaterial={hideAddMaterial} />
+            showAddMaterial && <AddMaterials units={materialUnits} loadProductMaterials={loadProductMaterials} product={product} hideAddMaterial={hideAddMaterial} />
         }
 
         {

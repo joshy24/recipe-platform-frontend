@@ -1291,3 +1291,12 @@ Pagination
 .skeletonHolder{
     padding: 0px 45px 30px 45px;
 }
+
+
+
+
+.materialContentHolder{
+    width: 100%;
+    max-width: 600px;
+    padding: 35px 24px;
+}

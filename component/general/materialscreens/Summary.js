@@ -1,11 +1,11 @@
 
 import { useState } from "react"
 
-import { getAmount, toUpperCase } from "../../utils/helper"
+import { getAmount, toUpperCase } from "../../../utils/helper"
 
-const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
+const Summary = ({saveMaterial, newMaterial, units, closeAddMaterial}) => {
     
-    const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_unit: units[0]._id, price: 0, quantity_in_stock: 0, lowLevel: 0})
+    const [material, setMaterial] = useState(newMaterial)
     
     const onChange = (e) => {
         let value = e.target.value
@@ -15,26 +15,31 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
             value = units.filter(aUnit => aUnit._id == value).shift()
         }
 
-        setIngredient({...ingredient, [name]:value});
+        setMaterial({...material, [name]:value});
+    }
+
+    const doSaveMaterial = () => {
+        if(!!material.name && !!material.purchase_quantity && !!material.purchase_unit && !!material.price && !!material.quantity_in_stock && !!material.lowLevel && !!material.pieces){
+            saveMaterial(material)
+            return;
+        }
     }
 
     return <div className="popUp">
         <div className="popUpInnerContent">
-                <h3 className="pageTitle">{ingredient.name ? toUpperCase(ingredient.name) : "New "+ingredient.type}</h3>
-                
-                
+                <h3 className="pageTitle">{material.name}</h3>
 
                 <div className="inputHorizontalHolder">
                     <div className="inputFieldHolder">
                         <h4>Name</h4>
 
-                        <input className="ptSearchInput" onChange={onChange} type="text" name="name" value={toUpperCase(ingredient.name)} placeholder={ `Enter ${ingredient.type.toLowerCase()} name`} />
+                        <input className="ptSearchInput" onChange={onChange} type="text" name="name" value={toUpperCase(material.name)} />
                     </div>
 
                     <div className="inputFieldHolder">
                         <h4>Purchase Quanity</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="text" name="purchase_quantity" value={ingredient.purchase_quantity} placeholder="Enter purchase quantity" />
+                        <input className="ptSearchInput" onChange={onChange} type="text" name="purchase_quantity" value={material.purchase_quantity} placeholder="Enter purchase quantity" />
                     </div>
                 </div>
 
@@ -54,7 +59,7 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
                     <div className="inputFieldHolder">
                         <h4>Price</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="number" name="price" value={ingredient.price} />
+                        <input className="ptSearchInput" onChange={onChange} type="number" name="price" value={material.price} />
                     </div>
                 </div>
 
@@ -62,38 +67,33 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
                     <div className="inputFieldHolder">
                         <h4>Quantity In Stock</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="number" name="quantity_in_stock" value={ingredient.quantity_in_stock} />
+                        <input className="ptSearchInput" onChange={onChange} type="number" name="quantity_in_stock" value={material.quantity_in_stock} />
                     </div>
 
                     <div className="inputFieldHolder">
                         <h4>Low Threshold</h4>
                         
-                        <input className="ptSearchInput" onChange={onChange} type="number" name="lowLevel" value={ingredient.lowLevel} />
+                        <input className="ptSearchInput" onChange={onChange} type="number" name="lowLevel" value={material.lowLevel} />
                     </div>
                 </div>
 
+                
+
+                <div className="inputHorizontalHolder">
+                    <div className="inputFieldHolder">
+                        <h4>Pieces per Packet/Carton</h4>
+                        
+                        <input className="ptSearchInput" onChange={onChange} type="number" name="pieces" value={material.pieces} />
+                    </div>
+                </div>
+
+
                 <div className="popButtonHolder">
-                    <button onClick={e => addInventory(e, ingredient)} className="colorWhite rectangleButtonPrimary">Save</button>
-                    <button onClick={closeAddIngredient} className="colorBlack rectangleButtonSecondary">Close</button>
+                    <button onClick={doSaveMaterial} className="colorWhite rectangleButtonPrimary">Save</button>
+                    <button onClick={closeAddMaterial} className="colorBlack rectangleButtonSecondary">Close</button>
                 </div>
         </div>
     </div>
 }
 
-export default AddIngredient;
-
-
-/*
-    <div className="inputFieldHolder">
-        <h4>Type</h4>
-
-        <select style={{marginLeft: "0px", width:"100%"}} onChange={onChange} name="type" className="pageContentTopSelectField">
-            <option value="Material">
-                Material
-            </option>
-            <option value="Ingredient">
-                Ingredient
-            </option>
-        </select>
-    </div>
-*/
+export default Summary;

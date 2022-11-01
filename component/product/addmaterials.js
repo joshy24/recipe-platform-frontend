@@ -38,7 +38,7 @@ import { BASE_URL, MATERIALS_TO_ADD, ADD_MATERIALS_TO_PRODUCT } from "../../util
 
 const add_materials_url = BASE_URL + ADD_MATERIALS_TO_PRODUCT
 
-const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
+const AddMaterials = ({hideAddMaterial, loadProductMaterials, product, units}) => {
 
     const appContext = AppContext();
     
@@ -148,7 +148,8 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
         if(foundIndex == -1){
             sm.push({
                 material: material._id,
-                quantity: material.quantity
+                quantity: material.quantity,
+                unit: material.unit
             })
         }
         else{
@@ -227,7 +228,7 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product}) => {
                                 </tr>
                                 {
                                     materials.docs.map(material => {
-                                        return <MaterialToAdd addToSelected={addMaterialToSelected} material={material} onChange={onChange} selectedMaterials={selectedMaterials} />
+                                        return <MaterialToAdd addToSelected={addMaterialToSelected} material={material} onChange={onChange} selectedMaterials={selectedMaterials} units={units} />
                                     })
                                 }
                             </tbody> : <EmptyResult  message={"No Materials found to add. Add materials to inventory"} onEmptyButtonClicked={getMaterialsToAddSearch} emptyButtonText={"Try Again"} />
