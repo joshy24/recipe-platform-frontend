@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const AddInStock = ({setInStock, moveCurrentUI, material_name, unit_name, closeAddMaterial}) => {
+const AddStock = ({setInStock, moveCurrentUI, material_name, unit_name, closeAddMaterial}) => {
     
     const [inStockObj, setInStockObj] = useState({inStock:0, lowLevel: 0})
 
@@ -34,4 +34,4 @@ const AddInStock = ({setInStock, moveCurrentUI, material_name, unit_name, closeA
     </div>
 }
 
-export default AddInStock;
+export default AddStock;

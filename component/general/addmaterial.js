@@ -4,7 +4,7 @@ import { useState } from "react"
 import { getAmount, toUpperCase } from "../../utils/helper"
 
 import AddName from "./materialscreens/AddName"
-import AddInStock from "./materialscreens/AddInStock"
+import AddStock from "./materialscreens/AddStock"
 import AddPurchase from "./materialscreens/AddPurchase"
 import AddConversion from "./materialscreens/AddConversion"
 import Summary from "./materialscreens/Summary"
@@ -58,7 +58,7 @@ const AddMaterial = ({units, closeAddMaterial, addMaterialToInventory}) => {
             }
 
             {
-                currentUI == 4 && <AddInStock unit_name={material.purchase_unit.name} material_name={material.name} setInStock={setInStock} moveCurrentUI={moveCurrentUI} closeAddMaterial={closeAddMaterial} />
+                currentUI == 4 && <AddStock unit_name={material.purchase_unit.name} material_name={material.name} setInStock={setInStock} moveCurrentUI={moveCurrentUI} closeAddMaterial={closeAddMaterial} />
             }
 
             {
