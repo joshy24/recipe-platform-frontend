@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { toUpperCase } from "../../utils/helper"
 
 
-const EditProductMaterial = ({material, onPerformEditClicked, onCancelEditClicked}) => {
-
-    const [quantity, setQuantity] = useState(material.quantity)
+const EditProductMaterial = ({material, onPerformEditClicked, onCancelEditClicked, units}) => {
+    console.log(material)
+    const [quantity, setQuantity] = useState({quantity: material.quantity})
 
     const doEdit = () => {
         if(quantity !== material.quantity){
@@ -28,6 +28,18 @@ const EditProductMaterial = ({material, onPerformEditClicked, onCancelEditClicke
                         <h4>Amount</h4>
 
                         <input className="ptInput" onChange={onChange} type="number" name="name" value={quantity} />
+                    </div>
+
+                    <div className="inputFieldHolder">
+                        <h4>Unit</h4>
+
+                        <select defaultValue={recipe.yield.unit._id} style={{margin: "0px", maxWidth: "100%"}} onChange={e => onChange(e)} name="unit" className="pageContentTopSelectField ptSearchInput">
+                            {
+                                units && units.map(aUnit => {
+                                    return <option value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>
+                                })
+                            }
+                        </select>
                     </div>
 
                     <div className="popButtonHolder">

@@ -260,7 +260,7 @@ const ProductIndex = ({id}) => {
         appContext.setBlockingLoading(true)
         
         try{
-            await putRequest(EDIT_PRODUCT_MATERIAL_URL, {id:id, material_id: newEditedMaterial._id, quantity: newEditedMaterial.quantity})
+            await putRequest(EDIT_PRODUCT_MATERIAL_URL, {id:id, material_id: newEditedMaterial._id, quantity: newEditedMaterial.quantity, unit: newEditedMaterial.unit})
 
             appContext.setBlockingLoading(false)
 
