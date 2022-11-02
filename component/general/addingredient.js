@@ -5,7 +5,7 @@ import { getAmount, toUpperCase } from "../../utils/helper"
 
 const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
     
-    const [ingredient, setIngredient] = useState({type: "Material",name: "", purchase_quantity: "", purchase_unit: units[0]._id, price: 0, quantity_in_stock: 0, lowLevel: 0})
+    const [ingredient, setIngredient] = useState({name: "", purchase_quantity: "", purchase_unit: units[0]._id, price: 0, quantity_in_stock: 0, lowLevel: 0})
     
     const onChange = (e) => {
         let value = e.target.value
@@ -20,7 +20,7 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
 
     return <div className="popUp">
         <div className="popUpInnerContent">
-                <h3 className="pageTitle">{ingredient.name ? toUpperCase(ingredient.name) : "New "+ingredient.type}</h3>
+                <h3 className="pageTitle">{ingredient.name ? toUpperCase(ingredient.name) : "New Ingredient"}</h3>
                 
                 
 
@@ -28,7 +28,7 @@ const AddIngredient = ({closeAddIngredient, addInventory, units}) => {
                     <div className="inputFieldHolder">
                         <h4>Name</h4>
 
-                        <input className="ptSearchInput" onChange={onChange} type="text" name="name" value={toUpperCase(ingredient.name)} placeholder={ `Enter ${ingredient.type.toLowerCase()} name`} />
+                        <input className="ptSearchInput" onChange={onChange} type="text" name="name" value={toUpperCase(ingredient.name)} placeholder="Ingredient Name" />
                     </div>
 
                     <div className="inputFieldHolder">
