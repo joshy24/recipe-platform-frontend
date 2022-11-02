@@ -27,6 +27,8 @@ const Summary = ({saveMaterial, newMaterial, units, closeAddMaterial}) => {
 
     return <div className="popUp">
         <div className="popUpInnerContent">
+                <h4 className="materialRightText">Material Summary</h4>
+
                 <h3 className="pageTitle">{material.name}</h3>
 
                 <div className="inputHorizontalHolder">

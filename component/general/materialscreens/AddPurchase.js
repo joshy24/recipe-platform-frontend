@@ -19,7 +19,9 @@ const AddPurchase = ({setPurchase,moveCurrentUI, units, closeAddMaterial}) => {
         }
     }
 
-    return <div>
+    return <div className="addMaterialHolder">
+        <h4 className="materialRightText">Step 3/4</h4>
+
         <h3 style={{lineHeight: "25px"}} className="pageTitle">How much did you purchase the quantity you bought?</h3>
 
         <div style={{display: "flex", alignItems: "center"}}>
@@ -36,7 +38,7 @@ const AddPurchase = ({setPurchase,moveCurrentUI, units, closeAddMaterial}) => {
             <input className="ptSearchInput" onChange={onChange} type="number" name="price" value={purchase.price} placeholder="Enter name" />
         </div>     
 
-        <div className="popButtonHolder">
+        <div style={{marginTop: "50px"}} className="popButtonHolder">
             <button onClick={continueClicked} className="colorWhite rectangleButtonPrimary">Continue</button>
             <button onClick={closeAddMaterial} className="colorBlack rectangleButtonSecondary">Close</button>
         </div>       

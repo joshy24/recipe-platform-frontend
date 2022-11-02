@@ -17,12 +17,14 @@ const AddName = ({setName,moveCurrentUI, closeAddMaterial}) => {
         }
     }
 
-    return <div>
-        <h3 className="pageTitle">What is the name of this new material?</h3>
+    return <div className="addMaterialHolder">
+        <h4 className="materialRightText">Step 1/4</h4>
+
+        <h3 className="pageTitle">What is the name of this material?</h3>
 
         <input className="ptSearchInput" onChange={onChange} type="text" name="name" value={name} placeholder="Enter name" />     
 
-        <div className="popButtonHolder">
+        <div style={{marginTop: "50px"}} className="popButtonHolder">
             <button onClick={continueClicked} className="colorWhite rectangleButtonPrimary">Continue</button>
             <button onClick={closeAddMaterial} className="colorBlack rectangleButtonSecondary">Close</button>
         </div>       

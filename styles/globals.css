@@ -1300,3 +1300,16 @@ Pagination
     max-width: 600px;
     padding: 35px 24px;
 }
+
+.materialRightText{
+    width: auto;
+    float: right;
+    text-align: right;
+    margin-bottom: 24px;
+    margin-top: 0px;
+}
+
+.addMaterialHolder{
+    display: flex;
+    flex-direction: column;
+}

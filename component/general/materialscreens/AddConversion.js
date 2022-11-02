@@ -17,12 +17,14 @@ const AddConversion = ({setConversion,moveCurrentUI,closeAddMaterial}) => {
         }
     }
 
-    return <div>
+    return <div className="addMaterialHolder">
+        <h4 className="materialRightText">Step 2/4</h4>
+
         <h3 style={{lineHeight: "25px"}} className="pageTitle">How many pieces are within a packet/carton?</h3>
 
         <input className="ptSearchInput" onChange={onChange} type="number" name="conversion" value={conversion} placeholder="Enter number" />     
 
-        <div className="popButtonHolder">
+        <div style={{marginTop: "50px"}} className="popButtonHolder">
             <button onClick={continueClicked} className="colorWhite rectangleButtonPrimary">Continue</button>
             <button onClick={closeAddMaterial} className="colorBlack rectangleButtonSecondary">Close</button>
         </div>       
