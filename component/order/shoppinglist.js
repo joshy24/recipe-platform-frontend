@@ -157,7 +157,7 @@ const ShoppingList = ({id}) => {
                         inventory && inventory.length > 0 && inventory.map(invent => {
                             return (filters.status == "All" || (invent.status.toLowerCase() === filters.status.toLowerCase())) && <tr className="notHeader">
                             <td style={tdStyle}>{invent && toUpperCase(invent.name)}</td>
-                            <td style={tdStyle}>{invent && invent.purchase_size}</td>
+                            <td style={tdStyle}>{invent && invent.unit.name} ({invent && invent.unit.abbreviation})</td>
                             <td style={tdStyle}>{invent && getAmount(invent.price)}</td>
                             <td style={tdStyle}>{invent && getAmount(invent.cost)}</td>
                             <td style={tdStyle}>{invent && invent.lowLevel}</td>

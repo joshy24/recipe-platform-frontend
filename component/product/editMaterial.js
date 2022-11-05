@@ -5,12 +5,12 @@ import { toUpperCase } from "../../utils/helper"
 
 
 const EditProductMaterial = ({material, onPerformEditClicked, onCancelEditClicked, units}) => {
-    console.log(material)
-    const [quantity, setQuantity] = useState({quantity: material.quantity})
+    const [quantity, setQuantity] = useState(material.quantity)
+    const [unit, setUnit] = useState(material.purchase_quantity.unit._id)
 
     const doEdit = () => {
         if(quantity !== material.quantity){
-            onPerformEditClicked({...material, quantity: quantity})
+            onPerformEditClicked({...material, quantity: quantity, unit:unit})
         }
     }
 
@@ -18,6 +18,12 @@ const EditProductMaterial = ({material, onPerformEditClicked, onCancelEditClicke
         const value = e.target.value
 
         setQuantity(value);
+    }
+
+    const onUnitChange = (e) => {
+        const value = e.target.value
+
+        setUnit(value);
     }
 
     return <div className="popUp">
@@ -33,7 +39,7 @@ const EditProductMaterial = ({material, onPerformEditClicked, onCancelEditClicke
                     <div className="inputFieldHolder">
                         <h4>Unit</h4>
 
-                        <select defaultValue={recipe.yield.unit._id} style={{margin: "0px", maxWidth: "100%"}} onChange={e => onChange(e)} name="unit" className="pageContentTopSelectField ptSearchInput">
+                        <select defaultValue={material.purchase_quantity.unit._id} style={{margin: "0px", maxWidth: "100%"}} onChange={e => onChange(e)} name="unit" className="pageContentTopSelectField ptSearchInput">
                             {
                                 units && units.map(aUnit => {
                                     return <option value={aUnit._id}>{aUnit.name} ({aUnit.abbreviation})</option>

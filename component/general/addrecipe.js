@@ -42,7 +42,7 @@ const AddRecipe = ({closeAddRecipe, addRecipe, units}) => {
             <div className="inputFieldHolder">
                 <h4>Yield</h4>
 
-                <input className="ptInput" onChange={onYieldChange} type="text" name="amount" value={ayield.amount} placeholder="Enter recipe description" />
+                <input className="ptInput" onChange={onYieldChange} type="number" name="amount" value={ayield.amount} placeholder="Enter recipe description" />
             </div>
 
             <div className="inputFieldHolder">

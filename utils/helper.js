@@ -314,3 +314,25 @@ export const getChildQuantityFromParentQuantity = (desiredAmount, parentAmount, 
 
     return desiredAmount * parentAmount / childAmount
 }
+
+
+export const getMaterialQuantityCost = (materialUnitObject, desiredUnitObject, materialObject, desiredQuantity) => {
+    if(materialUnitObject._id == desiredUnitObject._id){
+        return getPriceOfQuantity(materialObject.price, materialObject.purchase_quantity.amount, desiredQuantity)
+    }
+    
+    if(materialUnitObject.isBase){
+        //return getPriceOfQuantity(materialObject.price, materialObject.purchase_quantity.amount,  )
+        return (desiredQuantity * materialObject.price) / (materialObject.purchase_quantity.amount * materialObject.pieces) 
+    }
+
+    if(desiredUnitObject.isBase){
+        return  (desiredQuantity * materialObject.price) / (materialObject.purchase_quantity.amount / materialObject.pieces)
+    }
+
+    return 0;
+}
+
+export const getMaterialUnit  = (units, desiredUnitId) => {
+    return units.filter(aUnit => aUnit._id == desiredUnitId).shift()
+}

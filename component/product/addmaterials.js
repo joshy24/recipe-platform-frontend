@@ -220,9 +220,10 @@ const AddMaterials = ({hideAddMaterial, loadProductMaterials, product, units}) =
                                 <tr className="header" style={{marginBottom: "24px"}}>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Name</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Quantity</th>
-                                    <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Size</th>
+                                    <th style={{width: "12%", paddingLeft: "20px"}}>Purchase Unit</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Price</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Quantity To Add</th>
+                                    <th style={{width: "12%", paddingLeft: "20px"}}>Unit To Add</th>
                                     <th style={{width: "12%", paddingLeft: "20px"}}>Total Cost</th>
                                     <th style={{width: "16%", paddingLeft: "20px"}}></th>
                                 </tr>

@@ -236,13 +236,20 @@ const OrderIndex = ({id}) => {
         
     }
 
+    const openFulfillOrderMessage = () => {
+        setShowFulfillOrderMessage(true)
+    }
+
+    const closeFulfillOrderMessage = () => {
+        setShowFulfillOrderMessage(false)
+    }
+
     const fulfillOrder = async () => {
+        closeFulfillOrderMessage()
         appContext.setBlockingLoading(true)
         
         try{
             const result = await putRequest(FULFILL_ORDER_URL, {id: order._id})
-
-            console.log(result)
 
             appContext.setBlockingLoading(false)
 
@@ -421,7 +428,7 @@ const OrderIndex = ({id}) => {
                                 <td className="tabbedListContentHorizontalTableContent">
                                     {order && order.status}
                                     {
-                                        order && order.status == "PENDING" && <button onClick={fulfillOrder} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>
+                                        order && order.status == "PENDING" && <button onClick={openFulfillOrderMessage} style={{marginLeft: "16px"}} className="rectangleButtonPrimary">Fulfill</button>
                                     }
                                 </td>
                             </tr>
@@ -489,7 +496,7 @@ const OrderIndex = ({id}) => {
         }
 
         {
-            showFulfillOrderMessage && <MessageDialog onPerformClicked={fulfillOrder} onCancelClicked={hideFulfillOrderMessage} message="Are you sure you want to fulfill this order? Fulfilling this order will deduct the quantity of items in this order from inventory." />
+            showFulfillOrderMessage && <MessageDialog onPerformClicked={fulfillOrder} onCancelClicked={closeFulfillOrderMessage}  title="Confirm Fulfillment" message="Are you sure you want to fulfill this order? Fulfilling this order will deduct the quantity of items in this order from inventory." />
         }
 
         {

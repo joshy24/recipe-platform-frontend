@@ -23,7 +23,7 @@ import EditProduct from "./edit"
 
 import Image from "next/image"
 
-import { toUpperCase, getAmount, defaultPaginationObject } from "../../utils/helper"
+import { toUpperCase, getAmount, defaultPaginationObject, getMaterialQuantityCost } from "../../utils/helper"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -93,7 +93,7 @@ const ProductIndex = ({id}) => {
     }
 
     useEffect(() => {
-        if((recipes.docs && recipes.docs.length == 0) && (materials.docs && materials.docs.length == 0)){
+        if(recipes && (recipes.docs && recipes.docs.length == 0) && (materials.docs && materials.docs.length == 0)){
             appContext.setMessage({visible: true, message: "Please add Recipes and Materials to this product", title: "Message", type: "INFO"})
         }
     }, [materials, recipes])
@@ -670,7 +670,7 @@ const ProductIndex = ({id}) => {
         }
 
         {
-            showEditMaterial && <EditProductMaterial material={entityInFocus} onPerformEditClicked={editProductMaterial} onCancelEditClicked={hideEditMaterial} />
+            showEditMaterial && <EditProductMaterial units={materialUnits} material={entityInFocus} onPerformEditClicked={editProductMaterial} onCancelEditClicked={hideEditMaterial} />
         }
 
         {

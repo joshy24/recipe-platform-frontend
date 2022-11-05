@@ -1,13 +1,9 @@
 
-import {useEffect, useState} from "react"
+import {useState} from "react"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { getAmount, toUpperCase, getMaterialUnit, getMaterialQuantityCost } from "../../utils/helper"
 
-import { faPen, faAdd, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons'
-
-import { getAmount, toUpperCase, getPriceOfQuantity } from "../../utils/helper"
-
-const materialToAdd = ({material, selectedMaterials, addToSelected, units}) => {
+const materialToAdd = ({material, addToSelected, units}) => {
     const [quantity, setQuantity] = useState(1)
     const [isAdded, setIsAdded] = useState(false)
     const [unit, setUnit] = useState(units[0]._id)
@@ -37,6 +33,14 @@ const materialToAdd = ({material, selectedMaterials, addToSelected, units}) => {
         <td style={{paddingLeft: "30px"}}>{toUpperCase(material.name)}</td>
         <td style={{paddingLeft: "30px"}}>{material.purchase_quantity && material.purchase_quantity.amount}</td>
         <td style={{paddingLeft: "16px", paddingRight: "16px"}}>
+            { material.purchase_quantity && material.purchase_quantity.unit.name }
+            ({ material.purchase_quantity && material.purchase_quantity.unit.abbreviation })
+        </td>
+        <td style={{paddingLeft: "30px"}}>{getAmount(material.price)}</td>
+        <td style={{paddingLeft: "16px", paddingRight: "16px"}}>
+            <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
+        </td>
+        <td style={{paddingLeft: "16px", paddingRight: "16px"}}>
             <select style={{marginLeft: "0px", maxWidth: "100%"}} onChange={onUnitChange} name="unit" className="pageContentTopSelectField ptSearchInput">
                 {
                     units && units.map(aUnit => {
@@ -45,12 +49,8 @@ const materialToAdd = ({material, selectedMaterials, addToSelected, units}) => {
                 }
             </select>
         </td>
-        <td style={{paddingLeft: "30px"}}>{getAmount(material.price)}</td>
-        <td style={{paddingLeft: "16px", paddingRight: "16px"}}>
-            <input style={{width: "100px"}} type="number" name="quantity" placeholder="Enter quantity" value={quantity} onChange={e => onChange(e)} />
-        </td>
         <td style={{paddingLeft: "30px"}} >
-            {getAmount(getPriceOfQuantity(material.price, material.purchase_quantity.amount, quantity))}
+            {getAmount(getMaterialQuantityCost(material.purchase_quantity.unit, getMaterialUnit(units, unit), material, quantity))}
         </td>
         <td style={{paddingLeft: "30px"}} >
             <button onClick={doAddToSelected} className="rectangleButtonPrimary">{isAdded ? "Remove" : "Add"}</button>
