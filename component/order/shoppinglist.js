@@ -144,7 +144,7 @@ const ShoppingList = ({id}) => {
                 <table className="tabbedListTable" style={{width: "100%"}}>
                     <tr className="header" style={{marginBottom: "24px"}}>
                         <th style={thStyleFirst}>Name</th>
-                        <th style={thStyle}>Purchase Size</th>
+                        <th style={thStyle}>Purchase Unit</th>
                         <th style={thStyle}>Purchase Price</th>
                         <th style={thStyle}>Cost</th>
                         <th style={thStyle}>Low Level</th>
