@@ -2,37 +2,43 @@
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
-  background: #FFFFFF;;
+    background: #FFFFFF;
+    ;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
     margin: 0px;
 }
 
-.description{
-  font-weight: 500;
+.description {
+    font-weight: 500;
 }
 
 
 
 
-.nameLogo{
+.nameLogo {
     font-weight: 500;
     font-size: 24px;
     color: #FFFFFF;
@@ -42,21 +48,21 @@ h1, h2, h3, h4, h5, h6{
 
 
 
-.pageHolder{
+.pageHolder {
     padding-left: 100px;
     padding-right: 100px;
     padding-top: 110px;
     background: #FFFFFF;
 }
 
-.pageHolder .pageHolderContent{
+.pageHolder .pageHolderContent {
     width: 100%;
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
 }
 
-.pageHolder .pageHolderContentTopRight{
+.pageHolder .pageHolderContentTopRight {
     display: flex;
     width: 40%;
     justify-content: flex-end;
@@ -64,7 +70,7 @@ h1, h2, h3, h4, h5, h6{
     margin: 0px;
 }
 
-.pageHolder .pageHolderContentTopCenter{
+.pageHolder .pageHolderContentTopCenter {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -72,7 +78,7 @@ h1, h2, h3, h4, h5, h6{
     margin: 0px;
 }
 
-.pageHolder .pageHolderContentTopCenter div{
+.pageHolder .pageHolderContentTopCenter div {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -81,7 +87,7 @@ h1, h2, h3, h4, h5, h6{
     margin-right: 8px;
 }
 
-.pageHolder .pageHolderContentTopCenter div h5{
+.pageHolder .pageHolderContentTopCenter div h5 {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400;
@@ -90,7 +96,7 @@ h1, h2, h3, h4, h5, h6{
     color: #4D4D4C;
 }
 
-.pageHolder .pageHolderContentTopCenter div h4{
+.pageHolder .pageHolderContentTopCenter div h4 {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400;
@@ -100,98 +106,99 @@ h1, h2, h3, h4, h5, h6{
     margin-bottom: 8px;
 }
 
-.pageHolder .pageTitleContentHeaderDescription{
+.pageHolder .pageTitleContentHeaderDescription {
     display: flex;
 }
 
-.pageHolder .pageHolderContentTopLeft{
+.pageHolder .pageHolderContentTopLeft {
     display: flex;
     flex-direction: column;
     width: 40%;
     margin: 0px;
 }
 
-.pageHolder .pageHolderContentTopLeft h5,h4{
+.pageHolder .pageHolderContentTopLeft h5,
+h4 {
     margin-top: 20px;
 }
 
-.pageHolder .pageHolderContent .pageHolderContentTop{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.pageHolderContent .pageHolderContentTop div button{
-  margin-left: 16px;
-}
-
-/*
-Used by product component
-*/
-
-.pageHolder .pageHolderContent .pageHolderContentTopOther{
+.pageHolder .pageHolderContent .pageHolderContentTop {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 }
 
-.pageHolderContent .pageHolderContentTopOther div button{
+.pageHolderContent .pageHolderContentTop div button {
+    margin-left: 16px;
+}
+
+/*
+Used by product component
+*/
+
+.pageHolder .pageHolderContent .pageHolderContentTopOther {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.pageHolderContent .pageHolderContentTopOther div button {
     margin-left: 16px;
 }
 
 
 
-.pageHolderContentTopMobile{
+.pageHolderContentTopMobile {
     display: none;
 }
 
 @media screen and (max-width: 1200px) {
-    .pageHolder .pageHolderContent .pageHolderContentTopOther{
+    .pageHolder .pageHolderContent .pageHolderContentTopOther {
         display: none;
     }
 }
 
 @media screen and (max-width: 900px) {
 
-    .pageHolder .pageHolderContent .pageHolderContentTop{
+    .pageHolder .pageHolderContent .pageHolderContentTop {
         display: none;
     }
 
-    .pageHolderContentTopMobile{
+    .pageHolderContentTopMobile {
         display: flex;
         width: 100%;
         flex-direction: column;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopTop{
+    .pageHolderContentTopMobile .pageHolderContentTopTop {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopTopOther{
+    .pageHolderContentTopMobile .pageHolderContentTopTopOther {
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopTop div button{
+    .pageHolderContentTopMobile .pageHolderContentTopTop div button {
         margin-left: 16px;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentMiddle{
+    .pageHolderContentTopMobile .pageHolderContentMiddle {
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentMiddle{
+    .pageHolderContentTopMobile .pageHolderContentMiddle {
         margin-top: 16px;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopBottom{
+    .pageHolderContentTopMobile .pageHolderContentTopBottom {
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
@@ -199,41 +206,42 @@ Used by product component
         margin-top: 16px;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopBottom h4,h5{
+    .pageHolderContentTopMobile .pageHolderContentTopBottom h4,
+    h5 {
         margin: 0px;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem{
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem {
         justify-content: space-between;
         display: flex;
         align-items: center;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem *{
+    .pageHolderContentTopMobile .pageHolderContentTopBottom .pageHolderContentTopBottomItem * {
         margin-right: 16px;
     }
 }
 
 @media screen and (max-width: 750px) {
 
-    .pageHolder{
+    .pageHolder {
         padding-left: 24px;
         padding-right: 24px;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopTop{
+    .pageHolderContentTopMobile .pageHolderContentTopTop {
         display: flex;
         justify-content: space-between;
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .pageHolderContentTopMobile .pageHolderContentTopTop div button{
+    .pageHolderContentTopMobile .pageHolderContentTopTop div button {
         margin-left: 0px;
         margin-right: 16px;
     }
 
-    .pageTitle{
+    .pageTitle {
         margin-bottom: 32px;
     }
 }
@@ -242,20 +250,20 @@ Used by product component
 Padding
 */
 
-.tinyPadding{
+.tinyPadding {
     padding: 8px;
-  }
-
-.smallPadding{
-  padding: 16px;
 }
 
-.mediumPadding{
-  padding: 24px;
+.smallPadding {
+    padding: 16px;
 }
 
-.largePadding{
-  padding: 40px;
+.mediumPadding {
+    padding: 24px;
+}
+
+.largePadding {
+    padding: 40px;
 }
 
 
@@ -264,43 +272,43 @@ Padding
 Margin
 */
 
-.tinyRightMargin{
+.tinyRightMargin {
     margin-right: 8px;
 }
 
-.smallRightMargin{
+.smallRightMargin {
     margin-right: 16px;
 }
 
-.mediumRightMargin{
+.mediumRightMargin {
     margin-right: 24px;
 }
 
-.largeRightMargin{
+.largeRightMargin {
     margin-right: 40px;
 }
 
 
-.tinyTopMargin{
+.tinyTopMargin {
     margin-top: 8px;
 }
 
-.smallTopMargin{
+.smallTopMargin {
     margin-top: 16px;
 }
 
-.mediumTopMargin{
+.mediumTopMargin {
     margin-top: 24px;
 }
 
-.largeTopMargin{
+.largeTopMargin {
     margin-top: 40px;
 }
 
 
 
 
-.ptAlignTextLeft{
+.ptAlignTextLeft {
     text-align: left;
     width: 100%;
 }
@@ -312,19 +320,19 @@ Margin
 Buttons
 */
 
-.authContinueButton{
+.authContinueButton {
     margin-top: 16px;
 }
 
 @media (max-width: 650px) {
-    .authContinueButton{
+    .authContinueButton {
         margin-left: auto;
         margin-right: auto;
         display: block;
     }
 }
 
-button{
+button {
     border-radius: 8px;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
     font-size: 17px;
@@ -334,7 +342,7 @@ button{
     border: none;
 }
 
-.squareButtonPrimary{
+.squareButtonPrimary {
     width: 42px;
     height: 42px;
     max-width: 42px;
@@ -348,11 +356,11 @@ button{
     align-items: center;
 }
 
-.rectangleButtonPrimary{
+.rectangleButtonPrimary {
     height: 42px;
     max-height: 42px;
     color: #FFFFFF;
-    background: rgba(189, 91, 252, 0.85) !important; 
+    background: rgba(189, 91, 252, 0.85) !important;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     display: flex;
@@ -360,7 +368,7 @@ button{
     align-items: center;
 }
 
-.squareButtonSecondary{
+.squareButtonSecondary {
     width: 42px;
     height: 42px;
     max-width: 42px;
@@ -374,7 +382,7 @@ button{
     align-items: center;
 }
 
-.rectangleButtonSecondary{
+.rectangleButtonSecondary {
     height: 42px;
     max-height: 42px;
     color: #E46E14;
@@ -386,7 +394,7 @@ button{
     align-items: center;
 }
 
-.rectangleButtonGrey{
+.rectangleButtonGrey {
     height: 42px;
     max-height: 42px;
     color: #000000;
@@ -398,12 +406,12 @@ button{
     align-items: center;
 }
 
-button:hover{
+button:hover {
     cursor: pointer;
 }
 
 
-input{
+input {
     border-radius: 8px;
     font-size: 16px;
     font-family: 'DM Sans', sans-serif;
@@ -413,61 +421,61 @@ input{
     width: 100%;
 }
 
-.inputHorizontalHolder{
+.inputHorizontalHolder {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.inputHorizontalHolder .inputFieldHolder{
+.inputHorizontalHolder .inputFieldHolder {
     width: 48%;
 }
 
-.inputHorizontalHolder .ptSearchInput{
+.inputHorizontalHolder .ptSearchInput {
     width: 100%;
 }
 
-button:hover{
+button:hover {
     cursor: pointer;
 }
 
-.primaryButton{
-    background:#BD5BFC;
+.primaryButton {
+    background: #BD5BFC;
     color: #FFFFFF;
 }
 
-.secondaryButton{
-    background:#bf64f8;
+.secondaryButton {
+    background: #bf64f8;
     color: #FFFFFF;
 }
 
-.redButton{
+.redButton {
     background: #E41F26;
     color: #FFFFFF;
 }
 
-.greyButton{
+.greyButton {
     background: #CCCCCC;
     color: #000000;
 }
 
-.flatButton{
-    background: rgba(0,0,0,0);
+.flatButton {
+    background: rgba(0, 0, 0, 0);
     border: none;
     padding: 8px;
 
 }
 
-.link{
+.link {
     text-decoration: underline;
 }
 
-.no-link{
+.no-link {
     text-decoration: none;
 }
 
 
-.linkButton{
+.linkButton {
     font-size: 16px;
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
@@ -476,8 +484,8 @@ button:hover{
     width: 100%;
 }
 
-.linkButton:hover{
-  cursor: pointer;
+.linkButton:hover {
+    cursor: pointer;
 }
 
 /*
@@ -485,7 +493,7 @@ text
 */
 
 
-.pageTitle{
+.pageTitle {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 500;
@@ -496,7 +504,7 @@ text
     color: #4D4D4C;
 }
 
-.pageTitleContentHeader{
+.pageTitleContentHeader {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 500;
@@ -505,13 +513,13 @@ text
     margin-left: 4px;
 }
 
-.pageTitleLowerContent{
+.pageTitleLowerContent {
     display: flex;
     max-width: 400px;
 
 }
 
-.pageTitleLowerContent h5{
+.pageTitleLowerContent h5 {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400;
@@ -522,19 +530,19 @@ text
     flex-wrap: wrap;
 }
 
-.colorWhite{
+.colorWhite {
     color: #FFFFFF;
 }
 
-.colorBlack{
-   color: #000000;
+.colorBlack {
+    color: #000000;
 }
 
-.colorOrange{
+.colorOrange {
     color: #E46E14;
 }
 
-.colorRed{
+.colorRed {
     color: #E41F26;
 }
 
@@ -546,12 +554,12 @@ text
 colors
 */
 
-.colorPrimary{
-  color: #BD5BFC;
+.colorPrimary {
+    color: #BD5BFC;
 }
 
-.colorSecondary{
-  color:#bf64f8;
+.colorSecondary {
+    color: #bf64f8;
 }
 
 
@@ -561,20 +569,20 @@ colors
 Input Filed Holder
 */
 
-.inputFieldHolder{
-  margin-bottom: 30px;
+.inputFieldHolder {
+    margin-bottom: 30px;
 }
 
-.inputFieldHolder h4{
-  margin: 0px 0px 8px 0px;
-  font-weight: 500;
-  font-size: 18px;
+.inputFieldHolder h4 {
+    margin: 0px 0px 8px 0px;
+    font-weight: 500;
+    font-size: 18px;
 }
 
-.inputFieldHolder h5{
-  margin: 0px;
-  font-weight: 400;
-  font-size: 16px;
+.inputFieldHolder h5 {
+    margin: 0px;
+    font-weight: 400;
+    font-size: 16px;
 }
 
 
@@ -585,7 +593,7 @@ box
 */
 
 
-.whiteBox{
+.whiteBox {
     background: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
@@ -594,36 +602,36 @@ box
 
 
 
-.popUp{
-   width: 100%;
-   height: 100vh;
-   position: fixed;
-   z-index: 10;
-   background: rgba(0,0,0,0.3);
-   top: 0;
-   left: 0;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   overflow-y: scroll;
+.popUp {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.3);
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
 }
 
-.popUpInnerContent{
-   background: #FFFFFF;
-   border-radius: 8px;
-   box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
-   padding: 24px;
-   display: flex;
-   flex-direction: column;
-   min-width: 200px;
-   width: 500px;
-   max-width: 500px;
-   overflow-y: auto;
-   max-height: 96%;
-   height: auto;
+.popUpInnerContent {
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    width: 500px;
+    max-width: 500px;
+    overflow-y: auto;
+    max-height: 96%;
+    height: auto;
 }
 
-.popUpInnerContentWide{
+.popUpInnerContentWide {
     background: #FFFFFF;
     border-radius: 8px;
     box-shadow: -11.4052px 24.4397px 16.2931px rgba(0, 0, 0, 0.05);
@@ -638,39 +646,39 @@ box
     height: auto;
 }
 
-.popUpInnerContent .popUpInnerContentTop{
+.popUpInnerContent .popUpInnerContentTop {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.popUpInnerContentWide .popUpInnerContentTop{
+.popUpInnerContentWide .popUpInnerContentTop {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.popUpInnerContent h3{
-   margin-bottom: 30px;
-   color: #BD5BFC;
-}
-
-.popUpInnerContentWide h3{
+.popUpInnerContent h3 {
     margin-bottom: 30px;
     color: #BD5BFC;
- }
-
-.popButtonHolder{
-   display: flex;
-   align-items: center;
-   justify-content: flex-start;
-   margin-top: 24px;
 }
 
-.popButtonHolder > *{
-   margin-right: 16px;
+.popUpInnerContentWide h3 {
+    margin-bottom: 30px;
+    color: #BD5BFC;
+}
+
+.popButtonHolder {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 24px;
+}
+
+.popButtonHolder>* {
+    margin-right: 16px;
 }
 
 
@@ -685,35 +693,33 @@ box
 
 
 
-.indexMain{
+.indexMain {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
-    justify-content: flex-start;
-    margin-left: auto;
-    margin-right: auto;
-
-    
+    align-items: center;
 }
 
-.indexMain h4{
+/* un-used */
+
+/* .indexMain h4 {
     font-size: 80px;
     font-weight: 700;
     margin-bottom: 16px;
     color: #FFFFFF;
     text-align: center;
+} */
+
+.indexMain h5 {
+    font-size: 2.5rem;
+    width: 28rem;
+    font-weight: 400;
+    margin: 5rem 0;
+    color: #000000;
+    text-align: center;
 }
 
-.indexMain h5{
-  font-size: 30px;
-  font-weight: 400;
-  margin-bottom: 16px;
-  color: #000000;
-  text-align: center;
-  margin-top: 50px;
-}
-
-.indexMain button{
+.indexMain button {
     background: #BD5BFC;
     color: #FFFFFF;
     margin-top: 30px;
@@ -722,33 +728,43 @@ box
     margin-right: auto;
 }
 
-.indexMain .leftContent{
-    width: 30%;
+.indexMain button:hover {
+    background: #840dce;
+}
+
+.indexMain .leftContent {
+    width: 50%;
     height: 100%;
     background: #FFFFFF;
-    padding: 30px 24px 30px 24px;
+    padding: 10rem 10rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.indexMain .leftContent .bottomContent{
+.indexMain .leftContent .topContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.indexMain .leftContent .bottomContent {
     display: flex;
     justify-content: center;
 }
 
-.indexMain .leftContent .bottomContent h6{
+.indexMain .leftContent .bottomContent h6 {
     font-size: 14px;
 }
 
 
-
-.indexMain .rightContent{
+.indexMain .rightContent {
     background: url("/images/indexbg.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 70%;
+    width: 50%;
+    height: 100%;
 }
 
 
@@ -758,12 +774,12 @@ box
 New UI stuff
 */
 
-.whatIsCaret{
+.whatIsCaret {
     font-size: 24px;
     margin-left: 10px;
 }
 
-.whatIsHolder{
+.whatIsHolder {
     display: flex;
     align-items: center;
     font-family: 'DM Sans';
@@ -776,11 +792,11 @@ New UI stuff
     width: 100%;
 }
 
-.whatIsHolder:hover{
+.whatIsHolder:hover {
     cursor: pointer;
 }
 
-.whatIsContent{
+.whatIsContent {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400;
@@ -789,14 +805,14 @@ New UI stuff
     color: #4D4D4C;
 }
 
-.whatIsContentHolder{
+.whatIsContentHolder {
     margin-top: 8px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 }
 
-.whatIsContentCloseBtn{
+.whatIsContentCloseBtn {
     margin-right: -12px;
     margin-top: -12px;
     min-width: 30px;
@@ -807,11 +823,11 @@ New UI stuff
     margin-right: 1px;
 }
 
-.whatIsContentCloseBtn:hover{
+.whatIsContentCloseBtn:hover {
     cursor: pointer;
 }
 
-.tabbedListMainHolder{
+.tabbedListMainHolder {
     width: 100%;
     padding-bottom: 24px;
     background: #FFFFFF;
@@ -821,7 +837,7 @@ New UI stuff
     margin-bottom: 50px;
 }
 
-.tabbedListTabsHolder{
+.tabbedListTabsHolder {
     width: 100%;
     height: 60px;
     max-height: 60px;
@@ -836,11 +852,11 @@ New UI stuff
 }
 
 .tabbedListTabsHolder div:last-child {
-  border-radius: 0px 9px 0px 0px;
-  border-left: 1px solid #BDBDBD;
+    border-radius: 0px 9px 0px 0px;
+    border-left: 1px solid #BDBDBD;
 }
 
-.tabbedListTabsItem{
+.tabbedListTabsItem {
     background: #E0E0E0;
     display: flex;
     justify-content: center;
@@ -850,11 +866,11 @@ New UI stuff
     height: 100%;
 }
 
-.tabbedListTabsItem:hover{
+.tabbedListTabsItem:hover {
     cursor: pointer;
 }
 
-.tabbedListTabsItem h5{
+.tabbedListTabsItem h5 {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 500;
@@ -863,12 +879,12 @@ New UI stuff
     text-align: center;
 }
 
-.tabbedListTabsHolder .selected{
+.tabbedListTabsHolder .selected {
     background-color: #BD5BFC;
     color: #FFFFFF;
 }
 
-.tabbedListContentHolder{
+.tabbedListContentHolder {
     width: 100%;
     padding: 16px 24px 12px 24px;
     display: flex;
@@ -877,7 +893,7 @@ New UI stuff
     align-items: flex-start;
 }
 
-.tabbedListContentItem{
+.tabbedListContentItem {
     background: #F2F2F2;
     border-radius: 5px;
     padding: 16px;
@@ -885,7 +901,7 @@ New UI stuff
     justify-content: flex-start;
 }
 
-.tabbedListContentHorizontalTableContent{
+.tabbedListContentHorizontalTableContent {
     display: flex;
     align-items: center;
 }
@@ -898,39 +914,39 @@ New UI stuff
 New UI's
 */
 
-.tabbedListTableHolder{
+.tabbedListTableHolder {
     overflow-x: auto;
 }
 
-.tabbedListTable{
+.tabbedListTable {
     border-spacing: 1px 10px;
     border-collapse: separate;
     padding: 0px 45px 30px 45px;
 }
 
-.tabbedListTable .header{
+.tabbedListTable .header {
     height: 70px;
     max-height: 70px;
     min-height: 70px;
 }
 
-.tabbedListTable .header th{
+.tabbedListTable .header th {
     font-weight: 700;
     color: #4D4D4C;
 }
 
-.tabbedListTable .notHeader{
+.tabbedListTable .notHeader {
     background: #F2F2F2;
     height: 70px;
     max-height: 70px;
     min-height: 70px;
 }
 
-.tabbedListTable .notHeader:hover{
+.tabbedListTable .notHeader:hover {
     cursor: pointer;
 }
 
-.tabbedListTable th{
+.tabbedListTable th {
     text-align: left;
     padding-left: 60px;
     margin-bottom: 16px;
@@ -941,7 +957,7 @@ New UI's
     min-height: 70px;
 }
 
-.tabbedListTable td{
+.tabbedListTable td {
     text-align: left;
     padding-left: 60px;
     border-right: 1px solid #BD5BFC;
@@ -954,22 +970,23 @@ New UI's
 
 
 /**/
-.tabbedListTable .smallth th{
+.tabbedListTable .smallth th {
     padding-left: 20px;
 }
 
-.tabbedListTable .notHeader .smallth th{
+.tabbedListTable .notHeader .smallth th {
     padding-left: 20px;
 }
 
-.tabbedListTable .smalltd td{
+.tabbedListTable .smalltd td {
     padding-left: 20px;
 }
+
 /**/
 
 
 
-.tabbedListTable th:last-child{
+.tabbedListTable th:last-child {
     border-right: none;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -1006,22 +1023,35 @@ New UI's
 }
 
 
+@media (max-width: 1368px) {
+
+    .indexMain .leftContent {
+        padding: 10rem 2rem 4rem;
+    }
+
+    .indexMain h5 {
+        font-size: 2rem;
+        width: 20rem;
+    }
+
+}
+
 @media screen and (max-width: 700px) {
-    .tabbedListTable{
+    .tabbedListTable {
         padding: 20px 18px 20px 18px;
     }
 
-    .tabbedListTable th{
+    .tabbedListTable th {
         padding-left: 20px;
         font-size: 13px;
     }
 
-    .tabbedListTable td{
+    .tabbedListTable td {
         padding-left: 20px;
         font-size: 13px;
     }
- 
-    .tabbedListTabsItem h5{
+
+    .tabbedListTabsItem h5 {
         font-size: 14px;
     }
 }
@@ -1056,90 +1086,90 @@ select field styling
     font-size: 14px;
     color: rgba(189, 91, 252, 0.85);
     border-radius: 4px;
-  }
+}
 
-  .pageContentTopSelectField:focus{
+.pageContentTopSelectField:focus {
     outline: none;
-  }
+}
 
-  .pageContentTopSelectField:hover{
-      cursor: pointer;
-  }
+.pageContentTopSelectField:hover {
+    cursor: pointer;
+}
 
-  @media screen and (max-width: 900px) {
+@media screen and (max-width: 900px) {
     .pageContentTopSelectField {
         margin-left: 0px;
         margin-right: 16px;
     }
-  }
+}
 
 
 
-  /*
+/*
   Empty Result
   */
 
-  .empyResultHolder{
-      width: 100%;
-      height: 100%;
-      padding: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
+.empyResultHolder {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-  .emptyResultInnerContent{
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-  }
+.emptyResultInnerContent {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-  .emptyResultInnerContent button{
+.emptyResultInnerContent button {
     font-size: 14px;
-  }
+}
 
 
 
-  /*
+/*
   Add Dialog
   */
 
-  .popUpAdd{
+.popUpAdd {
     width: 100%;
     height: 100vh;
     position: fixed;
     z-index: 10;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
     top: 0;
     left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
- }
- 
- .popUpAddInnerContent{
+}
+
+.popUpAddInnerContent {
     display: flex;
     flex-direction: column;
     max-width: 1000px;
     width: 1000px;
     min-width: 250px;
     margin: 16px;
- }
- 
- .popUpAddInnerContent .popUpAddInnerContentTop{
-     width: 100%;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
-     background: #FFFFFF;
-     border-radius: 8px 8px 0px 0px;
-     padding: 24px;
- }
+}
 
- .popUpAddInnerContent .popUpAddInnerContentBottom{
+.popUpAddInnerContent .popUpAddInnerContentTop {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+    background: #FFFFFF;
+    border-radius: 8px 8px 0px 0px;
+    padding: 24px;
+}
+
+.popUpAddInnerContent .popUpAddInnerContentBottom {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -1153,12 +1183,12 @@ select field styling
     padding: 16px;
 }
 
-.close_button_add_modal{
+.close_button_add_modal {
     position: absolute;
 }
 
 
-.ptInput{
+.ptInput {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400;
@@ -1179,7 +1209,7 @@ select field styling
 }
 
 
-.ptSearchInput{
+.ptSearchInput {
     font-family: 'DM Sans';
     font-style: normal;
     font-weight: 400;
@@ -1200,7 +1230,7 @@ select field styling
     padding-right: 16px;
 }
 
-.ptSearchInput input{
+.ptSearchInput input {
     border: none;
     height: 26px;
     font-family: 'DM Sans';
@@ -1211,7 +1241,7 @@ select field styling
     background: #FFFFFF !important;
 }
 
-.ptSearchInput button{
+.ptSearchInput button {
     border: none;
     background: none;
     box-shadow: none;
@@ -1222,11 +1252,11 @@ select field styling
     height: 36px;
 }
 
-.ptSearchInput input:focus{
+.ptSearchInput input:focus {
     outline: none;
 }
 
-.ptSearchInput:focus{
+.ptSearchInput:focus {
     outline: none;
 }
 
@@ -1237,7 +1267,7 @@ select field styling
 Pagination 
 */
 
-.rpPagination{
+.rpPagination {
     width: auto;
     max-width: 600px;
     margin-right: 0px;
@@ -1249,59 +1279,59 @@ Pagination
     align-items: center;
 }
 
-.sidePadding{
+.sidePadding {
     padding: 0px 16px;
 }
 
-.paginationBreak{
+.paginationBreak {
     color: #BD5BFC;
     display: flex;
 }
 
-.paginationLink{
+.paginationLink {
     list-style: none;
     margin-right: 12px;
 }
 
-.paginationLink:hover{
+.paginationLink:hover {
     cursor: pointer;
 }
 
 
-.mobilePaginationDisplay{
+.mobilePaginationDisplay {
     display: none;
 }
 
 @media screen and (max-width: 700px) {
-    .mobilePaginationDisplay{
+    .mobilePaginationDisplay {
         display: block;
     }
 
-    .fullPaginationDisplay{
+    .fullPaginationDisplay {
         display: none;
     }
 
-    .rpPagination{
+    .rpPagination {
         padding-right: 16px;
         padding-left: 16px;
     }
 }
 
 
-.skeletonHolder{
+.skeletonHolder {
     padding: 0px 45px 30px 45px;
 }
 
 
 
 
-.materialContentHolder{
+.materialContentHolder {
     width: 100%;
     max-width: 600px;
     padding: 35px 24px;
 }
 
-.materialRightText{
+.materialRightText {
     width: auto;
     float: right;
     text-align: right;
@@ -1309,7 +1339,7 @@ Pagination
     margin-top: 0px;
 }
 
-.addMaterialHolder{
+.addMaterialHolder {
     display: flex;
     flex-direction: column;
 }
